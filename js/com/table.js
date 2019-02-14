@@ -1,0 +1,140 @@
+import {LitElement, html, css} from '../../vendor/lit-element/lit-element.js'
+import {classMap} from '../../vendor/lit-element/lit-html/directives/class-map.js'
+import {styleMap} from '../../vendor/lit-element/lit-html/directives/style-map.js'
+import {repeat} from '../../vendor/lit-element/lit-html/directives/repeat.js'
+import tableCSS from '../../css/com/table.css.js'
+
+export class Table extends LitElement {
+  static get properties() {
+    return { 
+      rows: {type: Array}
+    }
+  }
+
+  get columns () {
+    // this should be overridden by subclasses
+    return [
+      {id: 'example', label: 'Example', stretch: true},
+      {id: 'column2', label: 'Column2', width: 150}
+    ]
+  }
+
+  getRowHref (row) {
+    // this should be overridden by subclasses
+    // if a string is returned, the row will become a link
+    return false
+  }
+
+  isRowSelected (row) {
+    // this should be overridden by subclasses
+    return false
+  }
+
+  sort () {
+    // this should be overridden by subclasses
+  }
+
+  constructor (opts = {}) {
+    super()
+    this.rows = []
+    this.sortColumn = this.columns[0].id
+    this.sortDirection = 'asc'
+
+    if (opts.fontAwesomeCSSUrl) {
+      this.fontAwesomeCSSUrl = opts.fontAwesomeCSSUrl
+    }
+  }
+
+  // rendering
+  // =
+
+  render() {
+    return html`
+      <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
+      <div class="heading">
+        ${repeat(this.columns, col => this.renderHeadingColumn(col))}
+      </div>
+      <div class="rows">
+        ${repeat(this.rows, row => this.renderRow(row))}
+      </div>
+    `
+  }
+
+  getColumnClasses (column) {
+    return classMap({
+      col: true,
+      [column.id]: true,  
+      stretch: column.stretch
+    })
+  }
+
+  getColumnStyles (column) {
+    const styles = {}
+    if (column.width) {
+      styles.width = `${column.width}px`
+    }
+    return styleMap(styles)
+  }
+
+  renderHeadingColumn (column) {
+    const cls = this.getColumnClasses(column)
+    const styles = this.getColumnStyles(column)
+    return html`
+      <div class="${cls}" style=${styles}>
+        <span @click=${e => this.onClickHeadingColumn(e, column)}>${column.label}</span>
+        ${this.renderSortIcon(column)}
+      </div>
+    `
+  }
+
+  renderRow (row) {
+    const cls = classMap({
+      row: true,
+      selected: this.isRowSelected(row)
+    })
+    const columns = repeat(this.columns, col => this.renderRowColumn(col, row))
+    const href = this.getRowHref(row)
+    if (href) {
+      return html`<a class="${cls}" href="${href}" @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</a>`
+    }
+    return html`<div class="${cls}" @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</div>`
+  }
+
+  renderRowColumn (column, row) {
+    const cls = this.getColumnClasses(column)
+    const styles = this.getColumnStyles(column)
+    var content = (column.renderer) ? this[column.renderer](row) : row[column.id]
+    return html`
+      <div class="${cls}" style=${styles}>
+        ${content}
+      </div>
+    `
+  }
+
+  renderSortIcon (column) {
+    if (column.id !== this.sortColumn) {
+      return ''
+    }
+    return html`
+      <i class="fa fa-angle-${this.sortDirection === 'asc' ? 'down' : 'up'}"></i>
+    `
+  }
+
+  // events
+  // =
+
+  onClickHeadingColumn (e, column) {
+    if (this.sortColumn === column.id) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc'
+    } else {
+      this.sortColumn = column.id
+      this.sortDirection = 'asc'
+    }
+    this.sort()
+  }
+
+  onContextmenuRow (e, row) {
+    // this should be overridden by subclasses
+  }
+}
+Table.styles = tableCSS
