@@ -1,5 +1,5 @@
 import {LitElement, html} from '../../vendor/lit-element/lit-element.js'
-import toastCSS from '../../css/com/toast-css.js'
+import toastCSS from '../../css/com/toast.css.js'
 
 // exported api
 // =

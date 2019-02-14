@@ -1,5 +1,5 @@
 import {LitElement, html, css} from '../../../vendor/lit-element/lit-element.js'
-import popupsCSS from '../../../css/com/popups-css.js'
+import popupsCSS from '../../../css/com/popups.css.js'
 
 // exported api
 // =

@@ -1,6 +1,6 @@
 import {LitElement, html, css} from '../../vendor/lit-element/lit-element.js'
 import {findParent} from '../dom.js'
-import dropdownCSS from '../../css/com/dropdown-css.js'
+import dropdownCSS from '../../css/com/dropdown.css.js'
 
 // globals
 // =

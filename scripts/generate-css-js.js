@@ -42,13 +42,13 @@ export default cssStr
 }
 
 // converts a css path to a css-js path
-// eg reset.css -> reset-css.js
+// eg reset.css -> reset.css.js
 function cssPathToJsPath (cssPath) {
-  return cssPath.slice(0, cssPath.length - '.css'.length) + '-css.js'
+  return cssPath.slice(0, cssPath.length - '.css'.length) + '.css.js'
 }
 
 // finds all css imports and converts them into css-js module imports
-// eg @import "./reset.less" -> import resetcss from './reset-css.js'
+// eg @import "./reset.less" -> import resetcss from './reset.css.js'
 function extractAndReplaceImports (css) {
   var imports = []
   var newCss = css.replace(/^@import "([^"]*)";$/gm, (line, path) => {
