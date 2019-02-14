@@ -14,7 +14,7 @@ export class Table extends LitElement {
   get columns () {
     // this should be overridden by subclasses
     return [
-      {id: 'example', label: 'Example', stretch: true},
+      {id: 'example', label: 'Example', flex: 1},
       {id: 'column2', label: 'Column2', width: 150}
     ]
   }
@@ -72,6 +72,9 @@ export class Table extends LitElement {
     const styles = {}
     if (column.width) {
       styles.width = `${column.width}px`
+    }
+    if (column.flex) {
+      styles.flex = column.flex
     }
     return styleMap(styles)
   }

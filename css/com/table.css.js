@@ -57,9 +57,5 @@ a.row {
   margin-right: 5px;
   vertical-align: middle;
 }
-
-.col.stretch {
-  flex: 1;
-}
 `
 export default cssStr
