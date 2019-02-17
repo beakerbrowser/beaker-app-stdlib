@@ -75,6 +75,10 @@ const cssStr = css`
   padding: 10px 15px;
 }
 
+.dropdown-items.very-roomy .dropdown-item {
+  padding: 20px 30px;
+}
+
 .dropdown-items.no-border .dropdown-item {
   border-bottom: 0;
 }

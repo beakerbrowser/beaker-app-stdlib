@@ -95,7 +95,7 @@ function onClickAnywhere (e) {
 // =
 
 class BeakerContextMenu extends LitElement {
-  constructor ({x, y, right, withTriangle, items, fontAwesomeCSSUrl}) {
+  constructor ({x, y, right, withTriangle, items, fontAwesomeCSSUrl, render}) {
     super()
     this.x = x
     this.y = y
@@ -103,6 +103,13 @@ class BeakerContextMenu extends LitElement {
     this.withTriangle = withTriangle || false
     this.items = items
     this.fontAwesomeCSSUrl = fontAwesomeCSSUrl
+    this.customRender = render
+  }
+
+  // calls the global destroy
+  // (this function exists so that custom renderers can destroy with this.destroy)
+  destroy () {
+    destroy()
   }
 
   // rendering
@@ -110,33 +117,37 @@ class BeakerContextMenu extends LitElement {
 
   render() {
     return html`
-      <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
+      ${this.fontAwesomeCSSUrl ? html`<link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">` : ''}
       <div class="context-menu dropdown" style="left: ${this.x}px; top: ${this.y}px">
-        <div class="dropdown-items ${this.right ? 'right' : 'left'} ${this.withTriangle ? 'with-triangle' : ''}">
-          ${this.items.map(item => {
-            if (item === '-') {
-              return html`<hr />`
-            }
-            var icon = item.icon
-            if (icon && !icon.includes(' ')) {
-              icon = 'fa fa-' + icon
-            }
-            if (item.disabled) {
-              return html`
-                <div class="dropdown-item disabled">
-                  <i class="${icon}"></i>
-                  ${item.label}
-                </div>
-              `
-            }
-            return html`
-              <div class="dropdown-item" @click=${() => { destroy(); item.click() }}>
-                <i class="${icon}"></i>
-                ${item.label}
-              </div>
-            `
-          })}
-        </div>
+        ${this.customRender
+          ? this.customRender()
+          : html`
+            <div class="dropdown-items ${this.right ? 'right' : 'left'} ${this.withTriangle ? 'with-triangle' : ''}">
+              ${this.items.map(item => {
+                if (item === '-') {
+                  return html`<hr />`
+                }
+                var icon = item.icon
+                if (icon && !icon.includes(' ')) {
+                  icon = 'fa fa-' + icon
+                }
+                if (item.disabled) {
+                  return html`
+                    <div class="dropdown-item disabled">
+                      <i class="${icon}"></i>
+                      ${item.label}
+                    </div>
+                  `
+                }
+                return html`
+                  <div class="dropdown-item" @click=${() => { destroy(); item.click() }}>
+                    <i class="${icon}"></i>
+                    ${item.label}
+                  </div>
+                `
+              })}
+            </div>`
+        }
       </div>`
   }
 }
@@ -148,7 +159,7 @@ ${dropdownCSS}
   z-index: 10000;
 }
 
-.dropdown-items:not(.custom) {
+.dropdown-items {
   width: auto;
   white-space: nowrap;
 }
