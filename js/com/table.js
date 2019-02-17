@@ -1,4 +1,4 @@
-import {LitElement, html, css} from '../../vendor/lit-element/lit-element.js'
+import {LitElement, html} from '../../vendor/lit-element/lit-element.js'
 import {classMap} from '../../vendor/lit-element/lit-html/directives/class-map.js'
 import {styleMap} from '../../vendor/lit-element/lit-html/directives/style-map.js'
 import {repeat} from '../../vendor/lit-element/lit-html/directives/repeat.js'
@@ -17,6 +17,10 @@ export class Table extends LitElement {
       {id: 'example', label: 'Example', flex: 1},
       {id: 'column2', label: 'Column2', width: 150}
     ]
+  }
+
+  get hasHeadingLabels () {
+    return !!this.columns.find(col => !!col.label)
   }
 
   getRowHref (row) {
@@ -51,9 +55,12 @@ export class Table extends LitElement {
   render() {
     return html`
       <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
-      <div class="heading">
-        ${repeat(this.columns, col => this.renderHeadingColumn(col))}
-      </div>
+      ${this.hasHeadingLabels
+        ? html`
+          <div class="heading">
+            ${repeat(this.columns, col => this.renderHeadingColumn(col))}
+          </div>
+        ` : ''}
       <div class="rows">
         ${repeat(this.rows, row => this.renderRow(row))}
       </div>
