@@ -18,6 +18,7 @@ body {
   --color-text: #333;
   --color-text--muted: gray;
   --color-text--light: #aaa;
+  --color-text--dark: #111;
   --color-link: #295fcb;
   --color-focus-box-shadow: rgba(41, 95, 203, 0.8);
 }

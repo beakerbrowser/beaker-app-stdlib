@@ -1,0 +1,20 @@
+@import "../../common.css";
+@import "../search-input.css";
+
+.search-container,
+input.search {
+  position: relative;
+  width: 300px;
+  height: 36px;
+  font-size: 15px;
+}
+
+.fa-search {
+  font-size: 15px;
+  left: 14px;
+  top: 10px;
+}
+
+input.search::-webkit-input-placeholder {
+  font-size: 15px;
+}

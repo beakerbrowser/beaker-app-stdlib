@@ -54,7 +54,7 @@ function extractAndReplaceImports (css) {
   var newCss = css.replace(/^@import "([^"]*)";$/gm, (line, path) => {
     const importObj = {
       path: cssPathToJsPath(path),
-      varname: path.split('/').pop().replace(/\./g, '')
+      varname: path.split('/').pop().replace(/\./g, '').replace(/-/g, '')
     }
     imports.push(importObj)
     return `\${${importObj.varname}}`
