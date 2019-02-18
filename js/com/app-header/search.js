@@ -1,4 +1,4 @@
-import {LitElement, html, css} from '/vendor/beaker-app-stdlib/vendor/lit-element/lit-element.js'
+import {LitElement, html, css} from '../../../vendor/lit-element/lit-element.js'
 import searchCSS from '../../../css/com/app-header/search.css.js'
 
 export class AppHeaderSearch extends LitElement {
