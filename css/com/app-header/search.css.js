@@ -9,7 +9,7 @@ ${searchinputcss}
 .search-container,
 input.search {
   position: relative;
-  width: 300px;
+  width: 400px;
   height: 36px;
   font-size: 15px;
 }
