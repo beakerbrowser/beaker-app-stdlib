@@ -27,7 +27,7 @@ export class FeedPost extends LitElement {
           <a class="title" href="dat://profile/${authorDomain}">${this.post.author.title}</a>
           <a class="domain" href="dat://profile/${authorDomain}">${toNiceDomain(this.post.author.url)}</a>
           &middot;
-          <a class="permalink" href="#">${timeDifference(this.post.createdAt, true, '')}</a>
+          <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
         </div>
         <div class="body">${this.post.content.body}</div>
       </div>
