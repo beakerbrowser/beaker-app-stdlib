@@ -1,4 +1,5 @@
 import {LitElement, html} from '../../vendor/lit-element/lit-element.js'
+import {classMap} from '../../vendor/lit-element/lit-html/directives/class-map.js'
 import * as appMenu from './app-menu.js'
 import appHeaderCSS from '../../css/com/app-header.css.js'
 import './app-header/search.js'
@@ -6,6 +7,7 @@ import './app-header/search.js'
 export class AppHeader extends LitElement {
   static get properties () {
     return {
+      fullwidth: {type: Boolean},
       profilePicSrc: {type: String, attribute: 'profile-pic-src'},
       fontawesomeSrc: {type: String, attribute: 'fontawesome-src'}
     }
@@ -13,14 +15,16 @@ export class AppHeader extends LitElement {
 
   constructor () {
     super()
+    this.fullwidth = false
     this.profilePicSrc = ''
     this.fontawesomeSrc = ''
   }
 
   render() {
+    const cls = classMap({fullwidth: this.fullwidth})
     return html`
       <link rel="stylesheet" href="${this.fontawesomeSrc}">
-      <div>
+      <div class="${cls}">
         <beaker-app-header-search fontawesome-src="${this.fontawesomeSrc}"></beaker-app-header-search>
         <div class="spacer"></div>
         <a @click=${this.onClickAppMenu}><span class="fas fa-th"></span></a>

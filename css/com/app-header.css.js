@@ -21,6 +21,10 @@ const cssStr = css`
   align-items: center;
 }
 
+:host > div.fullwidth {
+  width: 98%;
+}
+
 a {
   margin-left: 26px;
   font-size: 16px;
