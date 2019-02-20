@@ -17,14 +17,15 @@ export class FeedPost extends LitElement {
 
   render () {
     if (!this.post) return
+    var authorDomain = (new URL(this.post.author.url)).hostname
     return html`
       <div class="avatar-column">
         <img class="avatar" src="${this.post.author.url}/thumb">
       </div>
       <div class="content-column">
         <div class="header">
-          <a class="title" href="#">${this.post.author.title}</a>
-          <a class="domain" href="#">${toNiceDomain(this.post.author.url)}</a>
+          <a class="title" href="dat://profile/${authorDomain}">${this.post.author.title}</a>
+          <a class="domain" href="dat://profile/${authorDomain}">${toNiceDomain(this.post.author.url)}</a>
           &middot;
           <a class="permalink" href="#">${timeDifference(this.post.createdAt, true, '')}</a>
         </div>
