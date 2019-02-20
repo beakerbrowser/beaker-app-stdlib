@@ -2,10 +2,6 @@ import {LitElement, html, css} from '../../../vendor/lit-element/lit-element.js'
 import searchCSS from '../../../css/com/app-header/search.css.js'
 
 export class AppHeaderSearch extends LitElement {
-  static register (tagName = 'app-header-search') {
-    customElements.define(tagName, AppHeaderSearch)
-  }
-
   static get properties () {
     return {
       fontawesomeSrc: {type: String, attribute: 'fontawesome-src'}
@@ -28,3 +24,5 @@ export class AppHeaderSearch extends LitElement {
   }
 }
 AppHeaderSearch.styles = searchCSS
+
+customElements.define('beaker-app-header-search', AppHeaderSearch)

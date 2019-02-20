@@ -1,11 +1,7 @@
 import {LitElement, html} from '../../vendor/lit-element/lit-element.js'
-import feedPostCSS from '../../css/com/profile-info-card.css.js'
+import profileInfoCardCSS from '../../css/com/profile-info-card.css.js'
 
 export class ProfileInfoCard extends LitElement {
-  static register (tagName = 'profile-info-card') {
-    customElements.define(tagName, ProfileInfoCard)
-  }
-
   render () {
     return html`
       <div class="cover-photo"><img src="/img/tmp-cover-photo.jpg"></div>
@@ -20,4 +16,6 @@ export class ProfileInfoCard extends LitElement {
     `
   }
 }
-ProfileInfoCard.styles = feedPostCSS
+ProfileInfoCard.styles = profileInfoCardCSS
+
+customElements.define('beaker-profile-info-card', ProfileInfoCard)
