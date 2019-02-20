@@ -29,15 +29,21 @@ export class Hoverable extends LitElement {
   }
 
   onMouseenter () {
-    if (!this.isHovered) {
-      this.isHovered = true
-    }
+    this.isHovered = true
+    
+    // HACK
+    // sometimes, if the mouse cursor leaves too quickly, 'mouseleave' doesn't get fired
+    // after a few ms, double check that it's still hovered
+    // -prf
+    setTimeout(() => {
+      if (!this.querySelector(':hover')) {
+        this.isHovered = false
+      }
+    }, 50)
   }
 
   onMouseleave () {
-    if (this.isHovered) {
-      this.isHovered = false
-    }
+    this.isHovered = false
   }
 }
 
