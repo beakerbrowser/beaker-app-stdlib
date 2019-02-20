@@ -5,10 +5,6 @@ import feedComposerCSS from '../../../css/com/feed/composer.css.js'
 const CHAR_LIMIT = 280
 
 export class FeedComposer extends LitElement {
-  static register (tagName = 'feed-composer') {
-    customElements.define(tagName, FeedComposer)
-  }
-
   static get properties () {
     return {
       isFocused: {type: Boolean},
@@ -84,3 +80,5 @@ export class FeedComposer extends LitElement {
   }
 }
 FeedComposer.styles = feedComposerCSS
+
+customElements.define('beaker-feed-composer', FeedComposer)

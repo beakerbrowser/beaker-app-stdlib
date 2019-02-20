@@ -2,10 +2,6 @@ import {LitElement, html} from '../../../vendor/lit-element/lit-element.js'
 import feedPostCSS from '../../../css/com/feed/post.css.js'
 
 export class FeedPost extends LitElement {
-  static register (tagName = 'feed-post') {
-    customElements.define(tagName, FeedPost)
-  }
-
   render () {
     return html`
       <div class="avatar-column">
@@ -28,3 +24,5 @@ I ‘await’ed for an invocation
   }
 }
 FeedPost.styles = feedPostCSS
+
+customElements.define('beaker-feed-post', FeedPost)
