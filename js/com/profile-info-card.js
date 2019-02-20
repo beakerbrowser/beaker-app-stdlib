@@ -18,6 +18,7 @@ export class ProfileInfoCard extends LitElement {
 
   render () {
     if (!this.user) return html`<div></div>`
+    var authorDomain = (new URL(this.user.url)).hostname
     return html`
       <div class="cover-photo">
         ${this.noCoverPhoto
@@ -25,10 +26,10 @@ export class ProfileInfoCard extends LitElement {
           : html`<img src="${this.user.url}/cover" @error=${this.onErrorCoverPhoto}>`
         }
       </div>
-      <div class="avatar"><img src="/img/tmp-profile.png"></div>
+      <div class="avatar"><img src="${this.user.url}/thumb"></div>
       <div class="ident">
-        <div><a class="title" href="#">${this.user.title}</a></div>
-        <div><a class="domain" href="#">${toNiceDomain(this.user.url)}</a></div>
+        <div><a class="title" href="dat://profile/${authorDomain}">${this.user.title}</a></div>
+        <div><a class="domain" href="dat://profile/${authorDomain}">${toNiceDomain(this.user.url)}</a></div>
       </div>
       <div class="description">${this.user.description}</div>
     `
