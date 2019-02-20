@@ -5,8 +5,8 @@ import profileInfoCardCSS from '../../css/com/profile-info-card.css.js'
 export class ProfileInfoCard extends LitElement {
   static get properties () {
     return {
-      user: {type: 'Object'},
-      noCoverPhoto: {type: 'Boolean'}
+      user: {type: Object},
+      noCoverPhoto: {type: Boolean}
     }
   }
 
