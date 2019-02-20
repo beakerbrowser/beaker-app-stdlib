@@ -7,7 +7,7 @@ const cssStr = css`
   background: #fff;
   border: 1px solid #ddd;
 
-  --fallback-cover-color: #e91e63;
+  --fallback-cover-color: linear-gradient(to bottom, hsla(216, 82%, 60%, 1), hsla(216, 82%, 55%, 1));
 }
 
 a {
