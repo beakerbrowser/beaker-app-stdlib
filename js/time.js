@@ -11,6 +11,7 @@ const msPerYear = msPerDay * 365;
 const now = Date.now()
 export function timeDifference (ts, short = false, postfix = 'ago') {
   var elapsed = now - ts
+  if (elapsed < 1) elapsed = 1 // let's avoid 0 and negative values
   if (elapsed < msPerMinute) {
     let n = Math.round(elapsed/1000)
     return `${n} ${short ? 's' : pluralize(n, 'second')} ${postfix}`
