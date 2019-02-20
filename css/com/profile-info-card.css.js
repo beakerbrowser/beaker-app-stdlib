@@ -6,6 +6,8 @@ const cssStr = css`
   display: block;
   background: #fff;
   border: 1px solid #ddd;
+
+  --fallback-cover-color: #e91e63;
 }
 
 a {
@@ -21,6 +23,12 @@ a:hover {
   width: 100%;
   height: 100px;
   object-fit: cover;
+}
+
+.cover-photo .fallback-cover {
+  width: 100%;
+  height: 100px;
+  background: var(--fallback-cover-color);
 }
 
 .avatar {

@@ -1,19 +1,41 @@
 import {LitElement, html} from '../../vendor/lit-element/lit-element.js'
+import {toNiceDomain} from '../strings.js'
 import profileInfoCardCSS from '../../css/com/profile-info-card.css.js'
 
 export class ProfileInfoCard extends LitElement {
+  static get properties () {
+    return {
+      user: {type: 'Object'},
+      noCoverPhoto: {type: 'Boolean'}
+    }
+  }
+
+  constructor () {
+    super()
+    this.user = null
+    this.noCoverPhoto = false
+  }
+
   render () {
+    if (!this.user) return html`<div></div>`
     return html`
-      <div class="cover-photo"><img src="/img/tmp-cover-photo.jpg"></div>
+      <div class="cover-photo">
+        ${this.noCoverPhoto
+          ? html`<div class="fallback-cover"></div>`
+          : html`<img src="${this.user.url}/cover" @error=${this.onErrorCoverPhoto}>`
+        }
+      </div>
       <div class="avatar"><img src="/img/tmp-profile.png"></div>
       <div class="ident">
-        <div><a class="title" href="#">Paul Frazee</a></div>
-        <div><a class="domain" href="#">pfrazee.com</a></div>
+        <div><a class="title" href="#">${this.user.title}</a></div>
+        <div><a class="domain" href="#">${toNiceDomain(this.user.url)}</a></div>
       </div>
-      <div class="description">
-        Cofounder of @BeakerBrowser and @hashbaseio. Previously Secure Scuttlebutt.
-      </div>
+      <div class="description">${this.user.description}</div>
     `
+  }
+
+  onErrorCoverPhoto () {
+    this.noCoverPhoto = true
   }
 }
 ProfileInfoCard.styles = profileInfoCardCSS
