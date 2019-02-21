@@ -8,7 +8,7 @@ export class AppHeader extends LitElement {
   static get properties () {
     return {
       fullwidth: {type: Boolean},
-      profilePicSrc: {type: String, attribute: 'profile-pic-src'},
+      currentUserUrl: {type: String, attribute: 'current-user-url'},
       fontawesomeSrc: {type: String, attribute: 'fontawesome-src'}
     }
   }
@@ -16,7 +16,7 @@ export class AppHeader extends LitElement {
   constructor () {
     super()
     this.fullwidth = false
-    this.profilePicSrc = ''
+    this.currentUserUrl = ''
     this.fontawesomeSrc = ''
   }
 
@@ -29,7 +29,7 @@ export class AppHeader extends LitElement {
         <div class="spacer"></div>
         <a @click=${this.onClickAppMenu}><span class="fas fa-th"></span></a>
         <a class="todo"><span class="fas fa-bell"></span></a>
-        <a href="dat://profile"><img class="profile" src="${this.profilePicSrc}"></a>
+        <a href="dat://profile"><img class="profile" src="${this.currentUserUrl}/thumb"></a>
       </div>
     `
   }
@@ -41,7 +41,7 @@ export class AppHeader extends LitElement {
     var rect = e.currentTarget.getClientRects()[0]
     var x = rect.right + 10
     var y = rect.top + e.currentTarget.offsetHeight
-    appMenu.create({x, y})
+    appMenu.create({x, y, currentUserUrl: this.currentUserUrl})
   }
 }
 AppHeader.styles = appHeaderCSS
