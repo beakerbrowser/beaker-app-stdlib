@@ -1,7 +1,7 @@
 import {html} from '../../vendor/lit-element/lit-element.js'
 import * as contextMenu from './context-menu.js'
 
-export function create ({x, y}) {
+export function create ({x, y, currentUserUrl}) {
   return contextMenu.create({
     x,
     y,
@@ -59,7 +59,7 @@ export function create ({x, y}) {
             Bookmarks
           </a>
           <a class="dropdown-item" href="dat://profile">
-            <img class="profile" src="/img/tmp-profile.png">
+            <img class="profile" src="${currentUserUrl}/thumb">
             Your Profile
           </a>
         </div>
