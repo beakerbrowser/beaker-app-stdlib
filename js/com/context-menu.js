@@ -28,10 +28,13 @@ create({
   // parent element to append to
   parent: document.body,
 
+  // url to fontawesome css
+  fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css',
+
   // menu items
   items: [
     // icon from font-awesome
-    {icon: 'link', label: 'Copy link', click: () => writeToClipboard('...')}
+    {icon: 'fa fa-link', label: 'Copy link', click: () => writeToClipboard('...')}
   ]
 
   // instead of items, can give render()
