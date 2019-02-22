@@ -6,7 +6,8 @@ export class ProfileInfoCard extends LitElement {
   static get properties () {
     return {
       user: {type: Object},
-      noCoverPhoto: {type: Boolean}
+      noCoverPhoto: {type: Boolean},
+      noAvatar: {type: Boolean}
     }
   }
 
@@ -14,6 +15,7 @@ export class ProfileInfoCard extends LitElement {
     super()
     this.user = null
     this.noCoverPhoto = false
+    this.noAvatar = false
   }
 
   render () {
@@ -27,7 +29,12 @@ export class ProfileInfoCard extends LitElement {
         }
       </div>
       <div class="avatar">
-        <a href="dat://profile/${authorDomain}"><img src="${this.user.url}/thumb"></a>
+        <a href="dat://profile/${authorDomain}">
+          ${this.noAvatar
+            ? html`<div class="fallback-avatar"></div>`
+            : html`<img src="${this.user.url}/thumb" @error=${this.onErrorAvatar}>`
+          }
+        </a>
       </div>
       <div class="ident">
         <div><a class="title" href="dat://profile/${authorDomain}">${this.user.title}</a></div>
@@ -39,6 +46,10 @@ export class ProfileInfoCard extends LitElement {
 
   onErrorCoverPhoto () {
     this.noCoverPhoto = true
+  }
+
+  onErrorAvatar () {
+    this.noAvatar = true
   }
 }
 ProfileInfoCard.styles = profileInfoCardCSS

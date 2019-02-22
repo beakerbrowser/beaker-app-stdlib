@@ -8,6 +8,7 @@ const cssStr = css`
   border: 1px solid #ddd;
 
   --fallback-cover-color: linear-gradient(to bottom, hsla(216, 82%, 60%, 1), hsla(216, 82%, 55%, 1));
+  --fallback-avatar-color: #e6edf1;
 }
 
 a {
@@ -35,7 +36,8 @@ a:hover {
   position: relative;
 }
 
-.avatar img {
+.avatar img,
+.avatar .fallback-avatar {
   position: absolute;
   left: 10px;
   top: -40px;
@@ -44,6 +46,10 @@ a:hover {
   border-radius: 50%;
   border: 3px solid #fff;
   object-fit: cover;
+}
+
+.avatar .fallback-avatar {
+  background: var(--fallback-avatar-color);
 }
 
 .ident {
