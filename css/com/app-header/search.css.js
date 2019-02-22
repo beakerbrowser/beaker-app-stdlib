@@ -11,7 +11,7 @@ ${autocompletecss}
 .search-container,
 input.search {
   position: relative;
-  width: 400px;
+  width: 100%;
   height: 36px;
   font-size: 15px;
 }
@@ -25,5 +25,32 @@ input.search {
 input.search::-webkit-input-placeholder {
   font-size: 15px;
 }
+
+.search-container.with-button,
+.search-container.with-button input.search {
+  height: 40px;
+}
+
+.search-container.with-button input.search {
+  border-radius: 4px 0 0 4px;
+  border-right: 0;
+  width: calc(100% - 50px);
+}
+
+.btn.search-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50px;
+  height: 40px;
+  border-radius: 0 4px 4px 0;
+  font-size: 20px;
+  line-height: 16px;
+}
+
+i.fa-arrow-right {
+  -webkit-text-stroke: 1px var(--blue);
+}
+
 `
 export default cssStr

@@ -11,6 +11,7 @@ export class AppHeaderSearch extends LitElement {
   static get properties () {
     return {
       fontawesomeSrc: {type: String, attribute: 'fontawesome-src'},
+      showButton: {type: Boolean, attribute: 'show-button'},
       isFocused: {type: Boolean},
       query: {type: String},
       results: {type: Array},
@@ -22,6 +23,7 @@ export class AppHeaderSearch extends LitElement {
   constructor () {
     super()
     this.fontawesomeSrc = ''
+    this.showButton = false
     this.isFocused = false
     this.query = ''
     this.results = null
@@ -68,7 +70,7 @@ export class AppHeaderSearch extends LitElement {
   render () {
     return html`
       <link rel="stylesheet" href="${this.fontawesomeSrc}">
-      <div class="search-container">
+      <div class="search-container ${this.showButton ? 'with-button' : ''}">
         <input
           type="text"
           class="search"
@@ -79,6 +81,12 @@ export class AppHeaderSearch extends LitElement {
           @focus=${this.onFocusInput}
         >
         <i class="fa fa-search"></i>
+        ${this.showButton
+          ? html`
+            <button class="btn primary search-btn" title="Submit search query" @click=${this.onClickSubmitActiveSearch}>
+              <i class="fa fa-arrow-right"></i>
+            </button>
+          ` : ''}
         ${this.renderResults()}
       </div>
     `
@@ -130,6 +138,10 @@ export class AppHeaderSearch extends LitElement {
     }
 
     document.removeEventListener('click', this.$onClickDocument)
+  }
+
+  onClickSubmitActiveSearch (e) {
+    window.location = `dat://search/?q=${encodeURIComponent(this.query)}`
   }
 
   onKeydownInput (e) {

@@ -25,6 +25,10 @@ const cssStr = css`
   width: 98%;
 }
 
+beaker-app-header-search {
+  width: 400px;
+}
+
 a {
   margin-left: 26px;
   font-size: 16px;
