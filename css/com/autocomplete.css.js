@@ -57,15 +57,19 @@ const cssStr = css`
 
 .autocomplete-result .title,
 .autocomplete-result .label {
+  white-space: pre;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .autocomplete-result .title {
   margin-right: 5px;
+  flex: auto 0;
 }
 
 .autocomplete-result .label {
   color: rgba(0,0,0,.475);
+  flex: 1;
 }
 
 .autocomplete-result:hover {

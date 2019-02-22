@@ -1,5 +1,6 @@
 @import "../../common.css";
 @import "../search-input.css";
+@import "../autocomplete.css";
 
 .search-container,
 input.search {
@@ -9,7 +10,7 @@ input.search {
   font-size: 15px;
 }
 
-.fa-search {
+.search-container > .fa-search {
   font-size: 15px;
   left: 14px;
   top: 10px;

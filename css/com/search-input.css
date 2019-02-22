@@ -22,7 +22,7 @@ input:focus {
   box-shadow: none;
 }
 
-i.fa-search {
+.search-container > i.fa-search {
   position: absolute;
   font-size: 16px;
   left: 17px;

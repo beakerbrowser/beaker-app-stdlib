@@ -18,19 +18,23 @@ export function shorten (str, n = 6) {
   return str
 }
 
-export function toNiceDomain (str) {
+export function toDomain (str) {
   if (!str) return ''
   try {
     var urlParsed = new URL(str)
-    var domain = urlParsed.hostname
-    if (DAT_KEY_REGEX.test(domain)) {
-      domain = `${domain.slice(0, 4)}..${domain.slice(-2)}`
-    }
-    return domain
+    return urlParsed.hostname
   } catch (e) {
     // ignore, not a url
   }
   return str
+}
+
+export function toNiceDomain (str) {
+  var domain = toDomain(str)
+  if (DAT_KEY_REGEX.test(domain)) {
+    domain = `${domain.slice(0, 4)}..${domain.slice(-2)}`
+  }
+  return domain
 }
 
 export function toNiceUrl (str) {

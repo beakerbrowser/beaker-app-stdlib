@@ -1,10 +1,12 @@
 import {css} from '../../../vendor/lit-element/lit-element.js'
 import commoncss from '../../common.css.js'
 import searchinputcss from '../search-input.css.js'
+import autocompletecss from '../autocomplete.css.js'
 
 const cssStr = css`
 ${commoncss}
 ${searchinputcss}
+${autocompletecss}
 
 .search-container,
 input.search {
@@ -14,7 +16,7 @@ input.search {
   font-size: 15px;
 }
 
-.fa-search {
+.search-container > .fa-search {
   font-size: 15px;
   left: 14px;
   top: 10px;
