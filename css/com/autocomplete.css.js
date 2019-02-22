@@ -48,6 +48,7 @@ const cssStr = css`
 
 .autocomplete-result .icon.rounded {
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .autocomplete-result .favicon {

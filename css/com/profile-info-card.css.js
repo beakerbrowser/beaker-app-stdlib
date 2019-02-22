@@ -43,6 +43,7 @@ a:hover {
   height: 75px;
   border-radius: 50%;
   border: 3px solid #fff;
+  object-fit: cover;
 }
 
 .ident {
