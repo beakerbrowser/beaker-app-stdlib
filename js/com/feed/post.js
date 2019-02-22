@@ -20,7 +20,7 @@ export class FeedPost extends LitElement {
     var authorDomain = (new URL(this.post.author.url)).hostname
     return html`
       <div class="avatar-column">
-        <img class="avatar" src="${this.post.author.url}/thumb">
+      <a href="dat://profile/${authorDomain}"><img class="avatar" src="${this.post.author.url}/thumb"></a>
       </div>
       <div class="content-column">
         <div class="header">
