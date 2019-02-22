@@ -27,6 +27,7 @@ export class AppHeader extends LitElement {
       <div class="${cls}">
         <beaker-app-header-search fontawesome-src="${this.fontawesomeSrc}"></beaker-app-header-search>
         <div class="spacer"></div>
+        <a class="text" href="dat://feed">Home</a>
         <a @click=${this.onClickAppMenu}><span class="fas fa-th"></span></a>
         <a class="todo"><span class="fas fa-bell"></span></a>
         <a href="dat://profile"><img class="profile" src="${this.currentUserUrl}/thumb"></a>

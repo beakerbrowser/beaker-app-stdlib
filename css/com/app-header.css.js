@@ -35,7 +35,13 @@ a {
 }
 
 a:hover {
-  color: #777;
+  color: var(--blue);
+}
+
+a.text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
 }
 
 a.todo {
