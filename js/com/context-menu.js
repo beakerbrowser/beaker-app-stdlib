@@ -1,4 +1,6 @@
 import {LitElement, html, css} from '../../vendor/lit-element/lit-element.js'
+import {classMap} from '../../vendor/lit-element/lit-html/directives/class-map.js'
+import {ifDefined} from '../../vendor/lit-element/lit-html/directives/if-defined.js'
 import {findParent} from '../dom.js'
 import dropdownCSS from '../../css/com/dropdown.css.js'
 
@@ -24,6 +26,12 @@ create({
 
   // use triangle
   withTriangle: true,
+
+  // roomy style
+  roomy: true,
+
+  // additional styles on dropdown-items
+  style: 'font-size: 14px',
 
   // parent element to append to
   parent: document.body,
@@ -98,12 +106,14 @@ function onClickAnywhere (e) {
 // =
 
 class BeakerContextMenu extends LitElement {
-  constructor ({x, y, right, withTriangle, items, fontAwesomeCSSUrl, render}) {
+  constructor ({x, y, right, withTriangle, roomy, style, items, fontAwesomeCSSUrl, render}) {
     super()
     this.x = x
     this.y = y
     this.right = right || false
     this.withTriangle = withTriangle || false
+    this.roomy = roomy || false
+    this.style = style || undefined
     this.items = items
     this.fontAwesomeCSSUrl = fontAwesomeCSSUrl
     this.customRender = render
@@ -119,13 +129,20 @@ class BeakerContextMenu extends LitElement {
   // =
 
   render() {
+    const cls = classMap({
+      'dropdown-items': true,
+      right: this.right,
+      left: !this.right,
+      'with-triangle': this.withTriangle,
+      roomy: this.roomy
+    })
     return html`
       ${this.fontAwesomeCSSUrl ? html`<link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">` : ''}
       <div class="context-menu dropdown" style="left: ${this.x}px; top: ${this.y}px">
         ${this.customRender
           ? this.customRender()
           : html`
-            <div class="dropdown-items ${this.right ? 'right' : 'left'} ${this.withTriangle ? 'with-triangle' : ''}">
+            <div class="${cls}" style=${ifDefined(this.style)}>
               ${this.items.map(item => {
                 if (item === '-') {
                   return html`<hr />`
