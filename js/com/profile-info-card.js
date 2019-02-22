@@ -26,7 +26,9 @@ export class ProfileInfoCard extends LitElement {
           : html`<img src="${this.user.url}/cover" @error=${this.onErrorCoverPhoto}>`
         }
       </div>
-      <div class="avatar"><img src="${this.user.url}/thumb"></div>
+      <div class="avatar">
+        <a href="dat://profile/${authorDomain}"><img src="${this.user.url}/thumb"></a>
+      </div>
       <div class="ident">
         <div><a class="title" href="dat://profile/${authorDomain}">${this.user.title}</a></div>
         <div><a class="domain" href="dat://profile/${authorDomain}">${toNiceDomain(this.user.url)}</a></div>
