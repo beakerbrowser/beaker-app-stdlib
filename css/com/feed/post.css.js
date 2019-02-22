@@ -47,7 +47,7 @@ a:hover {
 }
 
 .body {
-  white-space: pre;
+  white-space: pre-wrap;
   font-size: 14px;
   color: var(--color-text--dark);
 }
