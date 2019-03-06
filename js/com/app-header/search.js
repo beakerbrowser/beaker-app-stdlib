@@ -16,7 +16,8 @@ export class AppHeaderSearch extends LitElement {
       query: {type: String},
       results: {type: Array},
       highlightNonce: {type: String},
-      highlighted: {type: Number}
+      highlighted: {type: Number},
+      viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'}
     }
   }
 
@@ -29,6 +30,7 @@ export class AppHeaderSearch extends LitElement {
     this.results = null
     this.highlightNonce = null
     this.highlighted = 0
+    this.viewProfileBaseUrl = ''
 
     this.$onClickDocument = this.onClickDocument.bind(this)
   }
@@ -59,9 +61,12 @@ export class AppHeaderSearch extends LitElement {
 
   getResultUrl (res) {
     if (res.theFixedSearchItem) {
-      return `dat://search/?q=${encodeURIComponent(this.query)}`
+      return `beaker://search/?q=${encodeURIComponent(this.query)}`
     }
-    return `dat://profile/${toDomain(res.url)}`
+    if (this.viewProfileBaseUrl) {
+      return `${this.viewProfileBaseUrl}${encodeURIComponent(res.url)}`
+    }
+    return res.url
   }
 
   // rendering
@@ -141,7 +146,7 @@ export class AppHeaderSearch extends LitElement {
   }
 
   onClickSubmitActiveSearch (e) {
-    window.location = `dat://search/?q=${encodeURIComponent(this.query)}`
+    window.location = `beaker://search/?q=${encodeURIComponent(this.query)}`
   }
 
   onKeydownInput (e) {

@@ -42,23 +42,23 @@ export function create ({x, y, currentUserUrl}) {
           }
         </style>
         <div class="appmenu dropdown-items right">
-          <a class="dropdown-item" href="dat://feed">
+          <a class="dropdown-item" href="intent:unwalled.garden/view-feed">
             <img src="/vendor/beaker-app-stdlib/img/icons/newsfeed.png">
             News Feed
           </a>
-          <a class="dropdown-item" href="dat://library">
+          <a class="dropdown-item" href="beaker://library">
             <img src="/vendor/beaker-app-stdlib/img/icons/library.png">
             Library
           </a>
-          <a class="dropdown-item" href="dat://search">
+          <a class="dropdown-item" href="beaker://search">
             <img src="/vendor/beaker-app-stdlib/img/icons/search.png">
             Search
           </a>
-          <a class="dropdown-item" href="dat://bookmarks">
+          <a class="dropdown-item" href="beaker://bookmarks">
             <img src="/vendor/beaker-app-stdlib/img/icons/bookmarks.png">
             Bookmarks
           </a>
-          <a class="dropdown-item" href="dat://profile">
+          <a class="dropdown-item" href="intent:unwalled.garden/view-profile?url=${encodeURIComponent(currentUserUrl)}">
             <img class="profile" src="${currentUserUrl}/thumb">
             Your Profile
           </a>

@@ -7,7 +7,8 @@ export class ProfileInfoCard extends LitElement {
     return {
       user: {type: Object},
       noCoverPhoto: {type: Boolean},
-      noAvatar: {type: Boolean}
+      noAvatar: {type: Boolean},
+      viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'}
     }
   }
 
@@ -16,11 +17,12 @@ export class ProfileInfoCard extends LitElement {
     this.user = null
     this.noCoverPhoto = false
     this.noAvatar = false
+    this.viewProfileBaseUrl = 'intent:unwalled.garden/view-profile?url='
   }
 
   render () {
     if (!this.user) return html`<div></div>`
-    var authorDomain = (new URL(this.user.url)).hostname
+    var viewProfileUrl = `${this.viewProfileBaseUrl}${encodeURIComponent(this.user.url)}`
     return html`
       <div class="cover-photo">
         ${this.noCoverPhoto
@@ -29,7 +31,7 @@ export class ProfileInfoCard extends LitElement {
         }
       </div>
       <div class="avatar">
-        <a href="dat://profile/${authorDomain}">
+        <a href="${viewProfileUrl}">
           ${this.noAvatar
             ? html`<div class="fallback-avatar"></div>`
             : html`<img src="${this.user.url}/thumb" @error=${this.onErrorAvatar}>`
@@ -37,8 +39,8 @@ export class ProfileInfoCard extends LitElement {
         </a>
       </div>
       <div class="ident">
-        <div><a class="title" href="dat://profile/${authorDomain}">${this.user.title}</a></div>
-        <div><a class="domain" href="dat://profile/${authorDomain}">${toNiceDomain(this.user.url)}</a></div>
+        <div><a class="title" href="${viewProfileUrl}">${this.user.title}</a></div>
+        <div><a class="domain" href="${this.user.url}">${toNiceDomain(this.user.url)}</a></div>
       </div>
       <div class="description">${this.user.description}</div>
     `

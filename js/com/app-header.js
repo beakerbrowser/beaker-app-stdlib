@@ -9,7 +9,8 @@ export class AppHeader extends LitElement {
     return {
       fullwidth: {type: Boolean},
       currentUserUrl: {type: String, attribute: 'current-user-url'},
-      fontawesomeSrc: {type: String, attribute: 'fontawesome-src'}
+      fontawesomeSrc: {type: String, attribute: 'fontawesome-src'},
+      viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'}
     }
   }
 
@@ -18,6 +19,7 @@ export class AppHeader extends LitElement {
     this.fullwidth = false
     this.currentUserUrl = ''
     this.fontawesomeSrc = ''
+    this.viewProfileBaseUrl = ''
   }
 
   render() {
@@ -25,12 +27,14 @@ export class AppHeader extends LitElement {
     return html`
       <link rel="stylesheet" href="${this.fontawesomeSrc}">
       <div class="${cls}">
-        <beaker-app-header-search fontawesome-src="${this.fontawesomeSrc}"></beaker-app-header-search>
+        <beaker-app-header-search fontawesome-src="${this.fontawesomeSrc}" view-profile-base-url="${this.viewProfileBaseUrl}"></beaker-app-header-search>
         <div class="spacer"></div>
-        <a class="text" href="dat://feed">Home</a>
+        <a class="text" href="/">Home</a>
         <a @click=${this.onClickAppMenu}><span class="fas fa-th"></span></a>
         <a class="todo"><span class="fas fa-bell"></span></a>
-        <a href="dat://profile"><img class="profile" src="${this.currentUserUrl}/thumb"></a>
+        <a href="intent:unwalled.garden/view-profile?url=${encodeURIComponent(this.currentUserUrl)}">
+          <img class="profile" src="${this.currentUserUrl}/thumb">
+        </a>
       </div>
     `
   }

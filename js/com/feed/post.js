@@ -6,26 +6,28 @@ import {timeDifference} from '../../time.js'
 export class FeedPost extends LitElement {
   static get properties () {
     return {
-      post: {type: Object}
+      post: {type: Object},
+      viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'}
     }
   }
 
   constructor () {
     super()
     this.post = null
+    this.viewProfileBaseUrl = 'intent:unwalled.garden/view-profile?url='
   }
 
   render () {
     if (!this.post) return
-    var authorDomain = (new URL(this.post.author.url)).hostname
+    var viewProfileUrl = `${this.viewProfileBaseUrl}${encodeURIComponent(this.post.author.url)}`
     return html`
       <div class="avatar-column">
-      <a href="dat://profile/${authorDomain}"><img class="avatar" src="${this.post.author.url}/thumb"></a>
+      <a href="${viewProfileUrl}"><img class="avatar" src="${this.post.author.url}/thumb"></a>
       </div>
       <div class="content-column">
         <div class="header">
-          <a class="title" href="dat://profile/${authorDomain}">${this.post.author.title}</a>
-          <a class="domain" href="dat://profile/${authorDomain}">${toNiceDomain(this.post.author.url)}</a>
+          <a class="title" href="${viewProfileUrl}">${this.post.author.title}</a>
+          <a class="domain" href="${this.post.author.url}">${toNiceDomain(this.post.author.url)}</a>
           &middot;
           <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
         </div>
