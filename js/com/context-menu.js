@@ -30,6 +30,9 @@ create({
   // roomy style
   roomy: true,
 
+  // no borders on items
+  noBorders: false,
+
   // additional styles on dropdown-items
   style: 'font-size: 14px',
 
@@ -106,14 +109,15 @@ function onClickAnywhere (e) {
 // =
 
 class BeakerContextMenu extends LitElement {
-  constructor ({x, y, right, withTriangle, roomy, style, items, fontAwesomeCSSUrl, render}) {
+  constructor ({x, y, right, withTriangle, roomy, noBorders, style, items, fontAwesomeCSSUrl, render}) {
     super()
     this.x = x
     this.y = y
     this.right = right || false
     this.withTriangle = withTriangle || false
     this.roomy = roomy || false
-    this.style = style || undefined
+    this.noBorders = noBorders || false
+    this.customStyle = style || undefined
     this.items = items
     this.fontAwesomeCSSUrl = fontAwesomeCSSUrl
     this.customRender = render
@@ -134,7 +138,8 @@ class BeakerContextMenu extends LitElement {
       right: this.right,
       left: !this.right,
       'with-triangle': this.withTriangle,
-      roomy: this.roomy
+      roomy: this.roomy,
+      'no-border': this.noBorders
     })
     return html`
       ${this.fontAwesomeCSSUrl ? html`<link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">` : ''}
@@ -142,7 +147,7 @@ class BeakerContextMenu extends LitElement {
         ${this.customRender
           ? this.customRender()
           : html`
-            <div class="${cls}" style=${ifDefined(this.style)}>
+            <div class="${cls}" style="${ifDefined(this.customStyle)}">
               ${this.items.map(item => {
                 if (item === '-') {
                   return html`<hr />`
