@@ -50,6 +50,11 @@ const cssStr = css`
   font-weight: 500;
 }
 
+.dropdown-items hr {
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
 .dropdown-items.thin {
   width: 170px;
 }
