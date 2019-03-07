@@ -8,6 +8,7 @@ export class BeakerEditBookmarkPopup extends LitElement {
   constructor (bookmark) {
     super()
     this.bookmark = bookmark
+    this.isCreate = !bookmark.href
   }
 
   // management
@@ -59,7 +60,7 @@ export class BeakerEditBookmarkPopup extends LitElement {
     <div id="edit-bookmark-popup" class="popup-wrapper" @click=${this.onClickWrapper}>
       <form class="popup-inner" @submit=${this.onSubmit}>
         <div class="head">
-          <span class="title">Edit bookmark</span>
+          <span class="title">${this.isCreate ? 'Create' : 'Edit'} bookmark</span>
 
           <span title="Cancel" @click=${this.onCancel} class="close-btn square">
             x
