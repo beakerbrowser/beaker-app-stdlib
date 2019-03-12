@@ -63,6 +63,7 @@ export class Table extends LitElement {
         ` : ''}
       <div class="rows">
         ${repeat(this.rows, row => this.renderRow(row))}
+        ${this.rows.length === 0 ? this.renderEmpty() : ''}
       </div>
     `
   }
@@ -128,6 +129,11 @@ export class Table extends LitElement {
     return html`
       <i class="fa fa-angle-${this.sortDirection === 'asc' ? 'down' : 'up'}"></i>
     `
+  }
+
+  renderEmpty () {
+    // this should be overridden by subclasses
+    return ''
   }
 
   // events
