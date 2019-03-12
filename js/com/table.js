@@ -105,9 +105,9 @@ export class Table extends LitElement {
     const columns = repeat(this.columns, col => this.renderRowColumn(col, row))
     const href = this.getRowHref(row)
     if (href) {
-      return html`<a class="${cls}" href="${href}" @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</a>`
+      return html`<a class="${cls}" href="${href}" @click=${e => this.onClickRow(e, row)} @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</a>`
     }
-    return html`<div class="${cls}" @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</div>`
+    return html`<div class="${cls}" @click=${e => this.onClickRow(e, row)} @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</div>`
   }
 
   renderRowColumn (column, row) {
@@ -141,6 +141,10 @@ export class Table extends LitElement {
       this.sortDirection = 'asc'
     }
     this.sort()
+  }
+
+  onClickRow (e, row) {
+    // this should be overridden by subclasses
   }
 
   onContextmenuRow (e, row) {
