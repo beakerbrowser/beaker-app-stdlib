@@ -1,7 +1,7 @@
 import {html} from '../../vendor/lit-element/lit-element.js'
 import * as contextMenu from './context-menu.js'
 
-export function create ({x, y, currentUserUrl}) {
+export function create ({x, y}) {
   return contextMenu.create({
     x,
     y,
@@ -42,9 +42,9 @@ export function create ({x, y, currentUserUrl}) {
           }
         </style>
         <div class="appmenu dropdown-items right">
-          <a class="dropdown-item" href="intent:unwalled.garden/view-feed">
-            <img src="/vendor/beaker-app-stdlib/img/icons/newsfeed.png">
-            News Feed
+          <a class="dropdown-item" href="beaker://bookmarks">
+            <img src="/vendor/beaker-app-stdlib/img/icons/bookmarks.png">
+            Bookmarks
           </a>
           <a class="dropdown-item" href="beaker://library">
             <img src="/vendor/beaker-app-stdlib/img/icons/library.png">
@@ -54,13 +54,9 @@ export function create ({x, y, currentUserUrl}) {
             <img src="/vendor/beaker-app-stdlib/img/icons/search.png">
             Search
           </a>
-          <a class="dropdown-item" href="beaker://bookmarks">
-            <img src="/vendor/beaker-app-stdlib/img/icons/bookmarks.png">
-            Bookmarks
-          </a>
-          <a class="dropdown-item" href="intent:unwalled.garden/view-profile?url=${encodeURIComponent(currentUserUrl)}">
-            <img class="profile" src="${currentUserUrl}/thumb">
-            Your Profile
+          <a class="dropdown-item" href="intent:unwalled.garden/view-feed">
+            <img src="/vendor/beaker-app-stdlib/img/icons/newsfeed.png">
+            Beaker.Social
           </a>
         </div>
       `
