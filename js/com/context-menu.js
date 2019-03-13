@@ -159,14 +159,14 @@ class BeakerContextMenu extends LitElement {
                 if (item.disabled) {
                   return html`
                     <div class="dropdown-item disabled">
-                      <i class="${icon}"></i>
+                      ${icon !== false ? html`<i class="${icon}"></i>` : ''}
                       ${item.label}
                     </div>
                   `
                 }
                 return html`
                   <div class="dropdown-item" @click=${() => { destroy(); item.click() }}>
-                    <i class="${icon}"></i>
+                  ${icon !== false ? html`<i class="${icon}"></i>` : ''}
                     ${item.label}
                   </div>
                 `
