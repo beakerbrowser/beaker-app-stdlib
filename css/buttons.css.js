@@ -6,6 +6,14 @@ const cssStr = css`
 ${resetcss}
 ${colorscss}
 
+.link {
+  color: var(--blue);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 .btn.nofocus,
 .btn[disabled="disabled"],
 .btn.disabled,

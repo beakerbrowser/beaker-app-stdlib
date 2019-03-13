@@ -1,6 +1,14 @@
 @import "./reset.css";
 @import "./colors.css";
 
+.link {
+  color: var(--blue);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 .btn.nofocus,
 .btn[disabled="disabled"],
 .btn.disabled,
