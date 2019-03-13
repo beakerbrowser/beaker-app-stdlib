@@ -52,7 +52,7 @@ export class AppHeaderSearch extends LitElement {
     }
 
     // add the "run search" item
-    res.results.push({theFixedSearchItem: true})
+    res.results.unshift({theFixedSearchItem: true})
 
     this.highlighted = 0
     this.results = res.results
@@ -73,9 +73,13 @@ export class AppHeaderSearch extends LitElement {
   // =
 
   render () {
+    const cls = classMap({
+      'search-container': true,
+      'with-button': this.showButton
+    })
     return html`
       <link rel="stylesheet" href="${this.fontawesomeSrc}">
-      <div class="search-container ${this.showButton ? 'with-button' : ''}">
+      <div class="${cls}">
         <input
           type="text"
           class="search"
