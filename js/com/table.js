@@ -23,6 +23,11 @@ export class Table extends LitElement {
     return !!this.columns.find(col => !!col.label)
   }
 
+  getRowKey (row) {
+    // this should be overridden by subclasses
+    return row
+  }
+
   getRowHref (row) {
     // this should be overridden by subclasses
     // if a string is returned, the row will become a link
@@ -62,7 +67,7 @@ export class Table extends LitElement {
           </div>
         ` : ''}
       <div class="rows">
-        ${repeat(this.rows, row => this.renderRow(row))}
+        ${repeat(this.rows, row => this.getRowKey(row), row => this.renderRow(row))}
         ${this.rows.length === 0 ? this.renderEmpty() : ''}
       </div>
     `
