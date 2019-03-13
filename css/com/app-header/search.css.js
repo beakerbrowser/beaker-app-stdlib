@@ -8,12 +8,22 @@ ${commoncss}
 ${searchinputcss}
 ${autocompletecss}
 
+:host {
+  --input-bg-color: #fff;
+  --input-border-radius: 4px;
+}
+
 .search-container,
 input.search {
   position: relative;
   width: 100%;
   height: 36px;
   font-size: 15px;
+}
+
+.search-container input.search {
+  background: var(--input-bg-color);
+  border-radius: var(--input-border-radius);
 }
 
 .search-container > .fa-search {
