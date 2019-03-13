@@ -180,7 +180,7 @@ class BeakerContextMenu extends LitElement {
 BeakerContextMenu.styles = css`
 ${dropdownCSS}
 .context-menu {
-  position: absolute;
+  position: fixed;
   z-index: 10000;
 }
 
