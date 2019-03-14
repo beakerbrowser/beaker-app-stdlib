@@ -152,6 +152,9 @@ class BeakerContextMenu extends LitElement {
                 if (item === '-') {
                   return html`<hr />`
                 }
+                if (item.type === 'html') {
+                  return item
+                }
                 var icon = item.icon
                 if (icon && !icon.includes(' ')) {
                   icon = 'fa fa-' + icon
@@ -166,7 +169,7 @@ class BeakerContextMenu extends LitElement {
                 }
                 return html`
                   <div class="dropdown-item" @click=${() => { destroy(); item.click() }}>
-                  ${icon !== false ? html`<i class="${icon}"></i>` : ''}
+                    ${icon !== false ? html`<i class="${icon}"></i>` : ''}
                     ${item.label}
                   </div>
                 `
