@@ -50,6 +50,10 @@ const cssStr = css`
   font-weight: 500;
 }
 
+.dropdown-items .section-header.small {
+  font-size: 12px;
+}
+
 .dropdown-items hr {
   border: 0;
   border-bottom: 1px solid #ddd;
