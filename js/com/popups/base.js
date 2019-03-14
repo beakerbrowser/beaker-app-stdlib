@@ -95,4 +95,4 @@ export class BasePopup extends LitElement {
   }
 }
 
-BasePopup.styles = popupsCSS
+BasePopup.styles = [popupsCSS]
