@@ -105,6 +105,28 @@ input.inline {
   line-height: 1;
 }
 
+input.big,
+textarea.big {
+  height: 38px;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+textarea.big {
+  padding: 5px 10px;
+}
+
+input.huge,
+textarea.huge {
+  height: 40px;
+  padding: 0 10px;
+  font-size: 18px;
+}
+
+textarea.huge {
+  padding: 5px 10px;
+}
+
 input.inline:focus,
 input.inline:hover {
   border: 1px solid #ccc;
@@ -132,6 +154,11 @@ input.inline:focus {
 ::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.5);
   font-size: 0.8rem;
+}
+
+.big::-webkit-input-placeholder,
+.huge::-webkit-input-placeholder {
+  font-size: 0.9em;
 }
 
 label {

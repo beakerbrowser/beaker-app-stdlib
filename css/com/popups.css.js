@@ -50,8 +50,9 @@ ${inputscss}
 
 .popup-inner .head .close-btn {
   position: absolute;
-  top: 10px;
+  top: 8px;
   right: 12px;
+  cursor: pointer;
 }
 
 .popup-inner .body {
@@ -106,8 +107,8 @@ ${inputscss}
 }
 
 .popup-inner textarea {
-  height: 50px;
-  padding-top: 3px;
+  height: 60px;
+  resize: vertical;
 }
 
 .popup-inner .actions {
