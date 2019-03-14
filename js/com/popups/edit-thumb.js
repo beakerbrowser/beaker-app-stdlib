@@ -68,6 +68,7 @@ export class BeakerEditThumb extends BasePopup {
           <canvas id="thumb-canvas" width=${CANVAS_SIZE} height=${CANVAS_SIZE} @click=${this.onClickThumb}></canvas>
           <div>
             <button class="btn" tabindex="1" @click=${this.onClickThumb}>Choose a file</button>
+            <input type="file" accept=".jpg,.jpeg,.png" @change=${this.onChooseFile}>
           </div>
         </div>
 
@@ -112,17 +113,21 @@ export class BeakerEditThumb extends BasePopup {
 
   async onClickThumb (e) {
     e.preventDefault()
-    var filenames = await beaker.browser.showOpenDialog({
-      title: 'Choose photo',
-      filters: [{name: 'Images', extensions: ['jpg', 'jpeg', 'png']}],
-      properties: ['openFile']
-    })
-    if (filenames && filenames[0]) {
-      var base64buf = await beaker.browser.readFile(filenames[0], 'base64')
-      var ext = filenames[0].split('.').pop()
-      this.loadImg(`data:image/${ext};base64,${base64buf}`)
+    this.shadowRoot.querySelector('input[type="file"]').click()
+  }
+
+  onChooseFile (e) {
+    var file = e.currentTarget.files[0]
+    if (!file) return
+    var fr = new FileReader()
+    fr.onload = () => {
+      var ext = file.name.split('.').pop()
+      this.loadImg(fr.result)
+      var base64buf = fr.result.split(',').pop()
       this.loadedImg = {ext, base64buf}
     }
+    fr.readAsDataURL(file)
+  
   }
 
   onSubmit (e) {
@@ -159,6 +164,9 @@ canvas:hover {
   justify-content: space-between;
 }
 
+input[type="file"] {
+  display: none;
+}
 `]
 
 customElements.define('beaker-edit-thumb', BeakerEditThumb)
