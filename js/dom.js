@@ -12,3 +12,18 @@ export function findParent (node, test) {
     node = node.parentNode
   }
 }
+
+export function on (el, event, fn, opts) {
+  el.addEventListener(event, fn, opts)
+}
+
+export function once (el, event, fn, opts) {
+  opts = opts || {}
+  opts.once = true
+  el.addEventListener(event, fn, opts)
+}
+
+export function emit (el, evt, opts = {}) {
+  opts.bubbles = ('bubbles' in opts) ? opts.bubbles : true
+  el.dispatchEvent(new CustomEvent(evt, opts))
+}
