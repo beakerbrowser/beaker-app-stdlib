@@ -68,7 +68,51 @@ a:hover {
 }
 
 .description {
-  padding: 6px 14px 14px;
+  padding: 6px 14px;
+}
+
+.description.extra-pad {
+  padding-bottom: 14px;
+}
+
+.controls {
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.followers {
+  padding: 6px 14px;
+  background: #fafafa;
+}
+
+.followers h5 {
+  margin: 0 0 6px;
+  font-weight: 500;
+}
+
+.followers p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.followers img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.follows-you {
+  display: inline-block;
+  padding: 4px 12px 5px;
+  border-radius: 4px;
+  background: #d2dbe4;
+  color: rgb(59, 62, 66);
+  font-weight: 500;
+  margin-right: 7px;
 }
 `
 export default cssStr
