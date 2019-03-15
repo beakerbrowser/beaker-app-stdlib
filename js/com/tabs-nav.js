@@ -38,4 +38,4 @@ export class TabsNav extends LitElement {
     this.dispatchEvent(new CustomEvent('change-tab', {detail: {tab: id}}))
   }
 }
-TabsNav.styles = tabsCSS
+TabsNav.styles = [tabsCSS]
