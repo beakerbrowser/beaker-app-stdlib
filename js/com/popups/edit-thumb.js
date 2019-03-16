@@ -63,7 +63,7 @@ export class BeakerEditThumb extends BasePopup {
 
   renderBody () {
     return html`
-      <form @submit=${this.onSubmit}>      
+      <form @submit=${this.onSubmit}>
         <div class="controls">
           <canvas id="thumb-canvas" width=${CANVAS_SIZE} height=${CANVAS_SIZE} @click=${this.onClickThumb}></canvas>
           <div>

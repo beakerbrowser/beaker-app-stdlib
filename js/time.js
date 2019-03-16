@@ -14,21 +14,21 @@ export function timeDifference (ts, short = false, postfix = 'ago') {
   if (elapsed < 1) elapsed = 1 // let's avoid 0 and negative values
   if (elapsed < msPerMinute) {
     let n = Math.round(elapsed/1000)
-    return `${n} ${short ? 's' : pluralize(n, 'second')} ${postfix}`
+    return `${n}${short ? 's' : pluralize(n, ' second')} ${postfix}`
   } else if (elapsed < msPerHour) {
     let n = Math.round(elapsed/msPerMinute)
-    return `${n} ${short ? 'm' : pluralize(n, 'minute')} ${postfix}`
+    return `${n}${short ? 'm' : pluralize(n, ' minute')} ${postfix}`
   } else if (elapsed < msPerDay ) {
     let n = Math.round(elapsed/msPerHour )
-    return `${n} ${short ? 'h' : pluralize(n, 'hour')} ${postfix}`
+    return `${n}${short ? 'h' : pluralize(n, ' hour')} ${postfix}`
   } else if (elapsed < msPerMonth) {
     let n = Math.round(elapsed/msPerDay)
-    return `${n} ${short ? 'd' : pluralize(n, 'day')} ${postfix}`
+    return `${n}${short ? 'd' : pluralize(n, ' day')} ${postfix}`
   } else if (elapsed < msPerYear) {
     let n = Math.round(elapsed/msPerMonth)
-    return `${n} ${short ? 'm' : pluralize(n, 'month')} ${postfix}`
+    return `${n}${short ? 'm' : pluralize(n, ' month')} ${postfix}`
   } else {
     let n = Math.round(elapsed/msPerYear )
-    return `${n} ${short ? 'y' : pluralize(n, 'year')} ${postfix}`
+    return `${n}${short ? 'y' : pluralize(n, ' year')} ${postfix}`
   }
 }
