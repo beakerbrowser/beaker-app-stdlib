@@ -1,6 +1,7 @@
 import {LitElement, html} from '../../../vendor/lit-element/lit-element.js'
 import {classMap} from '../../../vendor/lit-element/lit-html/directives/class-map.js'
 import feedComposerCSS from '../../../css/com/feed/composer.css.js'
+import { on } from '../../dom.js'
 
 const CHAR_LIMIT = 280
 
@@ -16,6 +17,7 @@ export class FeedComposer extends LitElement {
     super()
     this.isFocused = false
     this.draftText = ''
+    on(document, 'focus-composer', () => this.onClickPlaceholder())
   }
 
   _submit () {
