@@ -47,7 +47,7 @@ export class BeakerEditBookmarkPopup extends BasePopup {
         <label class="toggle">
           <span class="text">Pin to start page</span>
           <input type="hidden" name="pinOrder" value="${this.bookmark.pinOrder}" />
-          <input checked="${this.bookmark.pinned}" type="checkbox" name="pinned" value="pinned">
+          <input ?checked=${this.bookmark.pinned} type="checkbox" name="pinned" value="pinned">
           <div class="switch"></div>
         </label>
 
