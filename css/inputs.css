@@ -10,6 +10,9 @@ textarea {
   color: rgba(51, 51, 51, 0.95);
   border: 1px solid #d9d9d9;
 }
+textarea {
+  padding: 7px;
+}
 
 input[type="checkbox"],
 textarea[type="checkbox"],
