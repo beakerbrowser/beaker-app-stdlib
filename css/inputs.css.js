@@ -175,6 +175,11 @@ label[disabled][data-tooltip] * {
   cursor: help;
 }
 
+label.required:after {
+  content: '*';
+  color: red;
+}
+
 .toggle {
   display: flex;
   align-items: center;
