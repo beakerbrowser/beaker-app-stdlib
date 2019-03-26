@@ -33,7 +33,8 @@ export class BeakerEditBookmarkPopup extends BasePopup {
   }
 
   renderBody () {
-    const tags = (this.bookmark.tags || '').toString().replace(',', ' ')
+    var tags = this.bookmark.tags
+    if (Array.isArray(tags)) tags = tags.join(' ')
     return html`
       <link rel="stylesheet" href="${this.fontawesomeSrc}">
       <form @submit=${this.onSubmit}>
