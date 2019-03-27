@@ -61,6 +61,9 @@ export class ProfileInfoCard extends LitElement {
   }
 
   renderControls () {
+    if (this.user.isYou) {
+      return html`<div class="controls"><span class="follows-you">This is you</span></div>`
+    }
     return html`
       <div class="controls">
         ${this.user.isFollowingYou ? html`<span class="follows-you">Follows you</span>` : html`<span></span>`}
