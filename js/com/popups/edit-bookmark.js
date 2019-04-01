@@ -60,12 +60,12 @@ export class BeakerEditBookmarkPopup extends BasePopup {
           <div class="input-group">
             <label>Visibility</label>
             <div class="privacy">
-              <input type="radio" id="privacy-private" name="privacy" value="private" ?checked=${!this.bookmark['public']}>
+              <input type="radio" id="privacy-private" name="privacy" value="private" ?checked=${!this.bookmark.isPublic}>
               <label class="btn" for="privacy-private">
                 <i class="fa fa-lock"></i>
                 Private
               </label>
-              <input type="radio" id="privacy-public" name="privacy" value="public" ?checked=${this.bookmark['public']}>
+              <input type="radio" id="privacy-public" name="privacy" value="public" ?checked=${this.bookmark.isPublic}>
               <label class="btn" for="privacy-public">
                 <i class="fa fa-globe"></i>
                 Public
@@ -110,7 +110,7 @@ export class BeakerEditBookmarkPopup extends BasePopup {
         description: e.target.description.value,
         tags: e.target.tags.value.split(' ').filter(Boolean),
         pinned: e.target.pinned.checked,
-        public: e.target.privacy.value === 'public',
+        isPublic: e.target.privacy.value === 'public',
         pinOrder: e.target.pinOrder.value
       }
     }))
