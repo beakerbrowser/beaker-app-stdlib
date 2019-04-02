@@ -61,8 +61,16 @@ export class ProfileInfoCard extends LitElement {
   }
 
   renderControls () {
+    console.log('is you', this.user)
     if (this.user.isYou) {
-      return html`<div class="controls"><span class="follows-you">This is you</span></div>`
+      return html`
+        <div class="controls">
+          <span class="follows-you">This is you</span>
+          <button class="btn" @click=${e => emit(this, 'edit-profile')}>
+            Edit profile
+          </button>
+        </div>
+      `
     }
     return html`
       <div class="controls">

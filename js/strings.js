@@ -29,10 +29,10 @@ export function toDomain (str) {
   return str
 }
 
-export function toNiceDomain (str) {
+export function toNiceDomain (str, len=4) {
   var domain = toDomain(str)
   if (DAT_KEY_REGEX.test(domain)) {
-    domain = `${domain.slice(0, 4)}..${domain.slice(-2)}`
+    domain = `${domain.slice(0, len)}..${domain.slice(-2)}`
   }
   return domain
 }

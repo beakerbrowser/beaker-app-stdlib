@@ -76,7 +76,7 @@ a:hover {
 }
 
 .controls {
-  padding: 6px 14px;
+  padding: 6px 14px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -102,7 +102,7 @@ a:hover {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .follows-you {
