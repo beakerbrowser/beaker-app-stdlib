@@ -13,7 +13,8 @@ export class HistoryAutocomplete extends LitElement {
       isFocused: {type: Boolean},
       query: {type: String},
       results: {type: Array},
-      highlighted: {type: Number}
+      highlighted: {type: Number},
+      includeVerbatim: {type: Boolean, attribute: 'include-verbatim'}
     }
   }
 
@@ -25,6 +26,7 @@ export class HistoryAutocomplete extends LitElement {
     this.query = ''
     this.results = null
     this.highlighted = 0
+    this.includeVerbatim = false
 
     this.$onClickDocument = this.onClickDocument.bind(this)
   }
@@ -38,6 +40,10 @@ export class HistoryAutocomplete extends LitElement {
       // user changed query while we were running, discard
       console.log('Discarding results from outdated query')
       return
+    }
+
+    if (this.includeVerbatim) {
+      res = [{url: this.query, title: ''}].concat(res)
     }
 
     this.highlighted = 0

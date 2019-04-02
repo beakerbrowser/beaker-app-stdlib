@@ -43,6 +43,7 @@ export class BeakerEditBookmarkPopup extends BasePopup {
           <beaker-history-autocomplete
             query="${this.bookmark.href}"
             placeholder="E.g. beakerbrowser.com"
+            include-verbatim
             @selection-changed=${this.onUrlSelectionChanged}
           ></beaker-history-autocomplete>
 
