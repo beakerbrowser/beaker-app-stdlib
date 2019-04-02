@@ -28,7 +28,7 @@ export class ProfileInfoCard extends LitElement {
   }
 
   getViewUrl (user) {
-    return `${this.viewProfileBaseUrl}${encodeURIComponent(user.url)}`
+    return this.viewProfileBaseUrl ? `${this.viewProfileBaseUrl}${encodeURIComponent(user.url)}` : user.url
   }
 
   render () {
