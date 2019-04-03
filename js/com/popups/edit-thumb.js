@@ -127,7 +127,6 @@ export class BeakerEditThumb extends BasePopup {
       this.loadedImg = {ext, base64buf}
     }
     fr.readAsDataURL(file)
-  
   }
 
   onSubmit (e) {
