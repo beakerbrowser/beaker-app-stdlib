@@ -24,11 +24,12 @@ export class TabsNav extends LitElement {
     this.currentTab = this.tabs[0].id
   }
 
-  render() {
+  render () {
     return html`${repeat(this.tabs, tab => this.renderTab(tab))}`
   }
 
-  renderTab ({id, label, onClick}) {
+  renderTab ({id, label, onClick, spacer}) {
+    if (spacer) return html`<span style="flex: 1"></span>`
     const cls = classMap({active: this.currentTab === id})
     return html`<a class="${cls}" @click=${onClick ? onClick : e => this.onClickTab(e, id)}>${label}</a>`
   }
