@@ -50,6 +50,7 @@ a:hover {
   white-space: pre-wrap;
   font-size: 14px;
   color: var(--color-text--dark);
+  word-break: break-word;
 }
 `
 export default cssStr
