@@ -42,7 +42,6 @@ a:hover {
   color: var(--color-text);
 }
 
-.domain,
 .permalink {
   color: inherit;
 }

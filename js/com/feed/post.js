@@ -1,6 +1,5 @@
 import {LitElement, html} from '../../../vendor/lit-element/lit-element.js'
 import feedPostCSS from '../../../css/com/feed/post.css.js'
-import {toNiceDomain} from '../../strings.js'
 import {timeDifference} from '../../time.js'
 
 export class FeedPost extends LitElement {
@@ -27,7 +26,6 @@ export class FeedPost extends LitElement {
       <div class="content-column">
         <div class="header">
           <a class="title" href="${viewProfileUrl}">${this.post.author.title}</a>
-          <a class="domain" href="${this.post.author.url}">${toNiceDomain(this.post.author.url)}</a>
           &middot;
           <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
         </div>
