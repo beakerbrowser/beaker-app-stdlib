@@ -61,7 +61,6 @@ export class ProfileInfoCard extends LitElement {
   }
 
   renderControls () {
-    console.log('is you', this.user)
     if (this.user.isYou) {
       return html`
         <div class="controls">
@@ -78,7 +77,7 @@ export class ProfileInfoCard extends LitElement {
         ${this.user.isFollowed
           ? html`
             <beaker-hoverable @click=${e => emit(this, 'unfollow', {detail: this.user})}>
-              <button class="btn" slot="default" style="width: 100px"><span class="fa fa-check"></span> Following</button>
+              <button class="btn transparent" slot="default" style="width: 100px"><span class="fa fa-check"></span> Following</button>
               <button class="btn warning" slot="hover" style="width: 100px"><span class="fa fa-times"></span> Unfollow</button>
             </beaker-hoverable>`
           : html`
