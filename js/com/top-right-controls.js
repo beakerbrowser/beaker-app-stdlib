@@ -131,7 +131,7 @@ TopRightControls.styles = css`
 div {
   display: flex;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 8px;
   right: 10px;
   font-size: 16px;
