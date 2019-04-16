@@ -4,8 +4,7 @@ import * as contextMenu from '/vendor/beaker-app-stdlib/js/com/context-menu.js'
 import * as toast from '/vendor/beaker-app-stdlib/js/com/toast.js'
 import _debounce from '../../vendor/lodash.debounce.js'
 
-const PASTEDAT_KEY = '9056aa61e80e4a1d16c0ac651049dc906fe0ebb6be13aa356df9e81fbce05c77'
-const PHOTOALBUM_KEY = '911c291505c8dd262b099880a858cfe9f9971e39a1118cef3b3a529a3ec7548e'
+const WIKI_KEY = '9d9bc457f39c987cb775e638d1623d894860947509a4143d035305d4d468587b'
 
 const createContextMenu = (el, items) => contextMenu.create({
   x: el.getBoundingClientRect().right,
@@ -52,7 +51,7 @@ class TopRightControls extends LitElement {
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div>
-        <a @click=${this.onClickNewMenu} style="font-size: 14px; font-weight: 500; line-height: 14px;">New <i class="fas fa-caret-down"></i></a>
+        <a @click=${this.onClickNewMenu} style="font-size: 14px; font-weight: 500; line-height: 14px;">+ New <i class="fas fa-caret-down"></i></a>
         <a @click=${this.onClickAppMenu}><i class="fas fa-th"></i></a>
         <a @click=${this.onClickProfileMenu} class="profile">${this.userImg}<i class="fas fa-caret-down"></i></a>
       </div>`
@@ -72,7 +71,7 @@ class TopRightControls extends LitElement {
     e.stopPropagation()
 
     const goto = (url) => { window.location = url }
-    async function create (templateUrl, title, description) {
+    async function create (templateUrl, title, description, urlModifyFn) {
       toast.create('Loading...', '', 10e3)
       setTimeout(() => toast.create('Still loading...', '', 10e3), 10e3)
       setTimeout(() => toast.create('Still loading, must be having trouble downloading the template...', '', 10e3), 20e3)
@@ -81,7 +80,7 @@ class TopRightControls extends LitElement {
       setTimeout(() => toast.create('Lets give it 10 more seconds...', '', 10e3), 50e3)
       try {
         var newSite = await DatArchive.fork(templateUrl, {title, description, prompt: false})
-        window.location = newSite.url
+        window.location = urlModifyFn ? urlModifyFn(newSite.url) : newSite.url
       } catch (e) {
         console.error(e)
         if (e.name === 'TimeoutError') {
@@ -95,11 +94,8 @@ class TopRightControls extends LitElement {
       html`<div class="section-header small light">Projects</div>`,
       {icon: false, label: 'Blank website', click: () => goto('beaker://library/?view=new-website')},
       '-',
-      html`<div class="section-header small light">Tools</div>`,
-      {icon: false, label: 'PasteDat', click: () => create(PASTEDAT_KEY, 'New PasteDat')},
-      '-',
-      html`<div class="section-header small light">Media</div>`,
-      {icon: false, label: 'Photo album', click: () => create(PHOTOALBUM_KEY, `Photo Album (${(new Date()).toLocaleDateString()})`)}
+      html`<div class="section-header small light">Templates</div>`,
+      {icon: false, label: 'Wiki', click: () => create(WIKI_KEY, 'Untitled Wiki', ' ', url => url + '?edit')},
     ]
     createContextMenu(e.currentTarget, items)
   }
@@ -131,7 +127,7 @@ TopRightControls.styles = css`
 div {
   display: flex;
   align-items: center;
-  position: absolute;
+  position: fixed;
   top: 8px;
   right: 10px;
   font-size: 16px;
