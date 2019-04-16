@@ -1,7 +1,6 @@
 import {LitElement, html} from '../../vendor/lit-element/lit-element.js'
 import {repeat} from '../../vendor/lit-element/lit-html/directives/repeat.js'
 import {classMap} from '../../vendor/lit-element/lit-html/directives/class-map.js'
-import {unsafeHTML} from '../../vendor/lit-element/lit-html/directives/unsafe-html.js'
 import {toDomain, highlightSearchResult} from '../strings.js'
 import historyAutocompleteCSS from '../../css/com/history-autocomplete.css.js'
 
