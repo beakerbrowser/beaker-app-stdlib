@@ -2,7 +2,6 @@ import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { classMap } from '../../../vendor/lit-element/lit-html/directives/class-map.js'
 import { ReactionPicker } from './picker.js'
 import { renderSafe as renderEmoji } from '../../emoji.js'
-import reactionsCSS from '../../../css/com/reactions/reactions.css.js'
 
 export class Reactions extends LitElement {
   static get properties () {
@@ -20,8 +19,17 @@ export class Reactions extends LitElement {
     this.topic = ''
   }
 
+  createRenderRoot () {
+    // dont use the shadow dom
+    // this enables the post's hover state to hide/show the add button
+    return this
+  }
+
   render () {
     return html`
+      <div class="reaction add-btn" @click=${this.onClickAddBtn}>
+        +
+      </div>
       ${this.reactions.map(r => {
         var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
         var cls = classMap({reaction: true, 'by-user': alreadySet})
@@ -32,9 +40,6 @@ export class Reactions extends LitElement {
           </div>
         `
       })}
-      <div class="reaction add-btn" @click=${this.onClickAddBtn}>
-        +
-      </div>
     `
   }
 
@@ -78,8 +83,8 @@ export class Reactions extends LitElement {
         rect.bottom -= 350
       }
       var emoji = await ReactionPicker.create({
-        left: rect.left,
-        top: rect.bottom
+        left: rect.right - 250,
+        top: rect.top
       })
       this.emitAdd(emoji)
     } catch (e) {
@@ -88,7 +93,6 @@ export class Reactions extends LitElement {
     el.classList.remove('pressed')
   }
 }
-Reactions.styles = reactionsCSS
 
 customElements.define('beaker-reactions', Reactions)
 

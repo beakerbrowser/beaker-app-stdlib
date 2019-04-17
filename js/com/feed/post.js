@@ -23,17 +23,19 @@ export class FeedPost extends LitElement {
     if (!this.post) return
     var viewProfileUrl = `${this.viewProfileBaseUrl}${encodeURIComponent(this.post.author.url)}`
     return html`
-      <div class="avatar-column">
-      <a href="${viewProfileUrl}"><img class="avatar" src="${this.post.author.url}/thumb"></a>
-      </div>
-      <div class="content-column">
-        <div class="header">
-          <a class="title" href="${viewProfileUrl}">${this.post.author.title}</a>
-          &middot;
-          <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
+      <div class="inner">
+        <div class="avatar-column">
+          <a href="${viewProfileUrl}"><img class="avatar" src="${this.post.author.url}/thumb"></a>
         </div>
-        <div class="body">${this.post.content.body}</div>
-        <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
+        <div class="content-column">
+          <div class="header">
+            <a class="title" href="${viewProfileUrl}">${this.post.author.title}</a>
+            &middot;
+            <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
+          <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
+          </div>
+          <div class="body">${this.post.content.body}</div>
+        </div>
       </div>
     `
   }

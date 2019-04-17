@@ -13,7 +13,7 @@ export function render (emoji, tone = false) {
 }
 
 export function renderSafe (emoji, tone = false) {
-  if (!isSupported(emoji)) return ''
+  // if (!isSupported(emoji)) return '' TODO needed?
   return render(emoji, tone)
 }
 
