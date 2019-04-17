@@ -27,9 +27,6 @@ export class Reactions extends LitElement {
 
   render () {
     return html`
-      <div class="reaction add-btn" @click=${this.onClickAddBtn}>
-        +
-      </div>
       ${this.reactions.map(r => {
         var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
         var cls = classMap({reaction: true, 'by-user': alreadySet})
@@ -40,6 +37,9 @@ export class Reactions extends LitElement {
           </div>
         `
       })}
+      <div class="reaction add-btn" @click=${this.onClickAddBtn}>
+        +
+      </div>
     `
   }
 
@@ -83,7 +83,7 @@ export class Reactions extends LitElement {
         rect.bottom -= 350
       }
       var emoji = await ReactionPicker.create({
-        left: rect.right - 250,
+        left: rect.right,
         top: rect.top
       })
       this.emitAdd(emoji)

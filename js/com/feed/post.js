@@ -32,9 +32,9 @@ export class FeedPost extends LitElement {
             <a class="title" href="${viewProfileUrl}">${this.post.author.title}</a>
             &middot;
             <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
-          <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
           </div>
           <div class="body">${this.post.content.body}</div>
+          <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
         </div>
       </div>
     `
