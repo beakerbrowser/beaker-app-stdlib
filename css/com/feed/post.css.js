@@ -69,7 +69,7 @@ a:hover {
 }
 
 .bottom-ctrls > * {
-  margin-right: 20px;
+  margin-right: 25px;
 }
 
 beaker-reactions {
@@ -90,7 +90,7 @@ beaker-reactions {
 
 .reaction:hover {
   cursor: pointer;
-  background: #f5f5f5;
+  background: #f5f8ff;
 }
 
 .reaction .count {
@@ -103,14 +103,14 @@ beaker-reactions {
 }
 
 .reaction.by-user:hover {
-  background: #eee;
+  background: #e3e9f7;
 }
 
 .reaction.add-btn {
   font-size: 16px;
   line-height: 12px;
   color: gray;
-  padding-left: 5px;
+  padding-left: 4px;
   padding-right: 4px;
   opacity: 0;
   transition: opacity 0.2s;
@@ -121,7 +121,7 @@ beaker-reactions {
 }
 
 .reaction.add-btn.pressed {
-  background: #eee;
+  background: #e3e9f7;
   box-shadow: inset 0 2px 3px rgba(0,0,0,.05);
   opacity: 1;
 }
