@@ -79,8 +79,8 @@ export class Reactions extends LitElement {
     el.classList.add('pressed')
     try {
       var rect = offset(el)
-      if (rect.bottom + 400 > document.body.scrollHeight) {
-        rect.bottom -= 350
+      if (rect.top + 400 > document.body.scrollHeight) {
+        rect.top -= 300
       }
       var emoji = await ReactionPicker.create({
         left: rect.right,
