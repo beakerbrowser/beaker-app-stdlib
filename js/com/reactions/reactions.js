@@ -24,7 +24,6 @@ export class Reactions extends LitElement {
     return html`
       ${this.reactions.map(r => {
         var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
-        console.log(alreadySet, r.authors, this.userUrl)
         var cls = classMap({reaction: true, 'by-user': alreadySet})
         return html`
           <div class="${cls}" @click=${e => this.emitChange(alreadySet, r.emoji)}>

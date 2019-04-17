@@ -2,7 +2,7 @@ import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { classMap } from '../../../vendor/lit-element/lit-html/directives/class-map.js'
 import pickerCSS from '../../../css/com/reactions/picker.css.js'
 import * as EMOJIS from '../../../data/emoji-list.js'
-import { render as renderEmoji } from '../../emoji.js'
+import { render as renderEmoji, setSkinTone } from '../../emoji.js'
 import { findParent } from '../../dom.js'
 
 const SKIN_TONE_EMOJIS = [`🏻`,`🏼`,`🏽`,`🏾`,`🏿`]
@@ -132,6 +132,7 @@ export class ReactionPicker extends LitElement {
   }
 
   onClickEmoji (e, emoji) {
+    emoji = setSkinTone(emoji, this.skinTone)
     this.dispatchEvent(new CustomEvent('resolve', {detail: emoji}))
   }
 
