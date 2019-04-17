@@ -49,8 +49,8 @@ const emojiModifierBase = new Set([
 	0x1F450,
 	0x1F466,
 	0x1F467,
-	0x1F468,
-	0x1F469,
+	// 0x1F468, SUPPORT (prf)
+	// 0x1F469, SUPPORT (prf)
 	0x1F46E,
 	0x1F470,
 	0x1F471,
@@ -92,7 +92,7 @@ const emojiModifierBase = new Set([
 	0x1F91A,
 	0x1F91B,
 	0x1F91C,
-	0x1F91D,
+	// 0x1F91D, SUPPORT (prf)
 	0x1F91E,
 	0x1F926,
 	0x1F930,
@@ -103,7 +103,7 @@ const emojiModifierBase = new Set([
 	0x1F937,
 	0x1F938,
 	0x1F939,
-	0x1F93C,
+	// 0x1F93C, SUPPORT (prf)
 	0x1F93D,
 	0x1F93E
 ]);

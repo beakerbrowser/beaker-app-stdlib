@@ -8,6 +8,7 @@ export function setSkinTone (emoji, tone) {
 }
 
 export function render (emoji, tone = false) {
+  emoji = emoji.replace('\uFE0F', '').replace('\uFE0E', '')
   return (tone === false ? emoji : skinTone.set(emoji, tone)) + EMOJI_VARIANT
 }
 
@@ -18,5 +19,6 @@ export function renderSafe (emoji, tone = false) {
 
 export function isSupported (emoji) {
   if (!emoji || typeof emoji !== 'string') return false
+  emoji = emoji.replace('\uFE0F', '').replace('\uFE0E', '')
   return FULL_LIST.indexOf(skinTone.set(emoji, skinTone.NONE)) !== -1
 }

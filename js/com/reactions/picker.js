@@ -97,16 +97,10 @@ export class ReactionPicker extends LitElement {
       <div class="inner">
         <div class="heading">Frequently used</div>
         <div class="list">${EMOJIS.SUGGESTED.map(this.renderEmoji.bind(this))}</div>
-        <div class="heading">Faces</div>
-        <div class="list">${EMOJIS.FACES.map(this.renderEmoji.bind(this))}</div>
-        <div class="heading">Hearts</div>
-        <div class="list">${EMOJIS.HEARTS.map(this.renderEmoji.bind(this))}</div>
-        <div class="heading">Hands</div>
-        <div class="list">${EMOJIS.HANDS.map(this.renderEmoji.bind(this))}</div>
-        <div class="heading">Symbols</div>
-        <div class="list">${EMOJIS.SYMBOLS.map(this.renderEmoji.bind(this))}</div>
-        <div class="heading">Other</div>
-        <div class="list">${EMOJIS.OTHER.map(this.renderEmoji.bind(this))}</div>
+        ${EMOJIS.GROUPS.map(group => html`
+          <div class="heading">${group.name}</div>
+          <div class="list">${group.emojis.map(this.renderEmoji.bind(this))}</div>
+        `)}
       </div>
     `
   }
