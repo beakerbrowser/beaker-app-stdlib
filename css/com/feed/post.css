@@ -15,7 +15,7 @@ a:hover {
 }
 
 .avatar-column {
-  width: 64px;
+  width: 60px;
 }
 
 .content-column {
@@ -33,13 +33,13 @@ a:hover {
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
   font-weight: 500;
   font-size: 14px;
   color: var(--color-text--muted);
 }
 
 .title {
+  font-size: 15px;
   font-weight: bold;
   color: var(--color-text);
   margin-right: 5px;
@@ -53,22 +53,35 @@ a:hover {
 .body {
   white-space: pre-wrap;
   font-size: 14px;
+  margin: 4px 0 10px;
   color: var(--color-text--dark);
   word-break: break-word;
 }
 
+.bottom-ctrls {
+  display: flex;
+  align-items: center;
+  color: #51555f;
+}
+
+.bottom-ctrls > * {
+  margin-right: 20px;
+}
+
 beaker-reactions {
-  margin-top: 10px;
   display: flex;
   min-height: 21px;
 }
 
 .reaction {
-  padding: 3px 6px 2px;
+  padding: 2px 6px 0px;
   line-height: 16px;
   font-size: 10px;
   font-weight: 500;
   color: #444;
+  border: 1px solid #a7acb7;
+  border-radius: 12px;
+  margin-right: 4px;
 }
 
 .reaction:hover {
@@ -81,7 +94,7 @@ beaker-reactions {
 }
 
 .reaction.by-user {
-  background: #f5f5f5;
+  background: #f5f8ff;
   font-weight: bold;
 }
 
@@ -93,12 +106,13 @@ beaker-reactions {
   font-size: 16px;
   line-height: 12px;
   color: gray;
-  padding-left: 6px;
-  padding-right: 6px;
-  opacity: 0.5;
+  padding-left: 5px;
+  padding-right: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.inner:hover beaker-reactions .reaction.add-btn {
+.bottom-ctrls:hover .reaction.add-btn {
   opacity: 1;
 }
 
