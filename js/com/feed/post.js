@@ -1,11 +1,13 @@
 import {LitElement, html} from '../../../vendor/lit-element/lit-element.js'
 import feedPostCSS from '../../../css/com/feed/post.css.js'
 import {timeDifference} from '../../time.js'
+import '../reactions/reactions.js'
 
 export class FeedPost extends LitElement {
   static get properties () {
     return {
       post: {type: Object},
+      userUrl: {type: String, attribute: 'user-url'},
       viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'}
     }
   }
@@ -13,6 +15,7 @@ export class FeedPost extends LitElement {
   constructor () {
     super()
     this.post = null
+    this.userUrl = ''
     this.viewProfileBaseUrl = 'intent:unwalled.garden/view-profile?url='
   }
 
@@ -30,6 +33,7 @@ export class FeedPost extends LitElement {
           <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
         </div>
         <div class="body">${this.post.content.body}</div>
+        <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
       </div>
     `
   }

@@ -52,5 +52,9 @@ a:hover {
   color: var(--color-text--dark);
   word-break: break-word;
 }
+
+beaker-reactions {
+  margin-top: 10px;
+}
 `
 export default cssStr

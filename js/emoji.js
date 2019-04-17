@@ -3,11 +3,11 @@ import * as skinTone from '../vendor/emoji-skin-tone/index.js'
 
 const EMOJI_VARIANT = `\uFE0F` // this codepoint forces emoji rendering rather than symbolic
 
-export function render (emoji, tone = 0) {
-  return skinTone.set(emoji, tone) + EMOJI_VARIANT
+export function render (emoji, tone = false) {
+  return (tone === false ? emoji : skinTone.set(emoji, tone)) + EMOJI_VARIANT
 }
 
-export function renderSafe (emoji, tone = 0) {
+export function renderSafe (emoji, tone = false) {
   if (!isSupported(emoji)) return ''
   return render(emoji, tone)
 }
