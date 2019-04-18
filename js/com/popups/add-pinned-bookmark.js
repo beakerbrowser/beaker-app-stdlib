@@ -130,9 +130,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   onContextMenu (e) {
     e.preventDefault()
     var url = e.currentTarget.getAttribute('href')
-    var title = e.currentTarget.getAttribute('title')
     const items = [
-      {icon: 'fas fa-plus', label: 'Add to Start Page', click: () => this.pin(url, title)},
       {icon: 'fa fa-external-link-alt', label: 'Open Link in New Tab', click: () => window.open(url)},
       {icon: 'fa fa-link', label: 'Copy Link Address', click: () => writeToClipboard(url)}
     ]
