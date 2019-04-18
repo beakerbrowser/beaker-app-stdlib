@@ -53,7 +53,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   // =
 
   renderTitle () {
-    return 'Add to start page'
+    return 'Pin to start page'
   }
 
   renderBody () {
@@ -118,7 +118,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
     } else {
       await bookmarks.edit(url, {pinned: true})
     }
-    toast.create('Added to your start page')
+    toast.create('Pinned to your start page')
   }
 
   async onClick (e) {
