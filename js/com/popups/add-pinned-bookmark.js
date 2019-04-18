@@ -11,7 +11,7 @@ const bookmarks = navigator.importSystemAPI('bookmarks')
 // exported api
 // =
 
-export class BeakerExplorerPopup extends BasePopup {
+export class AddPinnedBookmarkPopup extends BasePopup {
   static get properties () {
     return {
       suggestions: {type: Object}
@@ -32,11 +32,11 @@ export class BeakerExplorerPopup extends BasePopup {
   //
 
   static async create () {
-    return BasePopup.create(BeakerExplorerPopup)
+    return BasePopup.create(AddPinnedBookmarkPopup)
   }
 
   static destroy () {
-    return BasePopup.destroy('beaker-explorer-popup')
+    return BasePopup.destroy('beaker-add-pinned-bookmark-popup')
   }
 
   async initialLoad () {
@@ -53,16 +53,15 @@ export class BeakerExplorerPopup extends BasePopup {
   // =
 
   renderTitle () {
-    return html`
-      <div class="filter-control">
-        <input type="text" id="search-input" name="url" placeholder="Search" @input=${this.onFocusSearch} @keyup=${e => delay(this.onChangeQuery.bind(this), e)} />
-      </div>
-    `
+    return 'Add to start page'
   }
 
   renderBody () {
     var hasResults = !this.query || (Object.values(this.suggestions).filter(arr => arr.length > 0).length > 0)
     return html`  
+      <div class="filter-control">
+        <input type="text" id="search-input" name="url" placeholder="Search" @input=${this.onFocusSearch} @keyup=${e => delay(this.onChangeQuery.bind(this), e)} />
+      </div>
       <div class="suggestions ${this.query ? 'query-results' : 'defaults'}">
         ${hasResults ? '' : html`<div class="empty">No results</div>`}
         ${this.renderSuggestionGroup('builtins', 'Browser tools')}
@@ -87,7 +86,7 @@ export class BeakerExplorerPopup extends BasePopup {
   renderSuggestion (row, useThumb) {
     var title = row.title || 'Untitled'
     return html`
-      <a href=${row.url} class="suggestion" title=${title} @contextmenu=${this.onContextMenu}>
+      <a href=${row.url} class="suggestion" title=${title} @click=${this.onClick} @contextmenu=${this.onContextMenu}>
         <img class="${useThumb ? 'rounded' : ''} favicon" src="${useThumb ? `${row.url}/thumb` : `beaker-favicon:32,${row.url}`}"/>
         <span class="title">${this.query ? title : trunc(title, 15)}</span>
         ${this.query ? html`<span class="url">${row.url}</span>` : ''}
@@ -112,50 +111,51 @@ export class BeakerExplorerPopup extends BasePopup {
     this.query = this.shadowRoot.querySelector('input').value
     this.loadSuggestions()
   }
+
+  async pin (url, title) {
+    if (!(await bookmarks.has(url))) {
+      await bookmarks.add({href: url, title: title, pinned: true, isPublic: false})
+    } else {
+      await bookmarks.edit(url, {pinned: true})
+    }
+    toast.create('Added to your start page')
+  }
+
+  async onClick (e) {
+    e.preventDefault()
+    await this.pin(e.currentTarget.getAttribute('href'), e.currentTarget.getAttribute('title'))
+    this.dispatchEvent(new CustomEvent('resolve'))
+  }
     
   onContextMenu (e) {
     e.preventDefault()
     var url = e.currentTarget.getAttribute('href')
     var title = e.currentTarget.getAttribute('title')
     const items = [
+      {icon: 'fas fa-plus', label: 'Add to Start Page', click: () => this.pin(url, title)},
       {icon: 'fa fa-external-link-alt', label: 'Open Link in New Tab', click: () => window.open(url)},
-      {icon: 'fa fa-link', label: 'Copy Link Address', click: () => writeToClipboard(url)},
-      {icon: 'fas fa-thumbtack', label: 'Pin to Start Page', click: pin}
+      {icon: 'fa fa-link', label: 'Copy Link Address', click: () => writeToClipboard(url)}
     ]
     contextMenu.create({x: e.clientX, y: e.clientY, items, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
-  
-    async function pin () {
-      if (!(await bookmarks.has(url))) {
-        await bookmarks.add({href: url, title: title, pinned: true, isPublic: false})
-      } else {
-        await bookmarks.edit(url, {pinned: true})
-      }
-      toast.create('Pinned to your start page')
-    }
   }
 }
-BeakerExplorerPopup.styles = [popupsCSS, css`
+AddPinnedBookmarkPopup.styles = [popupsCSS, css`
 .popup-inner {
   width: 80vw;
   max-width: 900px;
   min-width: 600px;
 }
 
-.popup-inner .head .close-btn {
-  font-size: 19px;
-  right: 16px;
-}
-
 .filter-control input {
   height: 26px;
   margin: 0;
-  width: calc(100% - 30px);
+  width: 100%;
 }
 
 .suggestions {
   overflow-y: auto;
   max-height: calc(100vh - 200px);
-  padding: 10px 10px 0;
+  padding: 0 10px;
 }
 
 .empty {
@@ -232,7 +232,7 @@ BeakerExplorerPopup.styles = [popupsCSS, css`
 }
 `]
 
-customElements.define('beaker-explorer-popup', BeakerExplorerPopup)
+customElements.define('beaker-add-pinned-bookmark-popup', AddPinnedBookmarkPopup)
 
 
 // helpers
