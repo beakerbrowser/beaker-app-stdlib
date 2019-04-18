@@ -39,7 +39,7 @@ export class FeedComposer extends LitElement {
   renderInactive () {
     return html`
       <div class="input-placeholder" @click=${this.onClickPlaceholder}>
-        What's on your mind?
+        What would you like to share?
       </div>
     `
   }
@@ -51,7 +51,7 @@ export class FeedComposer extends LitElement {
     })
     return html`
       <textarea
-        placeholder="What's on your mind?"
+        placeholder="What would you like to share?"
         @keydown=${this.onKeydownTextarea}
         @keyup=${this.onChangeTextarea}
         @blur=${this.onBlurTextarea}

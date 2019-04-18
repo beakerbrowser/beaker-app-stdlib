@@ -6,17 +6,20 @@
   width: 250px;
   height: 320px;
   background: #fff;
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
-  border-radius: 4px;
-  border: 1px solid #ddd;
+  box-shadow: 0 6px 16px rgba(0,0,0,.1);
+  border-radius: 8px;
+  border: 1px solid #c6cddc;
 }
 
 .header {
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 3px rgba(0,0,0,.05);
+  border-bottom: 1px solid #d7dfef;
+  background: #f7f9fd;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: #636467;
 }
 
 .title {
@@ -67,7 +70,7 @@
 .heading {
   padding: 6px 16px 6px;
   font-size: 14px;
-  color: #8e8a8a;
+  color: #8892a7;
   margin-top: 8px;
   font-weight: 500;
 }

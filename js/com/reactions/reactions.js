@@ -31,15 +31,15 @@ export class Reactions extends LitElement {
         var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
         var cls = classMap({reaction: true, 'by-user': alreadySet})
         return html`
-          <div class="${cls}" @click=${e => this.emitChange(alreadySet, r.emoji)}>
+          <span class="${cls}" @click=${e => this.emitChange(alreadySet, r.emoji)}>
             ${renderEmoji(r.emoji)}
             <span class="count">${r.authors.length}</span>
-          </div>
+          </span>
         `
       })}
-      <div class="reaction add-btn" @click=${this.onClickAddBtn}>
+      <span class="reaction add-btn" @click=${this.onClickAddBtn}>
         +
-      </div>
+      </span>
     `
   }
 
@@ -83,7 +83,7 @@ export class Reactions extends LitElement {
         rect.top -= 300
       }
       var emoji = await ReactionPicker.create({
-        left: rect.right,
+        left: rect.right + 5,
         top: rect.top
       })
       this.emitAdd(emoji)

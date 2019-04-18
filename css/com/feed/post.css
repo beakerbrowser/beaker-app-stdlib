@@ -11,11 +11,11 @@ a:hover {
 .inner {
   display: flex;
   background: #fff;
-  padding: 14px;
+  padding: 18px 16px;
 }
 
 .avatar-column {
-  width: 60px;
+  width: 64px;
 }
 
 .content-column {
@@ -53,6 +53,7 @@ a:hover {
 .body {
   white-space: pre-wrap;
   font-size: 14px;
+  line-height: 1.4;
   margin: 4px 0 10px;
   color: var(--color-text--dark);
   word-break: break-word;
@@ -68,18 +69,18 @@ a:hover {
   margin-right: 25px;
 }
 
-beaker-reactions {
-  display: flex;
-  min-height: 21px;
+.bottom-ctrls > div a {
+  font-size: 11px;
+  color: #505869;
+  cursor: pointer;
 }
 
 .reaction {
-  padding: 2px 6px 0px;
-  line-height: 16px;
+  padding: 4px 4px 3px;
+  line-height: 14px;
   font-size: 10px;
   font-weight: 500;
   color: #444;
-  border: 1px solid #a7acb7;
   border-radius: 12px;
   margin-right: 4px;
 }
@@ -90,7 +91,7 @@ beaker-reactions {
 }
 
 .reaction .count {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .reaction.by-user {
@@ -104,15 +105,14 @@ beaker-reactions {
 
 .reaction.add-btn {
   font-size: 16px;
-  line-height: 12px;
-  color: gray;
-  padding-left: 4px;
-  padding-right: 4px;
-  opacity: 0;
+  line-height: 4px;
+  color: #7182a5;
+  padding: 0px 5px 2px;
   transition: opacity 0.2s;
+  opacity: 0;
 }
 
-.bottom-ctrls:hover .reaction.add-btn {
+.inner:hover .reaction.add-btn {
   opacity: 1;
 }
 
