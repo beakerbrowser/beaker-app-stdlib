@@ -52,7 +52,7 @@ export class ProfileInfoCard extends LitElement {
       </div>
       <div class="ident">
         <div><a class="title" href="${viewProfileUrl}">${this.user.title}</a></div>
-        <div><a class="domain" href="${this.user.url}">${toNiceDomain(this.user.url)}</a></div>
+        <div><a class="domain" href="${viewProfileUrl}">${toNiceDomain(this.user.url)}</a></div>
       </div>
       <div class="description ${this.showControls ? '' : 'extra-pad'}">${this.user.description}</div>
       ${this.showControls ? this.renderControls() : ''}
