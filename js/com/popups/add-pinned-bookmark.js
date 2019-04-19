@@ -87,7 +87,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
     var title = row.title || 'Untitled'
     return html`
       <a href=${row.url} class="suggestion" title=${title} @click=${this.onClick} @contextmenu=${this.onContextMenu}>
-        <img class="${useThumb ? 'rounded' : ''} favicon" src="${useThumb ? `${row.url}/thumb` : `beaker-favicon:32,${row.url}`}"/>
+        <img class="${useThumb ? 'rounded' : ''} favicon" src="${useThumb ? `asset:thumb:${row.url}` : `asset:favicon-32:${row.url}`}"/>
         <span class="title">${this.query ? title : trunc(title, 15)}</span>
         ${this.query ? html`<span class="url">${row.url}</span>` : ''}
       </a>

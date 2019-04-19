@@ -10,8 +10,6 @@ export class ProfileInfoCard extends LitElement {
     return {
       user: {type: Object},
       showControls: {type: Boolean, attribute: 'show-controls'},
-      noCoverPhoto: {type: Boolean},
-      noAvatar: {type: Boolean},
       viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'},
       fontawesomeSrc: {type: String, attribute: 'fontawesome-src'}
     }
@@ -21,8 +19,6 @@ export class ProfileInfoCard extends LitElement {
     super()
     this.user = null
     this.showControls = false
-    this.noCoverPhoto = false
-    this.noAvatar = false
     this.viewProfileBaseUrl = 'intent:unwalled.garden/view-profile?url='
     this.fontawesomeSrc = ''
   }
@@ -36,20 +32,8 @@ export class ProfileInfoCard extends LitElement {
     var viewProfileUrl = this.getViewUrl(this.user)
     return html`
       ${this.fontawesomeSrc ? html`<link rel="stylesheet" href="${this.fontawesomeSrc}">` : ''}
-      <div class="cover-photo">
-        ${this.noCoverPhoto
-          ? html`<div class="fallback-cover"></div>`
-          : html`<img src="${this.user.url}/cover" @error=${this.onErrorCoverPhoto}>`
-        }
-      </div>
-      <div class="avatar">
-        <a href="${viewProfileUrl}">
-          ${this.noAvatar
-            ? html`<div class="fallback-avatar"></div>`
-            : html`<img src="${this.user.url}/thumb" @error=${this.onErrorAvatar}>`
-          }
-        </a>
-      </div>
+      <div class="cover-photo"><img src="asset:cover:${this.user.url}"></div>
+      <div class="avatar"><a href="${viewProfileUrl}"><img src="asset:thumb:${this.user.url}"></a></div>
       <div class="ident">
         <div><a class="title" href="${viewProfileUrl}">${this.user.title}</a></div>
         <div><a class="domain" href="${viewProfileUrl}">${toNiceDomain(this.user.url)}</a></div>
@@ -96,19 +80,11 @@ export class ProfileInfoCard extends LitElement {
         <h5>Followed by</h5>
         <div>
           ${fs.map(f => html`
-            <a href="${this.getViewUrl(f)}"><img src="${f.url}/thumb"></a>
+            <a href="${this.getViewUrl(f)}"><img src="asset:thumb:${f.url}"></a>
           `)}
         </div>
       </div>
     `
-  }
-
-  onErrorCoverPhoto () {
-    this.noCoverPhoto = true
-  }
-
-  onErrorAvatar () {
-    this.noAvatar = true
   }
 }
 ProfileInfoCard.styles = [buttonsCSS, profileInfoCardCSS]
