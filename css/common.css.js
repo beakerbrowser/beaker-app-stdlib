@@ -11,7 +11,7 @@ ${buttonscss}
 ${inputscss}
 
 body {
-  background: #f7f7f7;
+  background: #f5f5f7;
   color: #333;
 }
 `

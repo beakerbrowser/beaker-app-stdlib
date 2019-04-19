@@ -3,12 +3,15 @@ import {css} from '../../vendor/lit-element/lit-element.js'
 
 const cssStr = css`
 :host {
-  display: block;
-  background: #fff;
-  border: 1px solid #ddd;
-
+  --border-color: #d4d7dc;
   --fallback-cover-color: linear-gradient(to bottom, hsla(216, 82%, 60%, 1), hsla(216, 82%, 55%, 1));
   --fallback-avatar-color: #e6edf1;
+
+  display: block;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 a {
@@ -84,7 +87,7 @@ a:hover {
 
 .followers {
   padding: 6px 14px;
-  background: #fafafa;
+  background: #fafafd;
 }
 
 .followers h5 {
