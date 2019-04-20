@@ -16,8 +16,8 @@ a:hover {
 
 .inner {
   display: flex;
+  padding: 10px 14px;
   background: #fff;
-  padding: 18px 16px;
 }
 
 .avatar-column {
@@ -26,53 +26,46 @@ a:hover {
 
 .content-column {
   flex: 1;
-}
-
-.avatar {
-  display: block;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--color-text--muted);
-}
-
-.title {
-  font-size: 15px;
-  font-weight: bold;
-  color: var(--color-text);
-  margin-right: 5px;
+  line-height: 20px;
 }
 
 .permalink {
-  color: inherit;
   margin-left: 5px;
 }
 
 .body {
-  white-space: pre-wrap;
-  font-size: 14px;
-  line-height: 1.4;
-  margin: 4px 0 10px;
-  color: var(--color-text--dark);
-  word-break: break-word;
+  margin: 4px 0 6px;
+}
+
+.body .title {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.body .title .domain {
+  font-size: 12px;
+  color: #909398;
+}
+
+.body .description {
+  color: #333;
+  font-size: 15px;
 }
 
 .bottom-ctrls {
   display: flex;
   align-items: center;
   color: #51555f;
+  font-size: 11px;
+  margin-top: 4px;
 }
 
 .bottom-ctrls > * {
   margin-right: 25px;
+}
+
+.author {
+  font-weight: 500;
 }
 
 .bottom-ctrls > div a {
@@ -84,5 +77,6 @@ a:hover {
 .inner:hover .reaction.add-btn {
   opacity: 1;
 }
+
 `
 export default cssStr

@@ -26,7 +26,7 @@ export class FeedPost extends LitElement {
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="inner">
         <div class="avatar-column">
-          <a href="${viewProfileUrl}"><img class="avatar" src="${this.post.author.url}/thumb"></a>
+          <a href="${viewProfileUrl}"><img class="avatar" src="asset:thumb:${this.post.author.url}"></a>
         </div>
         <div class="content-column">
           <div class="header">
@@ -37,7 +37,7 @@ export class FeedPost extends LitElement {
           <div class="body">${this.post.content.body}</div>
           <div class="bottom-ctrls">
             <div>
-              <a class="link"><span class="far fa-comment"></span> Reply (0)</a>
+              <a class="link"><span class="far fa-comment"></span> Comment (0)</a>
             </div>
             <div>
               <a class="link"><span class="fas fa-retweet"></span> Repost (0)</a>
