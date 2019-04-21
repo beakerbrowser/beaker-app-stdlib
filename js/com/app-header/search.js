@@ -52,7 +52,7 @@ export class AppHeaderSearch extends LitElement {
     }
 
     // add the "run search" item
-    res.results.unshift({theFixedSearchItem: true})
+    // res.results.unshift({theFixedSearchItem: true}) TODO readd when ready
 
     this.highlighted = 0
     this.results = res.results
