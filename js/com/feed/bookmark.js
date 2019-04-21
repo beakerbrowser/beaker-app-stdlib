@@ -41,7 +41,7 @@ export class FeedBookmark extends LitElement {
               <a class="permalink" href="${this.bookmark.record.url}" target="_blank">${timeDifference(this.bookmark.createdAt, true, '')} ago</a>
             </div>
             <div>
-              <a class="link"><span class="far fa-comment"></span> Comment (0)</a>
+              <a class="link disabled"><span class="far fa-comment"></span> Comment (0)</a>
             </div>
             <beaker-reactions .reactions=${this.bookmark.reactions} topic="${this.bookmark.record.url}" user-url="${this.userUrl}"></beaker-reactions>
           </div>

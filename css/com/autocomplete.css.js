@@ -42,6 +42,7 @@ const cssStr = css`
 
 .autocomplete-result .icon {
   width: 24px;
+  height: 24px;
   text-align: center;
   margin-right: 10px;
 }
@@ -49,10 +50,6 @@ const cssStr = css`
 .autocomplete-result .icon.rounded {
   border-radius: 50%;
   object-fit: cover;
-}
-
-.autocomplete-result .favicon {
-  height: 24px;
 }
 
 .autocomplete-result .title,

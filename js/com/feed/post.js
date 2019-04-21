@@ -37,10 +37,10 @@ export class FeedPost extends LitElement {
           <div class="body">${this.post.content.body}</div>
           <div class="bottom-ctrls">
             <div>
-              <a class="link"><span class="far fa-comment"></span> Comment (0)</a>
+              <a class="link disabled"><span class="far fa-comment"></span> Comment (0)</a>
             </div>
             <div>
-              <a class="link"><span class="fas fa-retweet"></span> Repost (0)</a>
+              <a class="link disabled"><span class="fas fa-retweet"></span> Repost (0)</a>
             </div>
             <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
           </div>

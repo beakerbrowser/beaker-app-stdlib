@@ -81,6 +81,12 @@ a:hover {
   cursor: pointer;
 }
 
+.bottom-ctrls > div a.disabled {
+  opacity: 0.5;
+  cursor: default;
+  text-decoration: none !important;
+}
+
 .inner:hover .reaction.add-btn {
   opacity: 1;
 }
