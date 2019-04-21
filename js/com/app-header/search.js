@@ -128,11 +128,18 @@ export class AppHeaderSearch extends LitElement {
     }
     return html`
       <a href="${this.getResultUrl(res)}" class="${cls}">
-        <img class="icon favicon" src="beaker-favicon:32,${res.url}"/>
+        ${this.renderResultImage(res)}
         <span class="title">${unsafeHTML(highlightSearchResult(res.title, this.highlightNonce))}</span>
         <span class="label">${unsafeHTML(highlightSearchResult(res.description, this.highlightNonce))}</span>
       </a>
     `
+  }
+
+  renderResultImage (res) {
+    if (res.record && res.record.type === 'site') {
+      return html`<img class="icon rounded" src="asset:thumb:${res.url}"/>`
+    }
+    return html`<img class="icon favicon" src="asset:favicon:${res.url}"/>`
   }
 
   // events
