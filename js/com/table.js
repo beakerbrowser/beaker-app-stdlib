@@ -4,6 +4,15 @@ import {styleMap} from '../../vendor/lit-element/lit-html/directives/style-map.j
 import {repeat} from '../../vendor/lit-element/lit-html/directives/repeat.js'
 import tableCSS from '../../css/com/table.css.js'
 
+/**
+ * @typedef {Object} ColumnDef
+ * @property {string} id
+ * @property {string=} label
+ * @property {number=} flex
+ * @property {number=} width
+ * @property {string=} renderer
+ */
+
 export class Table extends LitElement {
   static get properties() {
     return { 
@@ -11,6 +20,9 @@ export class Table extends LitElement {
     }
   }
 
+  /**
+   * @type ColumnDef[]
+   */
   get columns () {
     // this should be overridden by subclasses
     return [
@@ -24,23 +36,23 @@ export class Table extends LitElement {
   }
 
   getRowKey (row) {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
     return row
   }
 
   getRowHref (row) {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
     // if a string is returned, the row will become a link
     return false
   }
 
   isRowSelected (row) {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
     return false
   }
 
   sort () {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
   }
 
   constructor (opts = {}) {
@@ -66,7 +78,7 @@ export class Table extends LitElement {
             ${repeat(this.columns, col => this.renderHeadingColumn(col))}
           </div>
         ` : ''}
-      <div class="rows">
+      <div class="rows" @click=${this.onClickRows}>
         ${repeat(this.rows, row => this.getRowKey(row), row => this.renderRow(row))}
         ${this.rows.length === 0 ? this.renderEmpty() : ''}
       </div>
@@ -113,7 +125,13 @@ export class Table extends LitElement {
     if (href) {
       return html`<a class="${cls}" href="${href}" @click=${e => this.onClickRow(e, row)} @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</a>`
     }
-    return html`<div class="${cls}" @click=${e => this.onClickRow(e, row)} @contextmenu=${e => this.onContextmenuRow(e, row)}>${columns}</div>`
+    return html`
+      <div
+        class="${cls}"
+        @click=${e => this.onClickRow(e, row)}
+        @dblclick=${e => this.onDblclickRow(e, row)}
+        @contextmenu=${e => this.onContextmenuRow(e, row)}
+      >${columns}</div>`
   }
 
   renderRowColumn (column, row) {
@@ -137,7 +155,7 @@ export class Table extends LitElement {
   }
 
   renderEmpty () {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
     return ''
   }
 
@@ -154,12 +172,20 @@ export class Table extends LitElement {
     this.sort()
   }
 
+  onClickRows (e, row) {
+    // this can be overridden by subclasses
+  }
+
   onClickRow (e, row) {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
+  }
+
+  onDblclickRow (e, row) {
+    // this can be overridden by subclasses
   }
 
   onContextmenuRow (e, row) {
-    // this should be overridden by subclasses
+    // this can be overridden by subclasses
   }
 }
-Table.styles = tableCSS
+Table.styles = [tableCSS]
