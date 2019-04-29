@@ -1,5 +1,24 @@
 import {pluralize} from './strings.js'
 
+const shortFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric'
+})
+const longFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  year: 'numeric',
+  day: 'numeric'
+})
+const yearFormatter = new Intl.DateTimeFormat('en-US', {year: 'numeric'})
+const CURRENT_YEAR = yearFormatter.format(new Date())
+
+export function shortDate (ts) {
+  ts = new Date(ts)
+  var year = yearFormatter.format(ts)
+  var formatter = (year === CURRENT_YEAR) ? shortFormatter : longFormatter
+  return formatter.format(ts)
+}
+
 // simple timediff fn 
 // replace this with Intl.RelativeTimeFormat when it lands in Beaker
 // https://stackoverflow.com/questions/6108819/javascript-timestamp-to-relative-time-eg-2-seconds-ago-one-week-ago-etc-best
