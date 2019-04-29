@@ -25,5 +25,6 @@ export function once (el, event, fn, opts) {
 
 export function emit (el, evt, opts = {}) {
   opts.bubbles = ('bubbles' in opts) ? opts.bubbles : true
+  opts.composed = ('composed' in opts) ? opts.composed : true
   el.dispatchEvent(new CustomEvent(evt, opts))
 }
