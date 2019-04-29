@@ -18,6 +18,19 @@ export function shorten (str, n = 6) {
   return str
 }
 
+export function joinPath (...args) {
+  var str = args[0]
+  for (let v of args.slice(1)) {
+    v = v && typeof v === 'string' ? v : ''
+    let left = str.endsWith('/')
+    let right = v.startsWith('/')
+    if (left !== right) str += v
+    else if (left) str += v.slice(1)
+    else str += '/' + v
+  }
+  return str
+}
+
 export function toDomain (str) {
   if (!str) return ''
   try {
