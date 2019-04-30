@@ -10,14 +10,20 @@ const libraryAPI = navigator.importSystemAPI('library')
 const graphAPI = navigator.importSystemAPI('unwalled-garden-graph')
 
 export const CATEGORIES = {
-  all:          {icon: 'fas fa-sitemap',          label: 'All'},
-  applications: {icon: 'far fa-window-maximize',  label: 'Applications'},
-  modules:      {icon: 'fas fa-code',             label: 'Code modules'},
-  templates:    {icon: 'fas fa-drafting-compass', label: 'Templates'},
-  users:        {icon: 'fas fa-users',            label: 'Users'},
-  wikis:        {icon: 'far fa-file-word',        label: 'Wikis'},
-  trash:        {icon: 'fas fa-trash',            label: 'Trash'}
+  all:          {type: false,                         icon: 'fas fa-sitemap',          label: 'All'},
+  applications: {type: 'unwalled.garden/application', icon: 'far fa-window-restore',   label: 'Applications'},
+  modules:      {type: 'unwalled.garden/module',      icon: 'fas fa-cubes',            label: 'Modules'},
+  // musicAlbums:  {type: 'unwalled.garden/music-album', icon: 'fas fa-music',            label: 'Music albums'},
+  // photoAlbums:  {type: 'unwalled.garden/photo-album', icon: 'far fa-image',            label: 'Photo albums'},
+  // podcasts:     {type: 'unwalled.garden/podcast',     icon: 'fas fa-microphone',       label: 'Podcasts'},
+  templates:    {type: 'unwalled.garden/template',    icon: 'fas fa-drafting-compass', label: 'Templates'},
+  users:        {type: 'unwalled.garden/user',        icon: 'fas fa-users',            label: 'Users'},
+  trash:        {type: false,                         icon: 'fas fa-trash',            label: 'Trash'},
+  websites:     {type: false,                         icon: 'fas fa-sitemap',          label: 'Websites'},
+  // wikis:        {type: 'unwalled.garden/wiki',        icon: 'far fa-file-word',        label: 'Wikis'}
 }
+
+export const KNOWN_TYPES = Object.values(CATEGORIES).map(c => c.type).filter(Boolean)
 
 export function getCategoryLabel (id) {
   return CATEGORIES[id].label
@@ -25,6 +31,11 @@ export function getCategoryLabel (id) {
 
 export function getCategoryIcon (id) {
   return CATEGORIES[id].icon
+}
+
+export function hasKnownType (dat) {
+  if (!dat.type) return false
+  return !!dat.type.find(t => KNOWN_TYPES.includes(t))
 }
 
 export class DatsExplorer extends Explorer {
@@ -59,10 +70,17 @@ export class DatsExplorer extends Explorer {
     if (this.category === 'users') {
       // TODO replace this with a library api list query
       this.dats = [self].concat(await graphAPI.listFollows(self.url))
+    } else if (this.category === 'applications') {
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.applications.type, saved: true}})
+    } else if (this.category === 'modules') {
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.modules.type, saved: true}})
     } else if (this.category === 'templates') {
-      this.dats = await libraryAPI.list({filters: {type: 'unwalled.garden/template', saved: true}})
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.templates.type, saved: true}})
+    } else if (this.category === 'websites') {
+      this.dats = await libraryAPI.list({filters: {saved: true}})
+      this.dats = this.dats.filter(d => !hasKnownType(d))
     } else if (this.category === 'wikis') {
-      this.dats = await libraryAPI.list({filters: {type: 'unwalled.garden/wiki', saved: true}})
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.wikis.type, saved: true}})
     } else if (this.category === 'trash') {
       this.dats = await libraryAPI.list({filters: {owner: true, saved: false}})
     } else {
