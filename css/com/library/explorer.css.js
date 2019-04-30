@@ -88,10 +88,6 @@ input.search {
   top: 9px;
 }
 
-.toolbar .btn-group {
-  margin: 0 8px;
-}
-
 .toolbar button {
   background: #fff;
   border: 1px solid var(--border-color);
@@ -116,6 +112,27 @@ input.search {
 
 .toolbar button[disabled] {
   color: #999;
+}
+
+.toolbar .btn-group {
+  display: flex;
+  margin: 0 6px;
+}
+
+.toolbar .btn-group button {
+  border-radius: 0;
+  border-right-width: 0;
+}
+
+.toolbar .btn-group button:first-child {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.toolbar .btn-group button:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-right-width: 1px;
 }
 
 .list > * {

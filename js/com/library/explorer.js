@@ -1,5 +1,6 @@
 import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { repeat } from '../../../vendor/lit-element/lit-html/directives/repeat.js'
+import * as contextMenu from '../context-menu.js'
 import explorerCSS from '../../../css/com/library/explorer.css.js'
 
 export class Explorer extends LitElement {
@@ -14,6 +15,7 @@ export class Explorer extends LitElement {
     super()
     this.selectedKeys = []
     this.searchFilter = ''
+    this.iconsOnly = localStorage.getItem('toolbar-icons-only') === '1'
   }
 
   get viewPath () {
@@ -59,6 +61,14 @@ export class Explorer extends LitElement {
     `
   }
 
+  renderToolbarButton (label, icon, onClick, disabled = false) {
+    return html`
+      <button ?disabled=${disabled} title="${label}" @click=${onClick}>
+        <i class="${icon}"></i> ${this.iconsOnly ? '' : label}
+      </button>
+    `
+  }
+
   renderToolbarButtons () {
     // this should be overridden
     return html``
@@ -77,6 +87,13 @@ export class Explorer extends LitElement {
         <i class="fa fa-search"></i>
       </div>
       ${this.renderToolbarButtons()}
+      <div class="spacer"></div>
+      <div class="btn-group">
+        <button @click=${this.onClickOptions}>
+          <i class="fas fa-cog"></i>
+          <i class="fas fa-angle-down"></i>
+        </button>
+      </div>
     `
   }
   
@@ -115,6 +132,30 @@ export class Explorer extends LitElement {
 
   onKeydownSearch (e) {
     this.searchFilter = e.currentTarget.value
+  }
+
+  onClickOptions (e) {
+    e.stopPropagation()
+
+    const setIconsOnly = v => e => {
+      localStorage.setItem('toolbar-icons-only', v)
+      this.iconsOnly = v === '1'
+      this.requestUpdate()
+    }
+
+    var rect = e.currentTarget.getBoundingClientRect()
+    contextMenu.create({
+      x: rect.right,
+      y: rect.bottom,
+      items: [
+        {icon: this.iconsOnly ? '' : 'fas fa-check', label: 'Icons and labels', click: setIconsOnly('0')},
+        {icon: this.iconsOnly ? 'fas fa-check' : '', label: 'Icons only', click: setIconsOnly('1')},
+      ],
+      style: `padding: 4px 0`,
+      noBorders: true,
+      right: true,
+      fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'
+    })
   }
 }
 Explorer.styles = [explorerCSS]

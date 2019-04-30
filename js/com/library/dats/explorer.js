@@ -201,32 +201,20 @@ export class DatsExplorer extends Explorer {
       ${this.category === 'trash'
         ? html`
           <div class="btn-group">
-            <button ?disabled=${!canDelete} title="Restore from trash" @click=${e => this.restoreFromTrash(dats)}>
-              <i class="fas fa-undo"></i> Restore from trash
-            </button>
-            <button ?disabled=${!canDelete} title="Delete permanently" @click=${e => this.deletePermanently(dats)}>
-              <i class="fas fa-times-circle"></i> Delete permanently
-            </button>
+            ${this.renderToolbarButton('Restore from trash', 'fas fa-undo', e => this.restoreFromTrash(dats), !canDelete)}
+            ${this.renderToolbarButton('Delete permanently', 'fas fa-times-circle', e => e => this.deletePermanently(dats), !canDelete)}
           </div>
         ` : html`
           <div class="btn-group">
-            <button ?disabled=${!hasSingleSelection} title="Explore" @click=${e => window.open(dats[0].url)}}>
-              <i class="fas fa-external-link-alt"></i> Open in new tab
-            </button>
+            ${this.renderToolbarButton('Open', 'fas fa-external-link-alt', e => window.open(dats[0].url), !hasSingleSelection)}
           </div>
           <div class="btn-group">
-            <button ?disabled=${!hasSingleSelection} title="Explore" @click=${e => emit(this, 'change-location', {detail: {view: 'files', dat: dats[0].url}})}>
-              <i class="far fa-folder-open"></i> Explore
-            </button>
-            <button ?disabled=${!hasSingleSelection} title="View/edit source" @click=${e => window.open(`beaker://editor/${dats[0].url}`)}>
-              <i class="far fa-edit"></i> Edit source
-            </button>
+            ${this.renderToolbarButton('Explore', 'far fa-folder-open', e => emit(this, 'change-location', {detail: {view: 'files', dat: dats[0].url}}), !hasSingleSelection)}
+            ${this.renderToolbarButton('Edit source', 'far fa-edit', e => window.open(`beaker://editor/${dats[0].url}`), !hasSingleSelection)}
           </div>
           <div class="btn-group">
-            <button ?disabled=${!canDelete} title="Move to trash" @click=${e => this.moveToTrash(dats)}>
-              <i class="far fa-trash-alt"></i> Move to trash
-            </button>
-            </div>
+            ${this.renderToolbarButton('Move to trash', 'far fa-trash-alt', e => this.moveToTrash(dats), !canDelete)}
+          </div>
         `}
     `
   }

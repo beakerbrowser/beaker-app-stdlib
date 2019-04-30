@@ -139,12 +139,11 @@ export class FilesExplorer extends Explorer {
     var files = this.selectedKeys.map(key => this.getFileByKey(key))
     return html`
       <div class="btn-group">
-        <button ?disabled=${!hasSingleSelection} title="View/edit source" @click=${e => window.open(`beaker://editor/${files[0].url}`)}>
-          <i class="far fa-fw fa-edit"></i> Edit
-        </button>
-        <button ?disabled=${!canDelete} title="Move to trash" @click=${e => this.deleteFile(files)}>
-          <i class="far fa-fw fa-trash-alt"></i> Delete
-        </button>
+        ${this.renderToolbarButton('Open', 'fas fa-external-link-alt', e => window.open(files[0].url), !hasSingleSelection)}
+      </div>
+      <div class="btn-group">
+        ${this.renderToolbarButton('Edit', 'far fa-edit', e => window.open(`beaker://editor/${files[0].url}`), !hasSingleSelection)}
+        ${this.renderToolbarButton('Delete', 'far fa-trash-alt', e => this.deleteFile(files), !canDelete)}
       </div>
     `
   }
