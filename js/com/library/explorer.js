@@ -76,6 +76,8 @@ export class Explorer extends LitElement {
   
   renderToolbar () {
     return html`
+      ${this.renderToolbarButtons()}
+      <div class="spacer"></div>
       <div class="search-container">
         <input
           type="text"
@@ -86,8 +88,6 @@ export class Explorer extends LitElement {
         >
         <i class="fa fa-search"></i>
       </div>
-      ${this.renderToolbarButtons()}
-      <div class="spacer"></div>
       <div class="btn-group">
         <button @click=${this.onClickOptions}>
           <i class="fas fa-cog"></i>
