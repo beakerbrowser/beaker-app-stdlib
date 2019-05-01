@@ -1,5 +1,6 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
 import { Explorer } from '../explorer.js'
+import { findCategoryForDat } from '../dats/explorer.js'
 import { shorten, joinPath } from '../../../strings.js'
 import { emit } from '../../../dom.js'
 import './list.js'
@@ -32,14 +33,16 @@ export class FilesExplorer extends Explorer {
       }
       emit(this, 'change-location', {detail})
     }
+    var category = findCategoryForDat(this.datInfo)
     var path = [
-      {title: shorten(this.datInfo && this.datInfo.title ? this.datInfo.title : 'Untitled', 100), icon: 'fas fa-sitemap', onClick: gotoPath('/')}
+      {icon: category.icon, onClick: e => emit(this, 'change-location', {detail: {view: 'dats', category: category.id}})},
+      {title: shorten(this.datInfo && this.datInfo.title ? this.datInfo.title : 'Untitled', 100), onClick: gotoPath('/')}
     ]
     var pathUpTo = '/'
     for (let pathPart of this.path.split('/')) {
       if (!pathPart) continue
       pathUpTo = joinPath(pathUpTo, pathPart)
-      path.push({title: pathPart, icon: 'far fa-folder-open', onClick: gotoPath(pathUpTo)})
+      path.push({title: pathPart, onClick: gotoPath(pathUpTo)})
     }
     return path
   }

@@ -26,14 +26,12 @@ export class SocialgraphList extends List {
 
   renderSrc (row) {
     return html`<div class="site">
-      <img src="asset:thumb:${row.src.url}">
       <span>${row.src.title}</span>
     </div>`
   }
 
   renderDst (row) {
     return html`<div class="site">
-      <img src="asset:thumb:${row.dst.url}">
       <span>${row.dst.title}</span>
     </div>`
   }

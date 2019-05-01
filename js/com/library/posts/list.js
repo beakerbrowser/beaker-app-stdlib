@@ -11,8 +11,8 @@ export class PostsList extends List {
   get columns () {
     return [
       {id: 'body', label: 'Post', flex: 1, renderer: 'renderBody'},
-      {id: 'createdAt', label: 'Date Published', width: 120, renderer: 'renderCreatedAt'},
-      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'}
+      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
+      {id: 'createdAt', label: 'Date Published', width: 120, renderer: 'renderCreatedAt'}
     ]
   }
 
@@ -29,7 +29,6 @@ export class PostsList extends List {
 
   renderAuthor (row) {
     return html`<div class="site">
-      <img src="asset:thumb:${row.author.url}">
       <span>${row.author.title}</span>
     </div>`
   }

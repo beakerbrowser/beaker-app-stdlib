@@ -11,9 +11,9 @@ export class BookmarksList extends List {
   get columns () {
     return [
       {id: 'title', label: 'Title', flex: 1},
+      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
       {id: 'href', label: 'Location', flex: 1},
-      {id: 'createdAt', label: 'Date Published', width: 120, renderer: 'renderCreatedAt'},
-      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'}
+      {id: 'createdAt', label: 'Date Published', width: 120, renderer: 'renderCreatedAt'}
     ]
   }
 
@@ -26,7 +26,6 @@ export class BookmarksList extends List {
 
   renderAuthor (row) {
     return html`<div class="site">
-      <img src="asset:thumb:${row.author.url}">
       <span>${row.author.title}</span>
     </div>`
   }

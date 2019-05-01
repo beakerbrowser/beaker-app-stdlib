@@ -33,6 +33,18 @@ export function getCategoryIcon (id) {
   return CATEGORIES[id].icon
 }
 
+export function findCategoryForDat (dat) {
+  var type = dat && dat.type ? dat.type : []
+  var id = 'websites'
+  for (let k in CATEGORIES) {
+    if (type.includes(CATEGORIES[k].type)) {
+      id = k
+      break
+    }
+  }
+  return Object.assign({id}, CATEGORIES[id])
+}
+
 export function hasKnownType (dat) {
   if (!dat.type) return false
   return !!dat.type.find(t => KNOWN_TYPES.includes(t))

@@ -11,9 +11,9 @@ export class ReactionsList extends List {
   get columns () {
     return [
       {id: 'emojis', label: 'Reactions', width: 100, renderer: 'renderEmojis'},
+      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
       {id: 'topic', label: 'Topic', flex: 1},
       {id: 'crawledAt', label: 'Date Indexed', width: 120, renderer: 'renderCrawledAt'},
-      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'}
     ]
   }
 
@@ -30,7 +30,6 @@ export class ReactionsList extends List {
 
   renderAuthor (row) {
     return html`<div class="site">
-      <img src="asset:thumb:${row.author.url}">
       <span>${row.author.title}</span>
     </div>`
   }
