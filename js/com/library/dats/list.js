@@ -34,6 +34,13 @@ export class DatsList extends List {
     ]
   }
 
+  get groups () {
+    return [
+      {label: 'Saved to your library', filterFn: r => r.saved},
+      {label: 'Recently accessed', filterFn: r => !r.saved}
+    ]
+  }
+
   // data management
   // =
 

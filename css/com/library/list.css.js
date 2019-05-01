@@ -98,5 +98,11 @@ a.row {
   height: 16px;
   object-fit: cover;
 }
+
+.group-label {
+  padding: 10px 8px 2px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border-color);
+}
 `
 export default cssStr

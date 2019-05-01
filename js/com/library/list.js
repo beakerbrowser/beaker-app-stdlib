@@ -1,3 +1,5 @@
+import { html } from '../../../vendor/lit-element/lit-element.js'
+import {repeat} from '../../../vendor/lit-element/lit-html/directives/repeat.js'
 import { Table } from '../table.js'
 import * as contextMenu from '../context-menu.js'
 import listCSS from '../../../css/com/library/list.css.js'
@@ -49,6 +51,15 @@ export class List extends Table {
     emit(this, 'selection-changed', {detail: {keys: []}})
   }
 
+  get groups () {
+    // this can be overridden
+    return null
+    // return [
+    //   {label: 'Saved to your library', filterFn: r => r.saved},
+    //   {label: 'Recently accessed', filterFn: r => !r.saved}
+    // ]
+  }
+
   sort () {
     emit(this, 'sort', {detail: {direction: this.sortDirection, column: this.sortColumn}})
     this.requestUpdate()
@@ -61,6 +72,36 @@ export class List extends Table {
   buildContextMenuItems (row) {
     // this can be overridden
     return null
+  }
+
+  // rendering
+  // =
+
+  render() {
+    return html`
+      <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
+      ${this.hasHeadingLabels
+        ? html`
+          <div class="heading">
+            ${repeat(this.columns, col => this.renderHeadingColumn(col))}
+          </div>
+        ` : ''}
+      <div class="rows" @click=${this.onClickRows}>
+        ${this.groups
+          ? repeat(this.groups, group => this.renderGroup(group))
+          : repeat(this.rows, row => this.getRowKey(row), row => this.renderRow(row))}
+        ${this.rows.length === 0 ? this.renderEmpty() : ''}
+      </div>
+    `
+  }
+
+  renderGroup (group) {
+    return html`
+      <div class="group">
+        <div class="group-label">${group.label}</div>
+        <div class="group-rows">${repeat(this.rows.filter(group.filterFn), row => this.getRowKey(row), row => this.renderRow(row))}</div>
+      </div>
+    `
   }
 
   // events

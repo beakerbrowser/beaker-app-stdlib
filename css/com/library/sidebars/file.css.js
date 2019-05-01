@@ -21,6 +21,7 @@ const cssStr = css`
   padding: 4px;
   border-radius: 2px;
   overflow: hidden;
+  font-family: var(--code-font);
 }
 `
 export default cssStr

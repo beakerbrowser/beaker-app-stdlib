@@ -50,6 +50,10 @@ export function hasKnownType (dat) {
   return !!dat.type.find(t => KNOWN_TYPES.includes(t))
 }
 
+function isInTrash (dat) {
+  return !dat.saved && dat.owner
+}
+
 export class DatsExplorer extends Explorer {
   static get properties () {
     return {
@@ -83,16 +87,14 @@ export class DatsExplorer extends Explorer {
       // TODO replace this with a library api list query
       this.dats = [self].concat(await graphAPI.listFollows(self.url))
     } else if (this.category === 'applications') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.applications.type, saved: true}})
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.applications.type}})
     } else if (this.category === 'modules') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.modules.type, saved: true}})
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.modules.type}})
     } else if (this.category === 'templates') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.templates.type, saved: true}})
+      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.templates.type}})
     } else if (this.category === 'websites') {
-      this.dats = await libraryAPI.list({filters: {saved: true}})
-      this.dats = this.dats.filter(d => !hasKnownType(d))
-    } else if (this.category === 'wikis') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.wikis.type, saved: true}})
+      this.dats = await libraryAPI.list()
+      this.dats = this.dats.filter(d => !hasKnownType(d) && !isInTrash(d))
     } else if (this.category === 'trash') {
       this.dats = await libraryAPI.list({filters: {owner: true, saved: false}})
     } else {
