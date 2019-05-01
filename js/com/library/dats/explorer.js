@@ -1,4 +1,5 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
+import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import { Explorer } from '../explorer.js'
 import * as toast from '../../toast.js'
 import { emit } from '../../../dom.js'
@@ -18,7 +19,6 @@ export const CATEGORIES = {
   // podcasts:     {type: 'unwalled.garden/podcast',     icon: 'fas fa-microphone',       label: 'Podcasts'},
   templates:    {type: 'unwalled.garden/template',    icon: 'fas fa-drafting-compass', label: 'Templates'},
   users:        {type: 'unwalled.garden/user',        icon: 'fas fa-users',            label: 'Users'},
-  trash:        {type: false,                         icon: 'fas fa-trash',            label: 'Trash'},
   websites:     {type: false,                         icon: 'fas fa-sitemap',          label: 'Websites'},
   // wikis:        {type: 'unwalled.garden/wiki',        icon: 'far fa-file-word',        label: 'Wikis'}
 }
@@ -50,14 +50,11 @@ export function hasKnownType (dat) {
   return !!dat.type.find(t => KNOWN_TYPES.includes(t))
 }
 
-function isInTrash (dat) {
-  return !dat.saved && dat.owner
-}
-
 export class DatsExplorer extends Explorer {
   static get properties () {
     return {
       category: {type: String},
+      ownerFilter: {type: String, attribute: 'owner-filter'},
       searchFilter: {type: String},
       selectedKeys: {type: Array}
     }
@@ -66,14 +63,22 @@ export class DatsExplorer extends Explorer {
   constructor () {
     super()
     this.category = ''
+    this.ownerFilter = ''
     this.currentUser = null
     this.dats = []
+  }
+
+
+  get viewPath () {
+    var category = CATEGORIES[this.category]
+    if (!category) return null
+    return [{icon: category.icon, title: category.label}]
   }
 
   getDatByKey (key) {
     return this.dats.find(d => d.key === key)
   }
-
+  
   // data management
   // =
 
@@ -83,20 +88,19 @@ export class DatsExplorer extends Explorer {
 
     var self = await profilesAPI.getCurrentUser()
     this.currentUser = self
+    var owner = this.ownerFilter === 'yours' ? true : undefined
     if (this.category === 'users') {
       // TODO replace this with a library api list query
       this.dats = [self].concat(await graphAPI.listFollows(self.url))
     } else if (this.category === 'applications') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.applications.type}})
+      this.dats = await libraryAPI.list({filters: {owner, type: CATEGORIES.applications.type}})
     } else if (this.category === 'modules') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.modules.type}})
+      this.dats = await libraryAPI.list({filters: {owner, type: CATEGORIES.modules.type}})
     } else if (this.category === 'templates') {
-      this.dats = await libraryAPI.list({filters: {type: CATEGORIES.templates.type}})
+      this.dats = await libraryAPI.list({filters: {owner, type: CATEGORIES.templates.type}})
     } else if (this.category === 'websites') {
-      this.dats = await libraryAPI.list()
-      this.dats = this.dats.filter(d => !hasKnownType(d) && !isInTrash(d))
-    } else if (this.category === 'trash') {
-      this.dats = await libraryAPI.list({filters: {owner: true, saved: false}})
+      this.dats = await libraryAPI.list({filters: {owner}})
+      this.dats = this.dats.filter(d => !hasKnownType(d))
     } else {
       this.dats = await libraryAPI.list({filters: {saved: true}})
     }
@@ -126,28 +130,7 @@ export class DatsExplorer extends Explorer {
     this.requestUpdate()
   }
 
-  async moveToTrash (rows) {
-    // remove items
-    for (let row of rows) {
-      await libraryAPI.remove(row.url).catch(err => false)
-    }
-    // reload state
-    this.safelyAccessListEl(el => el.clearSelection())
-    await this.load()
-
-    const undo = async () => {
-      // readd items
-      for (let row of rows) {
-        await libraryAPI.add(row.url).catch(err => false)
-      }
-      // reload state
-      await this.load()
-    }
-
-    toast.create('Moved to trash', '', 10e3, { label: 'Undo', click: undo })
-  }
-
-  async restoreFromTrash (rows) {
+  async addToLibrary (rows) {
     // add items
     for (let row of rows) {
       await libraryAPI.add(row.url).catch(err => false)
@@ -165,11 +148,32 @@ export class DatsExplorer extends Explorer {
       await this.load()
     }
 
-    toast.create('Restored from trash', '', 10e3, { label: 'Undo', click: undo })
+    toast.create('Added to your library', '', 10e3, { label: 'Undo', click: undo })
+  }
+
+  async removeFromLibrary (rows) {
+    // remove items
+    for (let row of rows) {
+      await libraryAPI.remove(row.url).catch(err => false)
+    }
+    // reload state
+    this.safelyAccessListEl(el => el.clearSelection())
+    await this.load()
+
+    const undo = async () => {
+      // readd items
+      for (let row of rows) {
+        await libraryAPI.add(row.url).catch(err => false)
+      }
+      // reload state
+      await this.load()
+    }
+
+    toast.create('Removed from your library', '', 10e3, { label: 'Undo', click: undo })
   }
 
   async deletePermanently (rows) {
-    if (!confirm('Delete permanently? This cannot be undone.')) {
+    if (!confirm('Delete? This cannot be undone.')) {
       return
     }
     // permadelete
@@ -192,8 +196,6 @@ export class DatsExplorer extends Explorer {
           return true
         } else if (dat.description && dat.description.toLowerCase().includes(this.searchFilter)) {
           return true
-        } else if (dat.url && dat.url.toLowerCase().includes(this.searchFilter)) {
-          return true
         }
         return false
       })
@@ -205,49 +207,33 @@ export class DatsExplorer extends Explorer {
         current-user-url="${this.currentUser ? this.currentUser.url : ''}"
         current-user-title="${this.currentUser ? this.currentUser.title : ''}"
         @sort=${this.onSort}
-        @move-to-trash=${this.onMoveToTrash}
-        @restore-from-trash=${this.onRestoreFromTrash}
+        @add-to-library=${this.onAddToLibrary}
+        @remove-from-library=${this.onRemoveFromLibrary}
         @delete-permanently=${this.onDeletePermanently}
       ></beaker-library-dats-list>
     `
   }
 
-  renderToolbarButtons () {
-    var hasSingleSelection = this.selectedKeys.length === 1
-    var canDelete = this.selectedKeys.length > 0
-    var dats = this.selectedKeys.map(key => this.getDatByKey(key))
-    dats.forEach(dat => {
-      if (!dat) return
-      if (!dat.owner || dat.url === this.currentUser.url) {
-        canDelete = false
-      }
-    })
-
-    // TODO
-    // <div class="btn-group">
-    //   <button class="pressed" title="List view"><i class="fas fa-fw fa-list"></i></button>
-    //   <button title="Grid view"><i class="fas fa-fw fa-th"></i></button>
-    // </div>
+  renderToolbar () {
+    const ownerOpt = (v, label) => {
+      const cls = classMap({pressed: v == this.ownerFilter, radio: true})
+      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'dats', category: this.category, ownerFilter: v}}) }}>${label}</button>`
+    }
+    const canMakeNew = this.category === 'websites'
 
     return html`
-      ${this.category === 'trash'
+      <div class="radio-group">
+        ${ownerOpt(false, 'All')}
+        ${ownerOpt('yours', 'Yours')}
+      </div>
+      ${canMakeNew
         ? html`
           <div class="btn-group">
-            ${this.renderToolbarButton('Restore from trash', 'fas fa-undo', e => this.restoreFromTrash(dats), !canDelete)}
-            ${this.renderToolbarButton('Delete permanently', 'fas fa-times-circle', e => e => this.deletePermanently(dats), !canDelete)}
+            <button @click=${this.onClickNew}><i class="fa-fw fas fa-plus"></i> New ${this.category.slice(0, -1)}</button>
           </div>
-        ` : html`
-          <div class="btn-group">
-            ${this.renderToolbarButton('Open', 'fas fa-external-link-alt', e => window.open(dats[0].url), !hasSingleSelection)}
-          </div>
-          <div class="btn-group">
-            ${this.renderToolbarButton('Explore', 'far fa-folder-open', e => emit(this, 'change-location', {detail: {view: 'files', dat: dats[0].url}}), !hasSingleSelection)}
-            ${this.renderToolbarButton('Edit source', 'far fa-edit', e => window.open(`beaker://editor/${dats[0].url}`), !hasSingleSelection)}
-          </div>
-          <div class="btn-group">
-            ${this.renderToolbarButton('Move to trash', 'far fa-trash-alt', e => this.moveToTrash(dats), !canDelete)}
-          </div>
-        `}
+        ` : ''}
+      <div class="spacer"></div>
+      ${this.renderToolbarSearch()}
     `
   }
   
@@ -272,7 +258,7 @@ export class DatsExplorer extends Explorer {
 
   attributeChangedCallback (name, oldval, newval) {
     super.attributeChangedCallback(name, oldval, newval)
-    if (name === 'category') {
+    if (name === 'category' || name === 'owner-filter') {
       this.load()
     }
   }
@@ -291,16 +277,20 @@ export class DatsExplorer extends Explorer {
     this.sort(e.detail.column, e.detail.direction)
   }
 
-  onMoveToTrash (e) {
-    this.moveToTrash(e.detail.rows)
+  onAddToLibrary (e) {
+    this.addToLibrary(e.detail.rows)
   }
 
-  onRestoreFromTrash (e) {
-    this.restoreFromTrash(e.detail.rows)
+  onRemoveFromLibrary (e) {
+    this.removeFromLibrary(e.detail.rows)
   }
 
   onDeletePermanently (e) {
     this.deletePermanently(e.detail.rows)
+  }
+
+  onClickNew (e) {
+    emit(this, 'change-location', {detail: {view: 'new-website'}})
   }
 }
 

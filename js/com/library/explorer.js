@@ -72,29 +72,22 @@ export class Explorer extends LitElement {
   }
 
   renderToolbarDatabaseButtons (current) {
-    const item = (id, icon, label) => {
+    const item = (id, label) => {
       const cls = classMap({pressed: id === current, radio: true})
-      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'database', category: id}}) }}><i class="${icon}"></i> ${label}</button>`
+      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'database', category: id}}) }}>${label}</button>`
     }
     return html`
       <div class="radio-group">
-        ${item('bookmarks', 'far fa-fw fa-star', 'Bookmarks')}
-        ${item('posts', 'far fa-fw fa-comment-alt', 'Posts')}
-        ${item('reactions', 'far fa-fw fa-smile', 'Reactions')}
-        ${item('socialgraph', 'far fa-fw fa-address-book', 'Social graph')}
+        ${item('bookmarks', 'Bookmarks')}
+        ${item('posts', 'Posts')}
+        ${item('reactions', 'Reactions')}
+        ${item('socialgraph', 'Social graph')}
       </div>
     `
   }
 
-  renderToolbarButtons () {
-    // this should be overridden
-    return html``
-  }
-  
-  renderToolbar () {
+  renderToolbarSearch () {
     return html`
-      ${this.renderToolbarButtons()}
-      <div class="spacer"></div>
       <div class="search-container">
         <input
           type="text"
@@ -105,6 +98,11 @@ export class Explorer extends LitElement {
         >
         <i class="fa fa-search"></i>
       </div>
+    `
+  }
+
+  renderToolbarViewOptionsButton () {
+    return html`
       <div class="btn-group">
         <button @click=${this.onClickOptions}>
           <i class="fas fa-cog"></i>
@@ -112,6 +110,11 @@ export class Explorer extends LitElement {
         </button>
       </div>
     `
+  }
+  
+  renderToolbar () {
+    // this should be overridden
+    return html``
   }
   
   renderList () {

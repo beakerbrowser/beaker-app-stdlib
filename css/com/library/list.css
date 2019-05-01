@@ -63,7 +63,8 @@ a.row {
 }
 
 .row em {
-  color: #999;
+  color: #aaa;
+  font-weight: 300;
 }
 
 .row strong {
@@ -99,4 +100,21 @@ a.row {
   padding: 10px 8px 2px;
   margin-bottom: 6px;
   border-bottom: 1px solid var(--border-color);
+}
+
+.col.primary-action button,
+.col.hover-action button {
+  background: none;
+  border: 0;
+  outline: 0;
+  color: var(--blue);
+  font-size: 14px;
+}
+
+.col.hover-action {
+  opacity: 0;
+}
+
+.row:hover .col.hover-action {
+  opacity: 1;
 }

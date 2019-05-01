@@ -1,5 +1,5 @@
 import { html } from '../../../vendor/lit-element/lit-element.js'
-import {repeat} from '../../../vendor/lit-element/lit-html/directives/repeat.js'
+import { repeat } from '../../../vendor/lit-element/lit-html/directives/repeat.js'
 import { Table } from '../table.js'
 import * as contextMenu from '../context-menu.js'
 import listCSS from '../../../css/com/library/list.css.js'
@@ -96,10 +96,12 @@ export class List extends Table {
   }
 
   renderGroup (group) {
+    var rows = this.rows.filter(group.filterFn)
+    if (rows.length === 0) return html``
     return html`
       <div class="group">
         <div class="group-label">${group.label}</div>
-        <div class="group-rows">${repeat(this.rows.filter(group.filterFn), row => this.getRowKey(row), row => this.renderRow(row))}</div>
+        <div class="group-rows">${repeat(rows, row => this.getRowKey(row), row => this.renderRow(row))}</div>
       </div>
     `
   }
@@ -116,19 +118,23 @@ export class List extends Table {
   }
 
   onClickRows (e) {
-    if (e.target.classList.contains('rows')) {
+    if (/(rows|group|group-label)/.test(e.target.className)) {
       this.clearSelection()
     }
   }
 
   onContextmenuRow (e, row) {
+    console.log(e)
+
     var items = this.buildContextMenuItems(row)
     if (!items) return
 
     e.preventDefault()
+    e.stopPropagation()
     this.setSelection(row)
     const style = `padding: 4px 0`
-    contextMenu.create({x: e.clientX, y: e.clientY, items, style, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
+    const right = e.button === 0 // anchor on the right when event is fired by a left click (which means it's the context button)
+    contextMenu.create({x: e.clientX, y: e.clientY, items, style, right, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
   }
 }
 List.styles = [listCSS]

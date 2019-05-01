@@ -66,8 +66,13 @@ export class PostsExplorer extends Explorer {
       ></beaker-library-posts-list>
     `
   }
-  renderToolbarButtons () {
-    return this.renderToolbarDatabaseButtons('posts')
+
+  renderToolbar () {
+    return html`
+      ${this.renderToolbarDatabaseButtons('posts')}
+      <div class="spacer"></div>
+      ${this.renderToolbarSearch()}
+    `
   }
 
   // events

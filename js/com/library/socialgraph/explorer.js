@@ -76,8 +76,13 @@ export class SocialgraphExplorer extends Explorer {
       ></beaker-library-socialgraph-list>
     `
   }
-  renderToolbarButtons () {
-    return this.renderToolbarDatabaseButtons('socialgraph')
+
+  renderToolbar () {
+    return html`
+      ${this.renderToolbarDatabaseButtons('socialgraph')}
+      <div class="spacer"></div>
+      ${this.renderToolbarSearch()}
+    `
   }
 
   // events

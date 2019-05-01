@@ -68,10 +68,6 @@ input.search {
   font-size: 13px;
 }
 
-.search-container {
-  margin-right: 8px;
-}
-
 .search-container input.search {
   background: #fff;
   border-radius: 16px;

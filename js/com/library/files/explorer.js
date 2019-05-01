@@ -135,7 +135,7 @@ export class FilesExplorer extends Explorer {
     `
   }
 
-  renderToolbarButtons () {
+  renderToolbar () {
     var hasSingleSelection = this.selectedKeys.length === 1
     var isOwner = this.datInfo && this.datInfo.isOwner
     var canDelete = isOwner && this.selectedKeys.length > 0
@@ -148,6 +148,8 @@ export class FilesExplorer extends Explorer {
         ${this.renderToolbarButton('Edit', 'far fa-edit', e => window.open(`beaker://editor/${files[0].url}`), !hasSingleSelection)}
         ${this.renderToolbarButton('Delete', 'far fa-trash-alt', e => this.deleteFile(files), !canDelete)}
       </div>
+      <div class="spacer"></div>
+      ${this.renderToolbarSearch()}
     `
   }
 

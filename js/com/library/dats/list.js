@@ -29,9 +29,10 @@ export class DatsList extends List {
     return [
       {id: 'favicon', width: 22, renderer: 'renderFavicon'},
       {id: 'title', label: 'Title', width: 200, renderer: 'renderTitle'},
-      {id: 'visibility', label: 'Visibility', width: 80, renderer: 'renderVisibility'},
-      {id: 'owner', label: 'Owner', width: 120, renderer: 'renderOwner'},
+      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
       {id: 'description', label: 'Description', flex: 1},
+      {id: 'primary-action', width: 20, renderer: 'renderPrimaryAction'},
+      {id: 'hover-action', width: 24, renderer: 'renderHoverAction'},
     ]
   }
 
@@ -60,13 +61,14 @@ export class DatsList extends List {
       {icon: 'far fa-folder-open', label: 'Explore', click: explore},
       {icon: 'far fa-edit', label: `${row.owner || row.url === this.currentUserUrl ? 'Edit' : 'View'} source`, click: () => window.open(`beaker://editor/${row.url}`)}
     ]
-    if (row.owner && row.url !== this.currentUserUrl) {
+    if (row.url !== this.currentUserUrl) {
+      items.push('-')
       if (row.saved) {
-        items.push({icon: 'far fa-trash-alt', label: 'Move to trash', click: () => emit(this, 'move-to-trash', {detail: {rows: [row]}})})
+        items.push({icon: 'fas fa-minus', label: 'Remove from library', click: () => emit(this, 'remove-from-library', {detail: {rows: [row]}})})
       } else {
-        items.push({icon: 'fa fa-undo', label: 'Restore from trash', click: () => emit(this, 'restore-from-trash', {detail: {rows: [row]}})})
-        items.push({icon: 'fa fa-times-circle', label: 'Delete permanently', click: () => emit(this, 'delete-permanently', {detail: {rows: [row]}})})
+        items.push({icon: 'fas fa-plus', label: 'Add to library', click: () => emit(this, 'add-to-library', {detail: {rows: [row]}})})
       }
+      items.push({icon: 'far fa-trash-alt', label: 'Delete files', click: () => emit(this, 'delete-permanently', {detail: {rows: [row]}})})
     }
     return items
   }
@@ -88,19 +90,27 @@ export class DatsList extends List {
     return html`<img class="favicon" src="asset:favicon:${row.url}">`
   }
 
-  renderOwner (row) {
+  renderAuthor (row) {
     // TODO: when dats declare authorship, read that information for this
     if (row.owner || row.url === this.currentUserUrl) {
       return html`<div class="site">
-        <span><strong>You</strong></span>
+        <span>You</span>
       </div>`
     }
-    return html`<em>Unlisted</em>`
+    return html``
   }
 
-  renderVisibility (row) {
-    // TODO
-    return html`<em>Unlisted</em>`
+  renderPrimaryAction (row) {
+    if (row.saved) return html``
+    return html`
+      <button @click=${e => this.onClickAdd(e, row)}><i class="fas fa-plus"></i></button>
+    `
+  }
+
+  renderHoverAction (row) {
+    return html`
+      <button @click=${e => this.onContextmenuRow(e, row)}><i class="fas fa-ellipsis-h"></i></button>
+    `
   }
 
   // events
@@ -108,6 +118,10 @@ export class DatsList extends List {
 
   onDblclickRow (e, row) {
     window.open(row.url)
+  }
+
+  onClickAdd (e, row) {
+    emit(this, 'add-to-library', {detail: {rows: [row]}})
   }
 }
 
