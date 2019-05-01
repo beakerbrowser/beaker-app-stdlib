@@ -32,16 +32,30 @@ export class DatSidebar extends LitElement {
     const isUser = type.includes('unwalled.garden/user')
     return html`
       <div class="dat-info">
-        ${isUser
-          ? html`<img class="thumb" src="asset:thumb:${this.url}">`
-          : html`<img class="favicon" src="asset:favicon:${this.url}">`}
-        <h2 class="title">${this.datInfo.title}</h2>
+        <h2 class="title">
+          ${isUser
+            ? html`<img class="thumb" src="asset:thumb:${this.url}">`
+            : html`<img class="favicon" src="asset:favicon:${this.url}">`}
+          <span>${this.datInfo.title || (isUser ? 'Anonymous' : 'Untitled')}</span>
+        </h2>
         <p class="description">${this.datInfo.description}</p>
-        ${type.length ? html`<p class="type"><strong>Type:</strong> ${type.join(' ')}</p>` : ''}
         ${isUser ? html`<p><a target="_blank" href="intent:unwalled.garden/view-profile?url=${encodeURIComponent(this.url)}">View profile</a></p>` : ''}
       </div>
     `
   }
+
+// saved: true
+// owner: true
+// connections: 0
+
+// title: ""
+// description: ""
+// type: []
+// size: 13615
+// mtime: 1556648172622
+
+// localPath: "/Users/paulfrazee/work/beaker-user-website-template/assets"
+// previewEnabled: true
 
   // events
   // =

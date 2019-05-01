@@ -4,6 +4,7 @@ import { Explorer } from '../explorer.js'
 import * as toast from '../../toast.js'
 import { emit } from '../../../dom.js'
 import './list.js'
+import '../sidebars/dats.js'
 import '../sidebars/dat.js'
 
 const profilesAPI = navigator.importSystemAPI('profiles')
@@ -11,16 +12,41 @@ const libraryAPI = navigator.importSystemAPI('library')
 const graphAPI = navigator.importSystemAPI('unwalled-garden-graph')
 
 export const CATEGORIES = {
-  all:          {type: false,                         icon: 'fas fa-sitemap',          label: 'All'},
-  applications: {type: 'unwalled.garden/application', icon: 'far fa-window-restore',   label: 'Applications'},
-  modules:      {type: 'unwalled.garden/module',      icon: 'fas fa-cubes',            label: 'Modules'},
-  // musicAlbums:  {type: 'unwalled.garden/music-album', icon: 'fas fa-music',            label: 'Music albums'},
-  // photoAlbums:  {type: 'unwalled.garden/photo-album', icon: 'far fa-image',            label: 'Photo albums'},
-  // podcasts:     {type: 'unwalled.garden/podcast',     icon: 'fas fa-microphone',       label: 'Podcasts'},
-  templates:    {type: 'unwalled.garden/template',    icon: 'fas fa-drafting-compass', label: 'Templates'},
-  users:        {type: 'unwalled.garden/user',        icon: 'fas fa-users',            label: 'Users'},
-  websites:     {type: false,                         icon: 'fas fa-sitemap',          label: 'Websites'},
-  // wikis:        {type: 'unwalled.garden/wiki',        icon: 'far fa-file-word',        label: 'Wikis'}
+  all: {
+    type: false,
+    icon: 'fas fa-sitemap',
+    label: 'All'
+  },
+  applications: {
+    type: 'unwalled.garden/application',
+    icon: 'far fa-window-restore',
+    label: 'Applications',
+    description: 'Applications can be installed to provide new experiences.'
+  },
+  modules: {
+    type: 'unwalled.garden/module',
+    icon: 'fas fa-cubes',
+    label: 'Modules',
+    description: 'Modules contain code which can be imported into applications.'
+  },
+  templates: {
+    type: 'unwalled.garden/template',
+    icon: 'fas fa-drafting-compass',
+    label: 'Templates',
+    description: 'Templates are kits for creating new websites.'
+  },
+  users: {
+    type: 'unwalled.garden/user',
+    icon: 'fas fa-users',
+    label: 'Users',
+    description: 'Users are the people who make the Web. That includes you!'
+  },
+  websites: {
+    type: false,
+    icon: 'fas fa-sitemap',
+    label: 'Websites',
+    description: 'Websites contain pages of information and media for you to browse.'
+  },
 }
 
 export const KNOWN_TYPES = Object.values(CATEGORIES).map(c => c.type).filter(Boolean)
@@ -31,6 +57,10 @@ export function getCategoryLabel (id) {
 
 export function getCategoryIcon (id) {
   return CATEGORIES[id].icon
+}
+
+export function getCategoryDescription (id) {
+  return CATEGORIES[id].description
 }
 
 export function findCategoryForDat (dat) {
@@ -219,7 +249,7 @@ export class DatsExplorer extends Explorer {
       const cls = classMap({pressed: v == this.ownerFilter, radio: true})
       return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'dats', category: this.category, ownerFilter: v}}) }}>${label}</button>`
     }
-    const canMakeNew = this.category === 'websites'
+    const canMakeNew = this.category !== 'users'
 
     return html`
       <div class="radio-group">
@@ -238,7 +268,7 @@ export class DatsExplorer extends Explorer {
   }
   
   renderSidebarNoSelection () {
-    return html`<div></div>`
+    return html`<beaker-library-dats-sidebar category="${this.category}"></beaker-library-dats-sidebar>`
   }
 
   renderSidebarOneSelection () {

@@ -44,6 +44,7 @@ export class FileSidebar extends LitElement {
       }
     }
     this.preview = preview
+    this.requestUpdate()
   }
 
   // rendering
