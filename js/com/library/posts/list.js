@@ -10,8 +10,8 @@ export class PostsList extends List {
 
   get columns () {
     return [
-      {id: 'body', label: 'Post', flex: 1, renderer: 'renderBody'},
       {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
+      {id: 'body', label: 'Post', flex: 1, renderer: 'renderBody'},
       {id: 'createdAt', label: 'Date Published', width: 120, renderer: 'renderCreatedAt'}
     ]
   }

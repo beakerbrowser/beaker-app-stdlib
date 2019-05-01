@@ -10,8 +10,8 @@ export class BookmarksList extends List {
 
   get columns () {
     return [
-      {id: 'title', label: 'Title', flex: 1},
       {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
+      {id: 'title', label: 'Title', flex: 1},
       {id: 'href', label: 'Location', flex: 1},
       {id: 'createdAt', label: 'Date Published', width: 120, renderer: 'renderCreatedAt'}
     ]

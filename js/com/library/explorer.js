@@ -1,6 +1,8 @@
 import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { repeat } from '../../../vendor/lit-element/lit-html/directives/repeat.js'
+import { classMap } from '../../../vendor/lit-element/lit-html/directives/class-map.js'
 import * as contextMenu from '../context-menu.js'
+import { emit } from '../../dom.js'
 import explorerCSS from '../../../css/com/library/explorer.css.js'
 
 export class Explorer extends LitElement {
@@ -66,6 +68,21 @@ export class Explorer extends LitElement {
       <button ?disabled=${disabled} title="${label}" @click=${onClick}>
         <i class="${icon}"></i> ${this.iconsOnly ? '' : label}
       </button>
+    `
+  }
+
+  renderToolbarDatabaseButtons (current) {
+    const item = (id, icon, label) => {
+      const cls = classMap({pressed: id === current, radio: true})
+      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'database', category: id}}) }}><i class="${icon}"></i> ${label}</button>`
+    }
+    return html`
+      <div class="radio-group">
+        ${item('bookmarks', 'far fa-fw fa-star', 'Bookmarks')}
+        ${item('posts', 'far fa-fw fa-comment-alt', 'Posts')}
+        ${item('reactions', 'far fa-fw fa-smile', 'Reactions')}
+        ${item('socialgraph', 'far fa-fw fa-address-book', 'Social graph')}
+      </div>
     `
   }
 

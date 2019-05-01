@@ -66,6 +66,9 @@ export class PostsExplorer extends Explorer {
       ></beaker-library-posts-list>
     `
   }
+  renderToolbarButtons () {
+    return this.renderToolbarDatabaseButtons('posts')
+  }
 
   // events
   // =

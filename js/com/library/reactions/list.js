@@ -10,8 +10,8 @@ export class ReactionsList extends List {
 
   get columns () {
     return [
-      {id: 'emojis', label: 'Reactions', width: 100, renderer: 'renderEmojis'},
       {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
+      {id: 'emojis', label: 'Reactions', width: 100, renderer: 'renderEmojis'},
       {id: 'topic', label: 'Topic', flex: 1},
       {id: 'crawledAt', label: 'Date Indexed', width: 120, renderer: 'renderCrawledAt'},
     ]

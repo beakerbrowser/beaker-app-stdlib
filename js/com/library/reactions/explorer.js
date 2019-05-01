@@ -74,6 +74,10 @@ export class ReactionsExplorer extends Explorer {
     `
   }
 
+  renderToolbarButtons () {
+    return this.renderToolbarDatabaseButtons('reactions')
+  }
+
   // events
   // =
 

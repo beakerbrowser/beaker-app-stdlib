@@ -67,7 +67,7 @@ a.row {
 }
 
 .row em {
-  color: gray;
+  color: #999;
 }
 
 .row strong {

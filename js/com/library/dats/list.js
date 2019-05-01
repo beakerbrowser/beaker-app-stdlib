@@ -29,8 +29,9 @@ export class DatsList extends List {
     return [
       {id: 'favicon', width: 22, renderer: 'renderFavicon'},
       {id: 'title', label: 'Title', width: 200, renderer: 'renderTitle'},
-      {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
-      {id: 'description', label: 'Description', flex: 1}
+      {id: 'visibility', label: 'Visibility', width: 80, renderer: 'renderVisibility'},
+      {id: 'owner', label: 'Owner', width: 120, renderer: 'renderOwner'},
+      {id: 'description', label: 'Description', flex: 1},
     ]
   }
 
@@ -87,14 +88,19 @@ export class DatsList extends List {
     return html`<img class="favicon" src="asset:favicon:${row.url}">`
   }
 
-  renderAuthor (row) {
+  renderOwner (row) {
     // TODO: when dats declare authorship, read that information for this
     if (row.owner || row.url === this.currentUserUrl) {
       return html`<div class="site">
         <span><strong>You</strong></span>
       </div>`
     }
-    return ''
+    return html`<em>Unlisted</em>`
+  }
+
+  renderVisibility (row) {
+    // TODO
+    return html`<em>Unlisted</em>`
   }
 
   // events

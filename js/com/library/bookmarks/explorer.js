@@ -72,6 +72,10 @@ export class BookmarksExplorer extends Explorer {
     `
   }
 
+  renderToolbarButtons () {
+    return this.renderToolbarDatabaseButtons('bookmarks')
+  }
+
   // events
   // =
 
