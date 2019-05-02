@@ -49,6 +49,10 @@ export class PostsExplorer extends Explorer {
   // rendering
   // =
 
+  renderHeader () {
+    return html`<h2><i class="fas fa-database"></i> Database</h2>`
+  }
+
   renderList () {
     var posts = this.posts
     if (this.searchFilter) {

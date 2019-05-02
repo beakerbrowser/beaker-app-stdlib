@@ -4,7 +4,6 @@ import { findCategoryForDat } from '../dats/explorer.js'
 import { shorten, joinPath } from '../../../strings.js'
 import { emit } from '../../../dom.js'
 import './list.js'
-import '../sidebars/dat.js'
 import '../sidebars/file.js'
 
 export class FilesExplorer extends Explorer {
@@ -35,7 +34,7 @@ export class FilesExplorer extends Explorer {
     }
     var category = findCategoryForDat(this.datInfo)
     var path = [
-      {icon: category.icon, onClick: e => emit(this, 'change-location', {detail: {view: 'dats', category: category.id}})},
+      {title: category.label, icon: category.icon, onClick: e => emit(this, 'change-location', {detail: {view: 'dats', category: category.id}})},
       {title: shorten(this.datInfo && this.datInfo.title ? this.datInfo.title : 'Untitled', 100), onClick: gotoPath('/')}
     ]
     var pathUpTo = '/'
@@ -113,6 +112,18 @@ export class FilesExplorer extends Explorer {
   // rendering
   // =
 
+  renderHeader () {
+    if (!this.datInfo) return html``
+    const type = this.datInfo.type || []
+    const isUser = type.includes('unwalled.garden/user')
+    return html`
+      <h2>
+        <img class="favicon" src="asset:favicon:${this.dat}">
+        <span>${this.datInfo.title || (isUser ? 'Anonymous' : 'Untitled')}</span>
+      </h2>
+    `
+  }
+
   renderList () {
     var files = this.files
     if (this.searchFilter) {
@@ -150,14 +161,6 @@ export class FilesExplorer extends Explorer {
       </div>
       <div class="spacer"></div>
       ${this.renderToolbarSearch()}
-    `
-  }
-
-  renderSidebarNoSelection () {
-    return html`
-      <beaker-library-dat-sidebar
-        url="${this.dat}"
-      ></beaker-library-dat-sidebar>
     `
   }
 

@@ -4,7 +4,6 @@ import { Explorer } from '../explorer.js'
 import * as toast from '../../toast.js'
 import { emit } from '../../../dom.js'
 import './list.js'
-import '../sidebars/dats.js'
 import '../sidebars/dat.js'
 
 const profilesAPI = navigator.importSystemAPI('profiles')
@@ -96,13 +95,6 @@ export class DatsExplorer extends Explorer {
     this.ownerFilter = ''
     this.currentUser = null
     this.dats = []
-  }
-
-
-  get viewPath () {
-    var category = CATEGORIES[this.category]
-    if (!category) return null
-    return [{icon: category.icon, title: category.label}]
   }
 
   getDatByKey (key) {
@@ -218,6 +210,15 @@ export class DatsExplorer extends Explorer {
   // rendering
   // =
 
+  renderHeader () {
+    return html`
+      <h2>
+        <i class="${getCategoryIcon(this.category)}"></i>
+        ${getCategoryLabel(this.category)}
+      </h2>
+    `
+  }
+
   renderList () {
     var dats = this.dats
     if (this.searchFilter) {
@@ -245,7 +246,7 @@ export class DatsExplorer extends Explorer {
   }
 
   renderToolbar () {
-    const ownerOpt = (v, label) => {
+    const filterOpt = (v, label) => {
       const cls = classMap({pressed: v == this.ownerFilter, radio: true})
       return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'dats', category: this.category, ownerFilter: v}}) }}>${label}</button>`
     }
@@ -253,8 +254,9 @@ export class DatsExplorer extends Explorer {
 
     return html`
       <div class="radio-group">
-        ${ownerOpt(false, 'All')}
-        ${ownerOpt('yours', 'Yours')}
+        ${filterOpt(false, 'All')}
+        ${filterOpt('yours', 'Yours')}
+        ${filterOpt('recent', 'Recent')}
       </div>
       ${canMakeNew
         ? html`
@@ -267,10 +269,6 @@ export class DatsExplorer extends Explorer {
     `
   }
   
-  renderSidebarNoSelection () {
-    return html`<beaker-library-dats-sidebar category="${this.category}"></beaker-library-dats-sidebar>`
-  }
-
   renderSidebarOneSelection () {
     return html`
       <beaker-library-dat-sidebar

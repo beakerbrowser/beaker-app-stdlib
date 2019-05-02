@@ -80,7 +80,7 @@ export class List extends Table {
   render() {
     return html`
       <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
-      ${this.hasHeadingLabels
+      ${!this.groups && this.hasHeadingLabels
         ? html`
           <div class="heading">
             ${repeat(this.columns, col => this.renderHeadingColumn(col))}
@@ -101,6 +101,12 @@ export class List extends Table {
     return html`
       <div class="group">
         <div class="group-label">${group.label}</div>
+        ${this.hasHeadingLabels
+          ? html`
+            <div class="heading">
+              ${repeat(this.columns, col => this.renderHeadingColumn(col))}
+            </div>
+          ` : ''}
         <div class="group-rows">${repeat(rows, row => this.getRowKey(row), row => this.renderRow(row))}</div>
       </div>
     `
@@ -131,9 +137,10 @@ export class List extends Table {
 
     e.preventDefault()
     e.stopPropagation()
-    this.setSelection(row)
+    const isContextMenu = e.button === 2
+    if (isContextMenu) this.setSelection(row)
     const style = `padding: 4px 0`
-    const right = e.button === 0 // anchor on the right when event is fired by a left click (which means it's the context button)
+    const right = !isContextMenu
     contextMenu.create({x: e.clientX, y: e.clientY, items, style, right, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
   }
 }

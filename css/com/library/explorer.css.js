@@ -7,27 +7,24 @@ ${colorscss}
 ${searchinputcss}
 
 :host {
-  display: grid;
-  grid-template-columns: calc(100vw - 500px) 300px;
-}
-
-.main {
+  display: block;
   height: 100vh;
 }
 
-.sidebar {
+.header {
   background: #fff;
-  border-left: 1px solid var(--border-color);
+  height: 45px;
+  padding: 20px 20px 5px;
+  overflow: hidden ;
 }
 
 .path {
   display: flex;
   align-items: center;
   white-space: nowrap;
-  border-bottom: 1px solid var(--border-color);
-  background: #f9f9fa;
   color: #555;
   user-select: none;
+  background: #f9f9fa;
 }
 
 .path > div {
@@ -46,14 +43,62 @@ ${searchinputcss}
 .toolbar {
   display: flex;
   align-items: center;
-  background: #f9f9fa;
-  padding: 0 10px;
-  height: 40px;
-  border-bottom: 1px solid var(--border-color);
+  height: 30px;
+  padding: 0 20px 10px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid var(--light-border-color);
+}
+
+.main {
+  position: relative;
+}
+
+.list > * {
+  display: block;
+  height: calc(100vh - 160px);
+}
+
+.list.with-path > * {
+  height: calc(100vh - 185px);
+}
+
+.main /*.with-sidebar*/ {
+  display: grid;
+  grid-template-columns: calc(100vw - 560px) 360px;
+}
+
+.main > :first-child {
+  border-right: 1px solid var(--light-border-color);
 }
 
 .sidebar {
-  padding: 20px;
+  background: #fff;
+  padding: 10px;
+}
+
+/* header styles */
+
+.header h2 {
+  font-size: 27px;
+  margin: 0;
+  font-weight: 500
+}
+
+.header h2 i,
+.header h2 .favicon {
+  margin-right: 3px;
+}
+
+.header h2 .favicon {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  vertical-align: bottom;
+}
+
+.header p {
+  line-height: 1.6;
+  color: rgba(0,0,0,.6);
 }
 
 /* toolbar styles */
@@ -142,13 +187,5 @@ input.search {
   border-right-width: 1px;
 }
 
-.list > * {
-  display: block;
-  height: calc(100vh - 100px);
-}
-
-.list.with-path > * {
-  height: calc(100vh - 125px);
-}
 `
 export default cssStr

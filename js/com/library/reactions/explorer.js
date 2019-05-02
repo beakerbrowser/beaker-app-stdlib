@@ -54,6 +54,10 @@ export class ReactionsExplorer extends Explorer {
   // rendering
   // =
 
+  renderHeader () {
+    return html`<h2><i class="fas fa-database"></i> Database</h2>`
+  }
+
   renderList () {
     var reactions = this.reactions
     if (this.searchFilter) {

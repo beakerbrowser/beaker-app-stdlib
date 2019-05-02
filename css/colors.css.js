@@ -22,6 +22,7 @@ body {
   --color-link: #295fcb;
   --color-focus-box-shadow: rgba(41, 95, 203, 0.8);
   --border-color: #d4d7dc;
+  --light-border-color: #e4e7ec;
 }
 `
 export default cssStr

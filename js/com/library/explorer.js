@@ -43,18 +43,27 @@ export class Explorer extends LitElement {
   // =
 
   render() {
+    const sidebarEl = this.renderSidebar()
     const hasPath = !!this.viewPath
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
-      <div class="main">
-        ${hasPath ? html`<div class="path">${this.renderPath()}</div>` : ''}
-        <div class="toolbar">${this.renderToolbar()}</div>
-        <div class="list ${hasPath ? 'with-path' : ''}" @selection-changed=${this.onSelectionChanged}>${this.renderList()}</div>
-      </div>
-      <div class="sidebar">
-        ${this.renderSidebar()}
+      <div class="${classMap({main: true, 'with-sidebar': !!sidebarEl})}">
+        <div>
+          ${hasPath ? html`<div class="path">${this.renderPath()}</div>` : ''}
+          <div class="header">${this.renderHeader()}</div>
+          <div class="toolbar">
+            ${this.renderToolbar()}
+          </div>
+          <div class="list ${hasPath ? 'with-path' : ''}" @selection-changed=${this.onSelectionChanged}>${this.renderList()}</div>
+        </div>
+        ${sidebarEl ? html`<div class="sidebar">${sidebarEl}</div>` : html``}
       </div>
     `
+  }
+
+  renderHeader () {
+    // this should be overridden
+    return html``
   }
   
   renderPath () {
@@ -130,17 +139,17 @@ export class Explorer extends LitElement {
 
   renderSidebarNoSelection () {
     // this should be overridden
-    return html`<div></div>`
+    return null
   }
 
   renderSidebarOneSelection () {
     // this should be overridden
-    return html`<div></div>`
+    return null
   }
 
   renderSidebarMultiSelection () {
     // this should be overridden
-    return html`<div></div>`
+    return null
   }
 
   // events

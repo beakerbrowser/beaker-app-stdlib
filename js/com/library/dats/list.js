@@ -1,9 +1,47 @@
-import { html } from '../../../../vendor/lit-element/lit-element.js'
+import { html, css } from '../../../../vendor/lit-element/lit-element.js'
 import { List } from '../list.js'
 import * as toast from '../../toast.js'
 import { writeToClipboard } from '../../../clipboard.js'
 import { emit } from '../../../dom.js'
+import listCSS from '../../../../css/com/library/list.css.js'
 import '../sidebars/dat.js'
+
+export function buildContextMenuItems (self, row, {shortened} = {shortened: false}) {
+  const copyUrl = () => {
+    writeToClipboard(row.url)
+    toast.create('Copied URL to clipboard')
+  }
+  const explore = () => {
+    emit(self, 'change-location', {detail: {view: 'files', dat: row.url}})
+  }
+  var items = []
+  if (!shortened) {
+    items = items.concat([
+      {icon: 'fa fa-fw fa-external-link-alt', label: 'Open in new tab', click: () => window.open(row.url)},
+      {icon: 'fa fa-fw fa-link', label: 'Copy URL', click: copyUrl},
+      '-'
+    ])
+  }
+  if (row.url !== self.currentUserUrl) {
+    items.push(html`<div class="section-header light small">Library</div>`)
+    if (row.saved) {
+      items.push({icon: 'fas fa-fw fa-minus', label: 'Remove from library', click: () => emit(self, 'remove-from-library', {detail: {rows: [row]}})})
+    } else {
+      items.push({icon: 'fas fa-fw fa-plus', label: 'Add to library', click: () => emit(self, 'add-to-library', {detail: {rows: [row]}})})
+    }
+    items.push({icon: 'far fa-fw fa-trash-alt', label: 'Delete files', click: () => emit(self, 'delete-permanently', {detail: {rows: [row]}})})
+    items.push('-')
+  }
+  items = items.concat([
+    html`<div class="section-header light small">Open with</div>`,
+    {icon: 'far fa-fw fa-user', label: `Beaker.Social`, click: () => window.open(`intent:unwalled.garden/view-profile?url=${encodeURIComponent(row.url)}`)},
+    '-',
+    html`<div class="section-header light small">Developer tools</div>`,
+    {icon: 'far fa-fw fa-folder-open', label: 'Explore files', click: explore},
+    {icon: 'fas fa-fw fa-code', label: `Source Editor`, click: () => window.open(`beaker://editor/${row.url}`)},
+  ])
+  return items
+}
 
 export class DatsList extends List {
   static get properties() {
@@ -36,41 +74,11 @@ export class DatsList extends List {
     ]
   }
 
-  get groups () {
-    return [
-      {label: 'Saved to your library', filterFn: r => r.saved},
-      {label: 'Recently accessed', filterFn: r => !r.saved}
-    ]
-  }
-
   // data management
   // =
 
   buildContextMenuItems (row) {
-    const copyUrl = () => {
-      writeToClipboard(row.url)
-      toast.create('Copied URL to clipboard')
-    }
-    const explore = () => {
-      emit(this, 'change-location', {detail: {view: 'files', dat: row.url}})
-    }
-    var items = [
-      {icon: 'fa fa-external-link-alt', label: 'Open in new tab', click: () => window.open(row.url)},
-      {icon: 'fa fa-link', label: 'Copy URL', click: copyUrl},
-      '-',
-      {icon: 'far fa-folder-open', label: 'Explore', click: explore},
-      {icon: 'far fa-edit', label: `${row.owner || row.url === this.currentUserUrl ? 'Edit' : 'View'} source`, click: () => window.open(`beaker://editor/${row.url}`)}
-    ]
-    if (row.url !== this.currentUserUrl) {
-      items.push('-')
-      if (row.saved) {
-        items.push({icon: 'fas fa-minus', label: 'Remove from library', click: () => emit(this, 'remove-from-library', {detail: {rows: [row]}})})
-      } else {
-        items.push({icon: 'fas fa-plus', label: 'Add to library', click: () => emit(this, 'add-to-library', {detail: {rows: [row]}})})
-      }
-      items.push({icon: 'far fa-trash-alt', label: 'Delete files', click: () => emit(this, 'delete-permanently', {detail: {rows: [row]}})})
-    }
-    return items
+    return buildContextMenuItems(this, row)
   }
 
   // rendering
@@ -124,5 +132,19 @@ export class DatsList extends List {
     emit(this, 'add-to-library', {detail: {rows: [row]}})
   }
 }
+
+DatsList.styles = [listCSS, css`
+.mode-big .row {
+  font-size: 13px;
+  height: 42px;
+}
+
+.mode-big .favicon,
+.mode-big .thumb,
+.mode-big .site img {
+  width: 32px;
+  height: 32px;
+}
+`]
 
 customElements.define('beaker-library-dats-list', DatsList)

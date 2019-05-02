@@ -15,19 +15,24 @@ ${colorscss}
 }
 
 .heading {
-  height: 28px;
-  background: #f9f9fa;
-  border-bottom: 1px solid var(--border-color);
+  font-size: 10px;
+  color: rgba(0,0,0,.35);
+  height: 10px;
+  padding: 6px 20px 8px;
 }
 
 .heading span {
   cursor: pointer;
 }
 
+.heading i {
+  display: none;
+}
+
 .rows {
   height: 100%;
   overflow: auto;
-  padding-bottom: 30px; /* always include some extra space at the bottom */
+  padding-bottom: 30px;
 }
 
 .row {
@@ -35,12 +40,8 @@ ${colorscss}
   background: #fff;
 }
 
-.row:nth-child(even) {
-  background: #f9f9fa;
-}
-
 .row.selected {
-  background: var(--blue);
+  background: #427ffb;
 }
 
 a.row {
@@ -101,9 +102,9 @@ a.row {
 }
 
 .group-label {
-  padding: 10px 8px 2px;
-  margin-bottom: 6px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 14px 8px 4px;
+  margin: 0 6px 6px;
+  color: rgba(0,0,0,.6);
 }
 
 .col.primary-action button,

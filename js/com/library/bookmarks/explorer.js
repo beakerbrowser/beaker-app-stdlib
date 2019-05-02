@@ -52,6 +52,10 @@ export class BookmarksExplorer extends Explorer {
   // rendering
   // =
 
+  renderHeader () {
+    return html`<h2><i class="fas fa-database"></i> Database</h2>`
+  }
+
   renderList () {
     var bookmarks = this.bookmarks
     if (this.searchFilter) {
