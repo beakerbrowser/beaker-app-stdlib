@@ -59,5 +59,26 @@ const cssStr = css`
   pointer-events: none;
 }
 
+.tooltip-nodelay[data-tooltip]:hover:before,
+.tooltip-nodelay[data-tooltip]:hover:after {
+  transition-delay: initial;
+}
+
+.tooltip-right[data-tooltip]:before {
+  top: 50%;
+  left: calc(100% + 6px);
+  transform: translate(0, -50%);
+  line-height: 0.9;
+}
+
+.tooltip-right[data-tooltip]:after {
+  top: 50%;
+  left: calc(100% + 0px);
+  transform: translate(0, -50%);
+  border: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid rgba(17, 17, 17, 0.95);
+}
 `
 export default cssStr
