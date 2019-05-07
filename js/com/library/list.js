@@ -15,7 +15,6 @@ export class List extends Table {
 
   constructor () {
     super()
-
     this.selectedRows = {}
   }
 
@@ -80,7 +79,7 @@ export class List extends Table {
   render() {
     return html`
       <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
-      ${!this.groups && this.hasHeadingLabels
+      ${this.hasHeadingLabels
         ? html`
           <div class="heading">
             ${repeat(this.columns, col => this.renderHeadingColumn(col))}
@@ -100,13 +99,7 @@ export class List extends Table {
     if (rows.length === 0) return html``
     return html`
       <div class="group">
-        <div class="group-label">${group.label}</div>
-        ${this.hasHeadingLabels
-          ? html`
-            <div class="heading">
-              ${repeat(this.columns, col => this.renderHeadingColumn(col))}
-            </div>
-          ` : ''}
+        ${group.label ? html`<div class="group-label">${group.label}</div>` : ''}
         <div class="group-rows">${repeat(rows, row => this.getRowKey(row), row => this.renderRow(row))}</div>
       </div>
     `

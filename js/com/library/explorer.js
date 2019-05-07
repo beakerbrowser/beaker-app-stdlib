@@ -2,7 +2,6 @@ import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { repeat } from '../../../vendor/lit-element/lit-html/directives/repeat.js'
 import { classMap } from '../../../vendor/lit-element/lit-html/directives/class-map.js'
 import * as contextMenu from '../context-menu.js'
-import { emit } from '../../dom.js'
 import explorerCSS from '../../../css/com/library/explorer.css.js'
 
 export class Explorer extends LitElement {
@@ -43,17 +42,16 @@ export class Explorer extends LitElement {
   // =
 
   render() {
+    const headerEl = this.renderHeader()
     const sidebarEl = this.renderSidebar()
     const hasPath = !!this.viewPath
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
-      <div class="${classMap({main: true, 'with-sidebar': !!sidebarEl})}">
+      <div class="${classMap({main: true, 'with-sidebar': !!sidebarEl, 'with-header': !!headerEl})}">
         <div>
           ${hasPath ? html`<div class="path">${this.renderPath()}</div>` : ''}
-          <div class="header">${this.renderHeader()}</div>
-          <div class="toolbar">
-            ${this.renderToolbar()}
-          </div>
+          ${headerEl ? html`<div class="header">${headerEl}</div>` : ''}
+          <div class="toolbar">${this.renderToolbar()}</div>
           <div class="list ${hasPath ? 'with-path' : ''}" @selection-changed=${this.onSelectionChanged}>${this.renderList()}</div>
         </div>
         ${sidebarEl ? html`<div class="sidebar">${sidebarEl}</div>` : html``}
@@ -63,7 +61,7 @@ export class Explorer extends LitElement {
 
   renderHeader () {
     // this should be overridden
-    return html``
+    return null
   }
   
   renderPath () {
@@ -77,21 +75,6 @@ export class Explorer extends LitElement {
       <button ?disabled=${disabled} title="${label}" @click=${onClick}>
         <i class="${icon}"></i> ${this.iconsOnly ? '' : label}
       </button>
-    `
-  }
-
-  renderToolbarDatabaseButtons (current) {
-    const item = (id, label) => {
-      const cls = classMap({pressed: id === current, radio: true})
-      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'database', category: id}}) }}>${label}</button>`
-    }
-    return html`
-      <div class="radio-group">
-        ${item('bookmarks', 'Bookmarks')}
-        ${item('posts', 'Posts')}
-        ${item('reactions', 'Reactions')}
-        ${item('socialgraph', 'Social graph')}
-      </div>
     `
   }
 

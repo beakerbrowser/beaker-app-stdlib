@@ -1,4 +1,4 @@
-import {  html } from '../../../../vendor/lit-element/lit-element.js'
+import { html } from '../../../../vendor/lit-element/lit-element.js'
 import { List } from '../list.js'
 import { format as formatBytes } from '../../../../vendor/bytes/index.js'
 import * as toast from '../../toast.js'
@@ -89,7 +89,7 @@ export class FilesList extends List {
       var detail = {view: 'files', dat: this.dat, path}
       emit(this, 'change-location', {detail})
     } else {
-      window.open(this.dat + path)
+      window.open(`beaker://editor/${this.dat}${path}`)
     }
   }
 }

@@ -1,8 +1,10 @@
 import { html, css } from '../../../../vendor/lit-element/lit-element.js'
 import { List } from '../list.js'
+import { isPerson } from './explorer.js'
 import * as toast from '../../toast.js'
 import { writeToClipboard } from '../../../clipboard.js'
 import { emit } from '../../../dom.js'
+import { shortDate } from '../../../time.js'
 import listCSS from '../../../../css/com/library/list.css.js'
 import '../sidebars/dat.js'
 
@@ -24,7 +26,7 @@ export function buildContextMenuItems (self, row, {shortened} = {shortened: fals
   }
   if (row.url !== self.currentUserUrl) {
     items.push(html`<div class="section-header light small">Library</div>`)
-    if (row.saved) {
+    if (row.saved || row.userSettings.isSaved) {
       items.push({icon: 'fas fa-fw fa-minus', label: 'Remove from library', click: () => emit(self, 'remove-from-library', {detail: {rows: [row]}})})
     } else {
       items.push({icon: 'fas fa-fw fa-plus', label: 'Add to library', click: () => emit(self, 'add-to-library', {detail: {rows: [row]}})})
@@ -32,12 +34,17 @@ export function buildContextMenuItems (self, row, {shortened} = {shortened: fals
     items.push({icon: 'far fa-fw fa-trash-alt', label: 'Delete files', click: () => emit(self, 'delete-permanently', {detail: {rows: [row]}})})
     items.push('-')
   }
+  if (isPerson(row)) {
+    items = items.concat([
+      html`<div class="section-header light small">Open with</div>`,
+      {icon: 'far fa-fw fa-user', label: `Beaker.Social`, click: () => window.open(`dat://beaker.social/profile/${encodeURIComponent(row.url)}`)},
+      '-',
+    ])
+  }
   items = items.concat([
-    html`<div class="section-header light small">Open with</div>`,
-    {icon: 'far fa-fw fa-user', label: `Beaker.Social`, click: () => window.open(`intent:unwalled.garden/view-profile?url=${encodeURIComponent(row.url)}`)},
-    '-',
     html`<div class="section-header light small">Developer tools</div>`,
     {icon: 'far fa-fw fa-folder-open', label: 'Explore files', click: explore},
+    {icon: 'fas fa-fw fa-code-branch', label: `Fork`, click: () => window.open(`beaker://editor/${row.url}`)},
     {icon: 'fas fa-fw fa-code', label: `Source Editor`, click: () => window.open(`beaker://editor/${row.url}`)},
   ])
   return items
@@ -47,6 +54,7 @@ export class DatsList extends List {
   static get properties() {
     return { 
       category: {type: String},
+      section: {type: String},
       currentUserUrl: {type: String, attribute: 'current-user-url'},
       currentUserTitle: {type: String, attribute: 'current-user-title'},
       rows: {type: Array},
@@ -58,20 +66,48 @@ export class DatsList extends List {
     super()
     this.sortColumn = 'title'
     this.category = ''
+    this.section = ''
     this.currentUserUrl = ''
     this.currentUserTitle = ''
     this.rows = []
   }
 
   get columns () {
+    if (this.section === 'browse') {
+      return [
+        {id: 'favicon', width: 22, renderer: 'renderFavicon'},
+        {id: 'title', label: 'Title', width: 200, renderer: 'renderTitle'},
+        {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
+        {id: 'description', label: 'Description', flex: 1, renderer: 'renderDescription'},
+        {id: 'publishDate', label: 'Date Published', width: 80, renderer: 'renderDatePublished'},
+        {id: 'primary-action', width: 20, renderer: 'renderPrimaryAction'},
+        {id: 'hover-action', width: 24, renderer: 'renderHoverAction'},
+      ]
+    }
     return [
       {id: 'favicon', width: 22, renderer: 'renderFavicon'},
       {id: 'title', label: 'Title', width: 200, renderer: 'renderTitle'},
       {id: 'author', label: 'Author', width: 120, renderer: 'renderAuthor'},
-      {id: 'description', label: 'Description', flex: 1},
-      {id: 'primary-action', width: 20, renderer: 'renderPrimaryAction'},
+      {id: 'description', label: 'Description', flex: 1, renderer: 'renderDescription'},
+      {id: 'mtime', label: 'Last Updated', width: 80, renderer: 'renderLastUpdated'},
       {id: 'hover-action', width: 24, renderer: 'renderHoverAction'},
     ]
+  }
+
+  get groups () {
+    if (this.section === 'mine') {
+      return [
+        {label: false, filterFn: r => r.saved},
+        {label: 'Trash', filterFn: r => !r.saved}
+      ]
+    }
+    if (this.section === 'browse') {
+      return [
+        // TODO
+        {label: 'Recently accessed', filterFn: r => true}
+      ]
+    }
+    return null
   }
 
   // data management
@@ -89,6 +125,11 @@ export class DatsList extends List {
     return row.title
   }
 
+  renderDescription (row) {
+    if (!row.description.trim()) return html`<em>-</em>`
+    return row.description
+  }
+
   renderFavicon (row) {
     var isUser = row.type && row.type.includes('unwalled.garden/user')
     if (this.category === 'contacts') isUser = true // HACK- assume followed users are contacts for now
@@ -102,22 +143,33 @@ export class DatsList extends List {
     // TODO: when dats declare authorship, read that information for this
     if (row.owner || row.url === this.currentUserUrl) {
       return html`<div class="site">
-        <span>You</span>
+        <span>Me</span>
       </div>`
     }
-    return html``
+    return html`<em>-</em>`
+  }
+
+  renderDatePublished (row) {
+    return html`<em>-</em>`
+  }
+
+  renderLastUpdated (row) {
+    if (row.mtime) {
+      return html`${shortDate(row.mtime)}`
+    }
+    return html`<em>-</em>`
   }
 
   renderPrimaryAction (row) {
     if (row.saved) return html``
     return html`
-      <button @click=${e => this.onClickAdd(e, row)}><i class="fas fa-plus"></i></button>
+      <button class="blue" @click=${e => this.onClickAdd(e, row)}><i class="fas fa-plus"></i></button>
     `
   }
 
   renderHoverAction (row) {
     return html`
-      <button @click=${e => this.onContextmenuRow(e, row)}><i class="fas fa-ellipsis-h"></i></button>
+      <button class="blue hover" @click=${e => this.onContextmenuRow(e, row)}><i class="fas fa-ellipsis-h"></i></button>
     `
   }
 

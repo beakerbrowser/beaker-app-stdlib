@@ -1,14 +1,18 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
+import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import { Explorer } from '../explorer.js'
 import { findCategoryForDat } from '../dats/explorer.js'
 import { shorten, joinPath } from '../../../strings.js'
 import { emit } from '../../../dom.js'
 import './list.js'
+import '../sidebars/dat.js'
 import '../sidebars/file.js'
 
 export class FilesExplorer extends Explorer {
   static get properties () {
     return {
+      selectedKeys: {type: Array},
+      searchFilter: {type: String},
       dat: {type: String},
       path: {type: String},
       datInfo: {type: Object}
@@ -112,18 +116,6 @@ export class FilesExplorer extends Explorer {
   // rendering
   // =
 
-  renderHeader () {
-    if (!this.datInfo) return html``
-    const type = this.datInfo.type || []
-    const isUser = type.includes('unwalled.garden/user')
-    return html`
-      <h2>
-        <img class="favicon" src="asset:favicon:${this.dat}">
-        <span>${this.datInfo.title || (isUser ? 'Anonymous' : 'Untitled')}</span>
-      </h2>
-    `
-  }
-
   renderList () {
     var files = this.files
     if (this.searchFilter) {
@@ -147,20 +139,27 @@ export class FilesExplorer extends Explorer {
   }
 
   renderToolbar () {
-    var hasSingleSelection = this.selectedKeys.length === 1
-    var isOwner = this.datInfo && this.datInfo.isOwner
-    var canDelete = isOwner && this.selectedKeys.length > 0
-    var files = this.selectedKeys.map(key => this.getFileByKey(key))
+    const sectionOpt = (v, label) => {
+      const cls = classMap({pressed: v == 'files', radio: true})
+      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: v, dat: this.dat}}) }}>${label}</button>`
+    }
+
+    // ${sectionOpt('activity', 'Activity')}
+    // ${sectionOpt('website', 'Website')}
     return html`
-      <div class="btn-group">
-        ${this.renderToolbarButton('Open', 'fas fa-external-link-alt', e => window.open(files[0].url), !hasSingleSelection)}
-      </div>
-      <div class="btn-group">
-        ${this.renderToolbarButton('Edit', 'far fa-edit', e => window.open(`beaker://editor/${files[0].url}`), !hasSingleSelection)}
-        ${this.renderToolbarButton('Delete', 'far fa-trash-alt', e => this.deleteFile(files), !canDelete)}
+      <div class="radio-group">
+        ${sectionOpt('files', 'Files')}
       </div>
       <div class="spacer"></div>
       ${this.renderToolbarSearch()}
+    `
+  }
+  
+  renderSidebarNoSelection () {
+    return html`
+      <beaker-library-dat-sidebar
+        url="${this.dat}"
+      ></beaker-library-dat-sidebar>
     `
   }
 

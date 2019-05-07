@@ -1,15 +1,33 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
+import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import { Explorer } from '../explorer.js'
+import { emit } from '../../../dom.js'
 import './list.js'
+import './sidebar.js'
 
+const profilesAPI = navigator.importSystemAPI('profiles')
 const bookmarksAPI = navigator.importSystemAPI('bookmarks')
+const graphAPI = navigator.importSystemAPI('unwalled-garden-graph')
 
 export class BookmarksExplorer extends Explorer {
+  static get properties () {
+    return {
+      ownerFilter: {type: String, attribute: 'owner-filter'},
+      searchFilter: {type: String},
+      selectedKeys: {type: Array}
+    }
+  }
 
   constructor () {
     super()
+    this.ownerFilter = ''
+    this.currentUser = null
     this.bookmarks = []
     this.load()
+  }
+
+  getBookmarkByKey (key) {
+    return this.bookmarks.find(b => b.key === key)
   }
 
   // data management
@@ -19,7 +37,13 @@ export class BookmarksExplorer extends Explorer {
     this.reset()
     this.safelyAccessListEl(el => el.clearSelection())
 
-    this.bookmarks = await bookmarksAPI.query()
+    var currentUser = this.currentUser = await profilesAPI.getCurrentUser()
+    if (this.ownerFilter === 'network') {
+      let authors = [currentUser].concat(await graphAPI.listFollows(currentUser.url))
+      this.bookmarks = await bookmarksAPI.query({filters: {authors: authors.map(f => f.url)}})
+    } else {
+      this.bookmarks = await bookmarksAPI.query({filters: {authors: currentUser.url}})
+    }
     console.log(this.bookmarks)
     
     this.bookmarks.forEach(bookmark => { bookmark.key = bookmark.record ? bookmark.record.url : bookmark.href })
@@ -53,7 +77,7 @@ export class BookmarksExplorer extends Explorer {
   // =
 
   renderHeader () {
-    return html`<h2><i class="fas fa-database"></i> Database</h2>`
+    return html`<h2><i class="far fa-star"></i> Bookmarks</h2>`
   }
 
   renderList () {
@@ -71,16 +95,33 @@ export class BookmarksExplorer extends Explorer {
     return html`
       <beaker-library-bookmarks-list
         .rows=${bookmarks}
+        current-user-url="${this.currentUser ? this.currentUser.url : ''}"
         @sort=${this.onSort}
       ></beaker-library-bookmarks-list>
     `
   }
 
   renderToolbar () {
+    const filterOpt = (v, label) => {
+      const cls = classMap({pressed: v == this.ownerFilter, radio: true})
+      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'bookmarks', ownerFilter: v}}) }}>${label}</button>`
+    }
     return html`
-      ${this.renderToolbarDatabaseButtons('bookmarks')}
+      <div class="radio-group">
+        ${filterOpt(false, 'My bookmarks')}
+        ${filterOpt('network', 'Network')}
+      </div>
       <div class="spacer"></div>
       ${this.renderToolbarSearch()}
+    `
+  }
+
+  renderSidebarOneSelection () {
+    var bookmark = this.getBookmarkByKey(this.selectedKeys[0])
+    return html`
+      <beaker-library-bookmark-sidebar
+        .bookmark="${bookmark}"
+      ></beaker-library-bookmark-sidebar>
     `
   }
 
@@ -93,6 +134,13 @@ export class BookmarksExplorer extends Explorer {
 
   // helpers
   // =
+
+  attributeChangedCallback (name, oldval, newval) {
+    super.attributeChangedCallback(name, oldval, newval)
+    if (name === 'owner-filter') {
+      this.load()
+    }
+  }
 
   safelyAccessListEl (fn, fallback = undefined) {
     try {

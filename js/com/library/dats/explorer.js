@@ -19,32 +19,52 @@ export const CATEGORIES = {
   applications: {
     type: 'unwalled.garden/application',
     icon: 'far fa-window-restore',
-    label: 'Applications',
-    description: 'Applications can be installed to provide new experiences.'
+    label: 'Applications'
+  },
+  music: {
+    type: 'unwalled.garden/music',
+    icon: 'fas fa-music',
+    label: 'Music'
   },
   modules: {
     type: 'unwalled.garden/module',
     icon: 'fas fa-cubes',
-    label: 'Modules',
-    description: 'Modules contain code which can be imported into applications.'
+    label: 'Modules'
   },
-  templates: {
-    type: 'unwalled.garden/template',
-    icon: 'fas fa-drafting-compass',
-    label: 'Templates',
-    description: 'Templates are kits for creating new websites.'
-  },
-  users: {
-    type: 'unwalled.garden/user',
+  people: {
+    type: 'unwalled.garden/person',
     icon: 'fas fa-users',
-    label: 'Users',
-    description: 'Users are the people who make the Web. That includes you!'
+    label: 'People'
+  },
+  images: {
+    type: 'unwalled.garden/photo-album',
+    icon: 'fas fa-image',
+    label: 'Images'
+  },
+  podcasts: {
+    type: 'unwalled.garden/podcast',
+    icon: 'fas fa-microphone',
+    label: 'Podcasts'
+  },
+  interfaces: {
+    type: 'unwalled.garden/interface',
+    icon: 'fas fa-mouse-pointer',
+    label: 'Interfaces'
+  },
+  videos: {
+    type: 'unwalled.garden/video',
+    icon: 'fas fa-film',
+    label: 'Videos'
   },
   websites: {
     type: false,
     icon: 'fas fa-sitemap',
-    label: 'Websites',
-    description: 'Websites contain pages of information and media for you to browse.'
+    label: 'Websites'
+  },
+  wikis: {
+    type: 'unwalled.garden/wiki',
+    icon: 'fas fa-file-word',
+    label: 'Wikis'
   },
 }
 
@@ -79,6 +99,11 @@ export function hasKnownType (dat) {
   return !!dat.type.find(t => KNOWN_TYPES.includes(t))
 }
 
+export function isPerson (dat) {
+  if (!dat.type) return false
+  return Boolean(dat.type.find(t => t === 'unwalled.garden/person'))
+}
+
 export class DatsExplorer extends Explorer {
   static get properties () {
     return {
@@ -110,21 +135,16 @@ export class DatsExplorer extends Explorer {
 
     var self = await profilesAPI.getCurrentUser()
     this.currentUser = self
-    var owner = this.ownerFilter === 'yours' ? true : undefined
-    if (this.category === 'users') {
+    var saved = !this.ownerFilter ? true : undefined
+    var owner = this.ownerFilter === 'mine' ? true : undefined
+    if (this.category === 'following') {
       // TODO replace this with a library api list query
       this.dats = [self].concat(await graphAPI.listFollows(self.url))
-    } else if (this.category === 'applications') {
-      this.dats = await libraryAPI.list({filters: {owner, type: CATEGORIES.applications.type}})
-    } else if (this.category === 'modules') {
-      this.dats = await libraryAPI.list({filters: {owner, type: CATEGORIES.modules.type}})
-    } else if (this.category === 'templates') {
-      this.dats = await libraryAPI.list({filters: {owner, type: CATEGORIES.templates.type}})
     } else if (this.category === 'websites') {
-      this.dats = await libraryAPI.list({filters: {owner}})
+      this.dats = await libraryAPI.list({filters: {owner, saved}})
       this.dats = this.dats.filter(d => !hasKnownType(d))
     } else {
-      this.dats = await libraryAPI.list({filters: {saved: true}})
+      this.dats = await libraryAPI.list({filters: {owner, saved, type: CATEGORIES[this.category].type}})
     }
     console.log(this.dats)
     this.dats.forEach(row => { row.key = row.url })
@@ -235,8 +255,9 @@ export class DatsExplorer extends Explorer {
       <beaker-library-dats-list
         .rows=${dats}
         category="${this.category}"
+        section="${this.ownerFilter}"
         current-user-url="${this.currentUser ? this.currentUser.url : ''}"
-        current-user-title="${this.currentUser ? this.currentUser.title : ''}"
+        current-user-title="${this.currentUser ? this.currentUser.title : ''}"  
         @sort=${this.onSort}
         @add-to-library=${this.onAddToLibrary}
         @remove-from-library=${this.onRemoveFromLibrary}
@@ -254,18 +275,16 @@ export class DatsExplorer extends Explorer {
 
     return html`
       <div class="radio-group">
-        ${filterOpt(false, 'All')}
-        ${filterOpt('yours', 'Yours')}
-        ${filterOpt('recent', 'Recent')}
+        ${filterOpt(false, 'Library')}
+        ${filterOpt('mine', `My ${this.category}`)}
       </div>
+      <div class="spacer"></div>
       ${canMakeNew
         ? html`
           <div class="btn-group">
-            <button @click=${this.onClickNew}><i class="fa-fw fas fa-plus"></i> New ${this.category.slice(0, -1)}</button>
+            <button @click=${this.onClickNew} style="border-radius: 16px;"><i class="fa-fw fas fa-plus"></i> New ${this.category.slice(0, -1)}</button>
           </div>
         ` : ''}
-      <div class="spacer"></div>
-      ${this.renderToolbarSearch()}
     `
   }
   
@@ -273,6 +292,9 @@ export class DatsExplorer extends Explorer {
     return html`
       <beaker-library-dat-sidebar
         url="${this.selectedKeys[0]}"
+        @add-to-library=${this.onAddToLibrary}
+        @remove-from-library=${this.onRemoveFromLibrary}
+        @delete-permanently=${this.onDeletePermanently}
       ></beaker-library-dat-sidebar>
     `
   }

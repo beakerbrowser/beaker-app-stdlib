@@ -1,10 +1,12 @@
 import {css} from '../../../vendor/lit-element/lit-element.js'
 import colorscss from '../../colors.css.js'
 import searchinputcss from '../search-input.css.js'
+import buttons2css from '../../buttons2.css.js'
 
 const cssStr = css`
 ${colorscss}
 ${searchinputcss}
+${buttons2css}
 
 :host {
   display: block;
@@ -24,7 +26,6 @@ ${searchinputcss}
   white-space: nowrap;
   color: #555;
   user-select: none;
-  background: #f9f9fa;
 }
 
 .path > div {
@@ -44,27 +45,30 @@ ${searchinputcss}
   display: flex;
   align-items: center;
   height: 30px;
-  padding: 0 20px 10px;
+  padding: 4px 10px;
   margin-bottom: 5px;
-  border-bottom: 1px solid var(--light-border-color);
+}
+
+.main.with-header .toolbar {
+  padding: 0 20px 10px;
 }
 
 .main {
-  position: relative;
-}
-
-.list > * {
-  display: block;
-  height: calc(100vh - 160px);
-}
-
-.list.with-path > * {
-  height: calc(100vh - 185px);
+  height: 100vh;
 }
 
 .main /*.with-sidebar*/ {
   display: grid;
-  grid-template-columns: calc(100vw - 560px) 360px;
+  grid-template-columns: calc(100vw - 540px) 340px;
+}
+
+.list > * {
+  display: block;
+  height: calc(100vh - 170px);
+}
+
+.list.with-path > * {
+  height: calc(100vh - 123px);
 }
 
 .main > :first-child {
@@ -73,7 +77,6 @@ ${searchinputcss}
 
 .sidebar {
   background: #fff;
-  padding: 10px;
 }
 
 /* header styles */
@@ -129,63 +132,6 @@ input.search {
   top: 9px;
 }
 
-.toolbar button {
-  background: #fff;
-  border: 1px solid var(--border-color);
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0,0,0,.05);
-  padding: 5px 10px;
-  color: #333;
-  outline: 0;
-}
-
-.toolbar button:active {
-  background: #eee;
-}
-
-.toolbar button.pressed {
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.5);
-  background: #6d6d79;
-  color: rgba(255,255,255,1);
-  border-color: transparent;
-  border-radius: 4px;
-}
-
-.toolbar button[disabled] {
-  color: #999;
-}
-
-.toolbar .radio-group button {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-}
-
-.toolbar .radio-group button.pressed {
-  background: #6d6d79;
-  border-radius: 30px;
-}
-
-.toolbar .btn-group {
-  display: flex;
-  margin: 0 6px;
-}
-
-.toolbar .btn-group button {
-  border-radius: 0;
-  border-right-width: 0;
-}
-
-.toolbar .btn-group button:first-child {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.toolbar .btn-group button:last-child {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-right-width: 1px;
-}
 
 `
 export default cssStr
