@@ -5,12 +5,12 @@ const cssStr = css`
 
 .reaction {
   padding: 4px 4px 3px;
-  line-height: 14px;
-  font-size: 10px;
+  margin-right: 4px;
+  font-size: 13px;
   font-weight: 500;
   color: #444;
-  border-radius: 12px;
-  margin-right: 4px;
+  border: 1px solid var(--light-border-color);
+  border-radius: 16px;
 }
 
 .reaction:hover {
@@ -19,7 +19,7 @@ const cssStr = css`
 }
 
 .reaction .count {
-  font-size: 11px;
+  /* font-size: 11px; */
 }
 
 .reaction.by-user {
@@ -32,12 +32,9 @@ const cssStr = css`
 }
 
 .reaction.add-btn {
-  font-size: 16px;
-  line-height: 4px;
+  border: 0;
+  font-size: 11px;
   color: #7182a5;
-  padding: 0px 5px 2px;
-  transition: opacity 0.2s;
-  opacity: 0;
 }
 
 .reaction.add-btn.pressed {

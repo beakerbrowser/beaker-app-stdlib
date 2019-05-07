@@ -19,10 +19,9 @@ textarea::-webkit-input-placeholder {
 }
 
 .input-placeholder {
-  border: 1px solid #e5e5e5;
-  color: var(--color-text--muted);
-  border-radius: 4px;
   cursor: text;
+  color: #aaa;
+  font-weight: 400;
 }
 
 textarea {
@@ -32,6 +31,10 @@ textarea {
   height: auto;
   min-height: 55px;
   margin-bottom: 10px;
+  resize: none;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
 }
 
 .actions {

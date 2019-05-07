@@ -58,7 +58,7 @@ export class Table extends LitElement {
   constructor (opts = {}) {
     super()
     this.rows = []
-    this.sortColumn = this.columns[0].id
+    this.sortColumn = this.columns[0] ? this.columns[0].id : ''
     this.sortDirection = 'asc'
 
     if (opts.fontAwesomeCSSUrl) {

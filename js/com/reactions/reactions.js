@@ -25,20 +25,31 @@ export class Reactions extends LitElement {
     return this
   }
 
+  get defaultReactions () {
+    var reactions = this.reactions || []
+    return [/*'👍️'*/].map(emoji => reactions.find(r => r.emoji === emoji) || {emoji, authors: []})
+  }
+
+  get addedReactions () {
+    return this.reactions.filter(r => ![/*'👍️'*/].includes(r.emoji))
+  }
+
   render () {
+    const renderReaction = r => {
+      var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
+      var cls = classMap({reaction: true, 'by-user': alreadySet})
+      return html`
+        <span class="${cls}" @click=${e => this.emitChange(alreadySet, r.emoji)}>
+          ${renderEmoji(r.emoji)}
+          <span class="count">${r.authors.length}</span>
+        </span>
+      `
+    }
     return html`
-      ${this.reactions.map(r => {
-        var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
-        var cls = classMap({reaction: true, 'by-user': alreadySet})
-        return html`
-          <span class="${cls}" @click=${e => this.emitChange(alreadySet, r.emoji)}>
-            ${renderEmoji(r.emoji)}
-            <span class="count">${r.authors.length}</span>
-          </span>
-        `
-      })}
+      ${this.defaultReactions.map(renderReaction)}
+      ${this.addedReactions.map(renderReaction)}
       <span class="reaction add-btn" @click=${this.onClickAddBtn}>
-        +
+        <i class="fas fa-ellipsis-h"></i>
       </span>
     `
   }

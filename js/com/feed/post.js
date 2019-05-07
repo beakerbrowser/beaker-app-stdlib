@@ -8,7 +8,8 @@ export class FeedPost extends LitElement {
     return {
       post: {type: Object},
       userUrl: {type: String, attribute: 'user-url'},
-      viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'}
+      viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'},
+      viewRecordBaseUrl: {type: String, attribute: 'view-record-base-url'}
     }
   }
 
@@ -17,32 +18,27 @@ export class FeedPost extends LitElement {
     this.post = null
     this.userUrl = ''
     this.viewProfileBaseUrl = 'intent:unwalled.garden/view-profile?url='
+    this.viewRecordBaseUrl = 'intent:unwalled.garden/view-file?url='
   }
 
   render () {
     if (!this.post) return
     var viewProfileUrl = `${this.viewProfileBaseUrl}${encodeURIComponent(this.post.author.url)}`
+    var viewRecordUrl = `${this.viewRecordBaseUrl}${encodeURIComponent(this.post.url)}`
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="inner">
-        <div class="avatar-column">
-          <a href="${viewProfileUrl}"><img class="avatar" src="asset:thumb:${this.post.author.url}"></a>
+        <div class="thumb-column">
+          ${Math.random() > 0.7
+            ? html`<img src="asset:thumb:dat://f12cadfff9d8389a95c361408d1b1869072fe10f8da5ba364078d40398a293e4">`
+            : html`<div class="icon"><i class="far fa-newspaper"></i></div>`}
         </div>
         <div class="content-column">
-          <div class="header">
-            <a class="title" href="${viewProfileUrl}">${this.post.author.title}</a>
-            &middot;
-            <a class="permalink" href="${this.post.url}" target="_blank">${timeDifference(this.post.createdAt, true, '')}</a>
-          </div>
           <div class="body">${this.post.content.body}</div>
-          <div class="bottom-ctrls">
-            <div>
-              <a class="link disabled"><span class="far fa-comment"></span> Comment (0)</a>
-            </div>
-            <div>
-              <a class="link disabled"><span class="fas fa-retweet"></span> Repost (0)</a>
-            </div>
-            <beaker-reactions .reactions=${this.post.reactions} topic="${this.post.url}" user-url="${this.userUrl}"></beaker-reactions>
+          <div class="header">
+            <a class="comments" href="#">${(Math.random()*15)|0} comments</a>
+            <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
+            <a class="permalink" href="${viewRecordUrl}" target="_blank">${timeDifference(this.post.createdAt, true, 'ago')}</a>
           </div>
         </div>
       </div>

@@ -39,7 +39,7 @@ export class FeedComposer extends LitElement {
   renderInactive () {
     return html`
       <div class="input-placeholder" @click=${this.onClickPlaceholder}>
-        What would you like to share?
+        Create a new post
       </div>
     `
   }
@@ -51,7 +51,7 @@ export class FeedComposer extends LitElement {
     })
     return html`
       <textarea
-        placeholder="What would you like to share?"
+        placeholder="Enter your post title here"
         @keydown=${this.onKeydownTextarea}
         @keyup=${this.onChangeTextarea}
         @blur=${this.onBlurTextarea}
