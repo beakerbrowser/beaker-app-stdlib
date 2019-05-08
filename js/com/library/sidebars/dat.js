@@ -77,7 +77,7 @@ export class DatSidebar extends LitElement {
           <img class="thumb" src="asset:thumb:${this.url}">
           <div class="ctrls">
             ${this.isSelf ? html`<span class="isyou">This is you</span>` : ''}
-            <span class="btn-group">
+            <span class="btn-group rounded">
               ${this.isPerson && !this.isSelf
                   ? html`
                     <button @click=${this.onToggleFollowing}>

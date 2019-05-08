@@ -1,7 +1,27 @@
 import { html, css } from '../../../../vendor/lit-element/lit-element.js'
 import { List } from '../list.js'
 import { shortDate } from '../../../time.js'
+import { emit } from '../../../dom.js'
+import * as toast from '../../toast.js'
+import { writeToClipboard } from '../../../clipboard.js'
 import listCSS from '../../../../css/com/library/list.css.js'
+
+export function buildContextMenuItems (self, row) {
+  const copyUrl = () => {
+    writeToClipboard(row.href)
+    toast.create('Copied URL to clipboard')
+  }
+  var items = [
+    {icon: 'fa fa-external-link-alt', label: 'Open in new tab', click: () => window.open(row.href)},
+    {icon: 'fa fa-link', label: 'Copy URL', click: copyUrl}
+  ]
+  if (row.isOwner) {
+    items.push('-')
+    items.push({icon: 'far fa-edit', label: `Edit bookmark`, click: () => emit(self, 'edit-bookmark', {detail: {bookmark: row}})})
+    items.push({icon: 'far fa-trash-alt', label: `Delete bookmark`, click: () => emit(self, 'delete-bookmark', {detail: {bookmark: row}})})
+  }
+  return items
+}
 
 export class BookmarksList extends List {
   static get properties() {
@@ -27,6 +47,10 @@ export class BookmarksList extends List {
       {id: 'href', label: 'Location', width: 160},
       {id: 'createdAt', label: 'Date Created', width: 90, renderer: 'renderCreatedAt'},
     ]
+  }
+
+  buildContextMenuItems (row) {
+    return buildContextMenuItems(this, row)
   }
 
   // rendering

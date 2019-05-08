@@ -1,7 +1,9 @@
 import { LitElement, html, css } from '../../../../vendor/lit-element/lit-element.js'
-import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import sidebarStyles from '../../../../css/com/library/sidebar.css.js'
 import { toNiceUrl } from '../../../strings.js'
+import { buildContextMenuItems } from './list.js'
+import * as contextMenu from '../../context-menu.js'
+import { emit } from '../../../dom.js'
 
 export class BookmarkSidebar extends LitElement {
   static get properties () {
@@ -71,7 +73,17 @@ export class BookmarkSidebar extends LitElement {
   }
 
   onClickEdit (e) {
+    emit(this, 'edit-bookmark', {detail: {bookmark: this.bookmark}})
+  }
 
+  onClickMenu (e) {
+    var items = buildContextMenuItems(this, this.bookmark, {noOpen: true, noExplore: this.noExplore})
+    if (!items) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    const style = `padding: 4px 0`  
+    contextMenu.create({x: e.clientX, y: e.clientY, items, style, right: true, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
   }
 }
 BookmarkSidebar.styles = [sidebarStyles, css`

@@ -1,6 +1,8 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
 import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import { Explorer } from '../explorer.js'
+import { BeakerEditBookmarkPopup } from '../../popups/edit-bookmark.js'
+import * as toast from '../../toast.js'
 import { emit } from '../../../dom.js'
 import './list.js'
 import './sidebar.js'
@@ -28,6 +30,12 @@ export class BookmarksExplorer extends Explorer {
 
   getBookmarkByKey (key) {
     return this.bookmarks.find(b => b.key === key)
+  }
+
+  get viewPath () {
+    return [
+      {title: 'Bookmarks', icon: 'far fa-star', onClick: e => emit(this, 'change-location', {detail: {view: 'bookmarks'}})}
+    ]
   }
 
   // data management
@@ -73,12 +81,57 @@ export class BookmarksExplorer extends Explorer {
     this.requestUpdate()
   }
 
+  async addBookmark () {
+    try {
+      // render popup
+      var b = await BeakerEditBookmarkPopup.create({
+        href: '',
+        title: '',
+        tags: [],
+        pinned: true
+      }, {
+        fontawesomeSrc: '/vendor/beaker-app-stdlib/css/fontawesome.css'
+      })
+      
+      // make update
+      await bookmarksAPI.add(b)
+      await this.load()
+    } catch (e) {
+      // ignore
+      console.log(e)
+    }
+  }
+
+  async editBookmark (originalBookmark) {
+    try {
+      // render popup
+      var b = await BeakerEditBookmarkPopup.create(originalBookmark, {
+        fontawesomeSrc: '/vendor/beaker-app-stdlib/css/fontawesome.css'
+      })
+      
+      // make update
+      await bookmarksAPI.edit(originalBookmark.href, b)
+      await this.load()
+    } catch (e) {
+      // ignore
+      console.log(e)
+    }
+  }
+
+  async deleteBookmark (bookmark) {
+    await bookmarksAPI.remove(bookmark.href)
+    await this.load()
+
+    const undo = async () => {
+      await bookmarksAPI.add(bookmark)
+      await this.load()
+    }
+
+    toast.create('Bookmark deleted', '', 10e3, {label: 'Undo', click: undo})
+  }
+
   // rendering
   // =
-
-  renderHeader () {
-    return html`<h2><i class="far fa-star"></i> Bookmarks</h2>`
-  }
 
   renderList () {
     var bookmarks = this.bookmarks
@@ -97,6 +150,9 @@ export class BookmarksExplorer extends Explorer {
         .rows=${bookmarks}
         current-user-url="${this.currentUser ? this.currentUser.url : ''}"
         @sort=${this.onSort}
+        @add-bookmark=${this.addBookmark}
+        @edit-bookmark=${this.onEditBookmark}
+        @delete-bookmark=${this.onDeleteBookmark}
       ></beaker-library-bookmarks-list>
     `
   }
@@ -107,6 +163,7 @@ export class BookmarksExplorer extends Explorer {
       return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'bookmarks', ownerFilter: v}}) }}>${label}</button>`
     }
     return html`
+      <div class="path" style="margin-right: 20px;">${this.renderPath()}</div>
       <div class="radio-group">
         ${filterOpt(false, 'My bookmarks')}
         ${filterOpt('network', 'Network')}
@@ -121,6 +178,8 @@ export class BookmarksExplorer extends Explorer {
     return html`
       <beaker-library-bookmark-sidebar
         .bookmark="${bookmark}"
+        @edit-bookmark=${this.onEditBookmark}
+        @delete-bookmark=${this.onDeleteBookmark}
       ></beaker-library-bookmark-sidebar>
     `
   }
@@ -130,6 +189,14 @@ export class BookmarksExplorer extends Explorer {
 
   onSort (e) {
     this.sort(e.detail.column, e.detail.direction)
+  }
+
+  onEditBookmark (e) {
+    this.editBookmark(e.detail.bookmark)
+  }
+
+  onDeleteBookmark (e) {
+    this.deleteBookmark(e.detail.bookmark)
   }
 
   // helpers
