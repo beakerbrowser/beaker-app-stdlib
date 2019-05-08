@@ -139,19 +139,15 @@ export class FilesExplorer extends Explorer {
   }
 
   renderToolbar () {
-    const sectionOpt = (v, label) => {
-      const cls = classMap({pressed: v == 'files', radio: true})
-      return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: v, dat: this.dat}}) }}>${label}</button>`
-    }
-
-    // ${sectionOpt('activity', 'Activity')}
-    // ${sectionOpt('website', 'Website')}
+    const canMakeNew = this.datInfo && this.datInfo.isOwner
     return html`
-      <div class="radio-group">
-        ${sectionOpt('files', 'Files')}
-      </div>
+      <div class="path">${this.renderPath()}</div>
       <div class="spacer"></div>
       ${this.renderToolbarSearch()}
+      <div class="btn-group" style="margin: 0 0 0 10px">
+        <button class="primary" ?disabled=${!canMakeNew} @click=${canMakeNew ? this.onClickNew : undefined}><i class="fa-fw far fa-file"></i> New file</button>
+        <button class="primary" ?disabled=${!canMakeNew} @click=${canMakeNew ? this.onClickNew : undefined}><i class="fa-fw far fa-folder"></i> New folder</button>
+      </div>
     `
   }
   
@@ -159,6 +155,7 @@ export class FilesExplorer extends Explorer {
     return html`
       <beaker-library-dat-sidebar
         url="${this.dat}"
+        no-explore
       ></beaker-library-dat-sidebar>
     `
   }

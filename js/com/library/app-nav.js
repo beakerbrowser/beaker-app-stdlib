@@ -34,20 +34,19 @@ class AppNav extends LitElement {
   get tabs () {
     return [
       {view: 'bookmarks', category: undefined, icon: 'far fa-star', label: 'Bookmarks'},
+      {view: 'files', icon: 'far fa-hdd', label: 'My public drive'},
       this.makeDatCategory('people'),
       html`<h5>Media</h5>`,
       this.makeDatCategory('websites'),
-      this.makeDatCategory('images'),
-      this.makeDatCategory('music'),
-      this.makeDatCategory('videos'),
-      this.makeDatCategory('podcasts'),
-      this.makeDatCategory('wikis'),
+      // this.makeDatCategory('images'),
+      // this.makeDatCategory('music'),
+      // this.makeDatCategory('videos'),
+      // this.makeDatCategory('podcasts'),
       html`<h5>Software</h5>`,
       this.makeDatCategory('applications'),
       this.makeDatCategory('interfaces'),
       this.makeDatCategory('modules'),
       html`<h5>System</h5>`,
-      {view: 'database', category: undefined, icon: 'fas fa-database', label: 'Database'},
       {view: 'help', category: undefined, icon: 'far fa-question-circle', label: 'Help'}
     ]
   }
@@ -58,6 +57,10 @@ class AppNav extends LitElement {
         continue
       }
       return false
+    }
+    // special case for 'my files'
+    if (tab.view === 'files') {
+      return !this.dat || (this.user && this.dat === this.user.url)
     }
     return true
   }
@@ -85,7 +88,7 @@ class AppNav extends LitElement {
 
   onClickTab (e, tab) {
     if (this.followLinks) {
-      window.location = `beaker://library/?view=${tab.view}&category=${tab.category || ''}`
+      window.location = `beaker://library/?view=${tab.view}${tab.category ? `&category=${tab.category}` : ''}${tab.dat ? `&dat=${tab.dat}` : ''}`
     } else {
       this.dispatchEvent(new CustomEvent('change-location', {detail: tab}))
     }

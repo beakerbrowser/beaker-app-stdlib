@@ -26,6 +26,8 @@ ${buttons2css}
   white-space: nowrap;
   color: #555;
   user-select: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .path > div {

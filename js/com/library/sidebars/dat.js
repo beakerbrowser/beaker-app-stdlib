@@ -15,7 +15,8 @@ export class DatSidebar extends LitElement {
     return {
       url: {type: String},
       datInfo: {type: Object},
-      tab: {type: String}
+      tab: {type: String},
+      noExplore: {type: Boolean, attribute: 'no-explore'}
     }
   }
 
@@ -25,6 +26,7 @@ export class DatSidebar extends LitElement {
     this.datInfo = null
     this.currentUser = null
     this.tab = 'about'
+    this.noExplore = false
   }
 
   get currentUserUrl () {
@@ -75,7 +77,7 @@ export class DatSidebar extends LitElement {
           <img class="thumb" src="asset:thumb:${this.url}">
           <div class="ctrls">
             ${this.isSelf ? html`<span class="isyou">This is you</span>` : ''}
-            <span class="btn-group rounded">
+            <span class="btn-group">
               ${this.isPerson && !this.isSelf
                   ? html`
                     <button @click=${this.onToggleFollowing}>
@@ -172,7 +174,7 @@ export class DatSidebar extends LitElement {
   }
 
   onClickMenu (e) {
-    var items = buildContextMenuItems(this, this.datInfo, {shortened: false})
+    var items = buildContextMenuItems(this, this.datInfo, {noOpen: true, noExplore: this.noExplore})
     if (!items) return
 
     e.preventDefault()

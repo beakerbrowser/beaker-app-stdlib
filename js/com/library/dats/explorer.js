@@ -58,14 +58,9 @@ export const CATEGORIES = {
   },
   websites: {
     type: false,
-    icon: 'fas fa-sitemap',
+    icon: 'fas fa-file-alt',
     label: 'Websites'
-  },
-  wikis: {
-    type: 'unwalled.garden/wiki',
-    icon: 'fas fa-file-word',
-    label: 'Wikis'
-  },
+  }
 }
 
 export const KNOWN_TYPES = Object.values(CATEGORIES).map(c => c.type).filter(Boolean)
@@ -124,6 +119,12 @@ export class DatsExplorer extends Explorer {
 
   getDatByKey (key) {
     return this.dats.find(d => d.key === key)
+  }
+
+  get viewPath () {
+    return [
+      {title: getCategoryLabel(this.category), icon: getCategoryIcon(this.category), onClick: e => emit(this, 'change-location', {detail: {view: 'dats', category: category.id}})}
+    ]
   }
   
   // data management
@@ -230,14 +231,14 @@ export class DatsExplorer extends Explorer {
   // rendering
   // =
 
-  renderHeader () {
-    return html`
-      <h2>
-        <i class="${getCategoryIcon(this.category)}"></i>
-        ${getCategoryLabel(this.category)}
-      </h2>
-    `
-  }
+  // renderHeader () {
+  //   return html`
+  //     <h2>
+  //       <i class="${getCategoryIcon(this.category)}"></i>
+  //       ${getCategoryLabel(this.category)}
+  //     </h2>
+  //   `
+  // }
 
   renderList () {
     var dats = this.dats
@@ -271,9 +272,10 @@ export class DatsExplorer extends Explorer {
       const cls = classMap({pressed: v == this.ownerFilter, radio: true})
       return html`<button class="${cls}" @click=${e => { emit(this, 'change-location', {detail: {view: 'dats', category: this.category, ownerFilter: v}}) }}>${label}</button>`
     }
-    const canMakeNew = this.category !== 'users'
+    const canMakeNew = this.category !== 'people'
 
     return html`
+      <div class="path" style="margin-right: 20px;">${this.renderPath()}</div>
       <div class="radio-group">
         ${filterOpt(false, 'Library')}
         ${filterOpt('mine', `My ${this.category}`)}
@@ -282,7 +284,7 @@ export class DatsExplorer extends Explorer {
       ${canMakeNew
         ? html`
           <div class="btn-group">
-            <button @click=${this.onClickNew} style="border-radius: 16px;"><i class="fa-fw fas fa-plus"></i> New ${this.category.slice(0, -1)}</button>
+            <button @click=${this.onClickNew} class="primary"><i class="fa-fw fas fa-plus"></i> New ${this.category.slice(0, -1)}</button>
           </div>
         ` : ''}
     `

@@ -49,7 +49,6 @@ export class Explorer extends LitElement {
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="${classMap({main: true, 'with-sidebar': !!sidebarEl, 'with-header': !!headerEl})}">
         <div>
-          ${hasPath ? html`<div class="path">${this.renderPath()}</div>` : ''}
           ${headerEl ? html`<div class="header">${headerEl}</div>` : ''}
           <div class="toolbar">${this.renderToolbar()}</div>
           <div class="list ${hasPath ? 'with-path' : ''}" @selection-changed=${this.onSelectionChanged}>${this.renderList()}</div>

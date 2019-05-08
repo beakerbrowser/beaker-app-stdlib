@@ -8,7 +8,7 @@ import { shortDate } from '../../../time.js'
 import listCSS from '../../../../css/com/library/list.css.js'
 import '../sidebars/dat.js'
 
-export function buildContextMenuItems (self, row, {shortened} = {shortened: false}) {
+export function buildContextMenuItems (self, row, {noOpen, noExplore} = {noOpen: false, noExplore: false}) {
   const copyUrl = () => {
     writeToClipboard(row.url)
     toast.create('Copied URL to clipboard')
@@ -16,11 +16,23 @@ export function buildContextMenuItems (self, row, {shortened} = {shortened: fals
   const explore = () => {
     emit(self, 'change-location', {detail: {view: 'files', dat: row.url}})
   }
+  const fork = async () => {
+    let a = await DatArchive.fork(row.url, {prompt: true})
+    window.open(a.url)
+  }
   var items = []
-  if (!shortened) {
+  if (!noOpen) {
+    items.push({icon: 'fa fa-fw fa-external-link-alt', label: 'Open in new tab', click: () => window.open(row.url)})
+  }
+  if (!noExplore) {
+    items.push({icon: 'far fa-fw fa-folder-open', label: 'Explore files', click: explore})
+  }
+  items.push({icon: 'fa fa-fw fa-link', label: 'Copy URL', click: copyUrl})
+  items.push('-')
+  if (isPerson(row)) {
     items = items.concat([
-      {icon: 'fa fa-fw fa-external-link-alt', label: 'Open in new tab', click: () => window.open(row.url)},
-      {icon: 'fa fa-fw fa-link', label: 'Copy URL', click: copyUrl},
+      html`<div class="section-header light small">Open with</div>`,
+      {icon: 'far fa-fw fa-user', label: `Beaker.Social`, click: () => window.open(`dat://beaker.social/profile/${encodeURIComponent(row.url)}`)},
       '-'
     ])
   }
@@ -34,17 +46,9 @@ export function buildContextMenuItems (self, row, {shortened} = {shortened: fals
     items.push({icon: 'far fa-fw fa-trash-alt', label: 'Delete files', click: () => emit(self, 'delete-permanently', {detail: {rows: [row]}})})
     items.push('-')
   }
-  if (isPerson(row)) {
-    items = items.concat([
-      html`<div class="section-header light small">Open with</div>`,
-      {icon: 'far fa-fw fa-user', label: `Beaker.Social`, click: () => window.open(`dat://beaker.social/profile/${encodeURIComponent(row.url)}`)},
-      '-',
-    ])
-  }
   items = items.concat([
     html`<div class="section-header light small">Developer tools</div>`,
-    {icon: 'far fa-fw fa-folder-open', label: 'Explore files', click: explore},
-    {icon: 'fas fa-fw fa-code-branch', label: `Fork`, click: () => window.open(`beaker://editor/${row.url}`)},
+    {icon: 'fas fa-fw fa-code-branch', label: `Fork`, click: fork},
     {icon: 'fas fa-fw fa-code', label: `Source Editor`, click: () => window.open(`beaker://editor/${row.url}`)},
   ])
   return items

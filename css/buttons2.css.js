@@ -30,15 +30,17 @@ button.pressed {
   border-radius: 4px;
 }
 
-button[disabled] {
-  color: #999;
-}
-
 button.primary {
   background: #5289f7;
   border-color: var(--blue);
   color: #fff;
   box-shadow: 0 1px 1px rgba(0,0,0,.1);
+}
+
+button[disabled] {
+  border-color: var(--border-color);
+  background: #fff;
+  color: #999;
 }
 
 button.rounded {
