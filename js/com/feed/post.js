@@ -28,11 +28,14 @@ export class FeedPost extends LitElement {
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="inner">
-        <div class="thumb-column">
-          ${Math.random() > 0.7
-            ? html`<img src="asset:thumb:dat://f12cadfff9d8389a95c361408d1b1869072fe10f8da5ba364078d40398a293e4">`
-            : html`<div class="icon"><i class="far fa-newspaper"></i></div>`}
-        </div>
+        ${1 && Math.random() > 0.4 && this.post.content.body.length < 100 && this.post.content.body.indexOf('\n') === -1
+          ? html`
+            <div class="thumb-column">
+              ${Math.random() > 0.9
+                ? html`<img src="asset:thumb:dat://f12cadfff9d8389a95c361408d1b1869072fe10f8da5ba364078d40398a293e4">`
+                : html`<div class="icon"><i class="far fa-newspaper"></i></div>`}
+            </div>
+          ` : ''}
         <div class="content-column">
           <div class="body">${this.post.content.body}</div>
           <div class="header">

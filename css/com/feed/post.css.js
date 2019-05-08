@@ -8,7 +8,8 @@ ${reactionscss}
 
 :host {
   display: block;
-  --body-font-size: 17px;
+  cursor: pointer;
+  --body-font-size: 15px;
   --header-font-size: 12px;
   --title-font-size: 12px;
   --avatar-size: 50px;
@@ -34,6 +35,7 @@ a:hover {
 
 .content-column {
   flex: 1;
+  overflow: hidden;
 }
 
 .thumb-column > * {
@@ -64,6 +66,8 @@ a:hover {
   width: 16px;
   height: 16px;
   vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
 .header {
@@ -88,6 +92,7 @@ a:hover {
   color: var(--color-text);
   margin-left: 0;
   font-weight: 500;
+  line-height: 17px;
 }
 
 .permalink {
@@ -96,16 +101,21 @@ a:hover {
 
 .comments {
   font-weight: 500;
-  width: 86px;
 }
 
 .body {
-  font-size: var(--body-font-size);
-  line-height: 1.2;
-  color: var(--color-text);
-  word-break: break-word;
+  color: rgba(0, 0, 0, 0.9);
   padding-right: 10px;
   margin: 4px 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--body-font-size);
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+.body a:hover {
+  text-decoration: none;
 }
 
 .bottom-ctrls {
