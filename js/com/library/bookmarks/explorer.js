@@ -170,6 +170,9 @@ export class BookmarksExplorer extends Explorer {
       </div>
       <div class="spacer"></div>
       ${this.renderToolbarSearch()}
+      <div class="btn-group">
+        <button @click=${this.onClickNew} class="primary"><i class="fa-fw fas fa-plus"></i> New bookmark</button>
+      </div>
     `
   }
 
@@ -189,6 +192,10 @@ export class BookmarksExplorer extends Explorer {
 
   onSort (e) {
     this.sort(e.detail.column, e.detail.direction)
+  }
+
+  onClickNew (e) {
+    this.addBookmark()
   }
 
   onEditBookmark (e) {
