@@ -66,11 +66,7 @@ ${buttons2css}
 
 .list > * {
   display: block;
-  height: calc(100vh - 170px);
-}
-
-.list.with-path > * {
-  height: calc(100vh - 123px);
+  height: calc(100vh - 100px);
 }
 
 .main > :first-child {

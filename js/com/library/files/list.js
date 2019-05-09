@@ -1,4 +1,5 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
+import { repeat } from '../../../../vendor/lit-element/lit-html/directives/repeat.js'
 import { List } from '../list.js'
 import { format as formatBytes } from '../../../../vendor/bytes/index.js'
 import * as toast from '../../toast.js'
@@ -6,6 +7,7 @@ import { writeToClipboard } from '../../../clipboard.js'
 import { shortDate } from '../../../time.js'
 import { joinPath } from '../../../strings.js'
 import { emit } from '../../../dom.js'
+import './readme.js'
 
 export class FilesList extends List {
   static get properties() {
@@ -79,6 +81,29 @@ export class FilesList extends List {
     return row.stat.isDirectory() ? '' : formatBytes(row.stat.size)
   }
 
+  render () {
+    return html`
+      <link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">
+      ${this.hasHeadingLabels
+        ? html`
+          <div class="heading">
+            ${repeat(this.columns, col => this.renderHeadingColumn(col))}
+          </div>
+        ` : ''}
+      <div class="rows" @click=${this.onClickRows}>
+        ${this.groups
+          ? repeat(this.groups, group => this.renderGroup(group))
+          : repeat(this.rows, row => this.getRowKey(row), row => this.renderRow(row))}
+        ${this.rows.length === 0 ? this.renderEmpty() : ''}
+        <beaker-library-files-readme
+          .datInfo=${this.datInfo}
+          path="${this.path}"
+          .files=${this.rows}
+        ></beaker-library-files-readme>
+      </div>
+    `
+  }
+
   // events
   // =
 
@@ -89,7 +114,7 @@ export class FilesList extends List {
       var detail = {view: 'files', dat: this.dat, path}
       emit(this, 'change-location', {detail})
     } else {
-      window.open(`beaker://editor/${this.dat}${path}`)
+      window.open(`${this.dat}${path}`)
     }
   }
 }

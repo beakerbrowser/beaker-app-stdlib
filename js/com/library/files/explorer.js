@@ -1,5 +1,4 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
-import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import { Explorer } from '../explorer.js'
 import { findCategoryForDat } from '../dats/explorer.js'
 import { shorten, joinPath } from '../../../strings.js'
