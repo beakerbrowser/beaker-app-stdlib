@@ -1,10 +1,12 @@
 @import "../../inputs.css";
-@import "../../buttons.css";
+@import "../../buttons2.css";
 
 :host {
   display: block;
   background: #fff;
   padding: 14px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .input-placeholder,

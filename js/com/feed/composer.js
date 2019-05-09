@@ -51,7 +51,7 @@ export class FeedComposer extends LitElement {
     })
     return html`
       <textarea
-        placeholder="Enter your post title here"
+        placeholder="Enter your post here"
         @keydown=${this.onKeydownTextarea}
         @keyup=${this.onChangeTextarea}
         @blur=${this.onBlurTextarea}

@@ -1,15 +1,17 @@
 import {css} from '../../../vendor/lit-element/lit-element.js'
 import inputscss from '../../inputs.css.js'
-import buttonscss from '../../buttons.css.js'
+import buttons2css from '../../buttons2.css.js'
 
 const cssStr = css`
 ${inputscss}
-${buttonscss}
+${buttons2css}
 
 :host {
   display: block;
   background: #fff;
   padding: 14px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .input-placeholder,
