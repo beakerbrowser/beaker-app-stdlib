@@ -181,7 +181,8 @@ export class DatsList extends List {
   // =
 
   onDblclickRow (e, row) {
-    window.open(row.url)
+    var detail = {view: 'files', dat: row.url, path: '/'}
+    emit(this, 'change-location', {detail})
   }
 
   onClickAdd (e, row) {

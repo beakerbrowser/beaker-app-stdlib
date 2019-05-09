@@ -19,47 +19,56 @@ export const CATEGORIES = {
   applications: {
     type: 'unwalled.garden/application',
     icon: 'far fa-window-restore',
-    label: 'Applications'
+    label: 'Applications',
+    itemLabel: 'Application'
   },
   music: {
     type: 'unwalled.garden/music',
     icon: 'fas fa-music',
-    label: 'Music'
+    label: 'Music',
+    itemLabel: 'Music Album'
   },
   modules: {
     type: 'unwalled.garden/module',
     icon: 'fas fa-cubes',
-    label: 'Modules'
+    label: 'Modules',
+    itemLabel: 'Module'
   },
   people: {
     type: 'unwalled.garden/person',
     icon: 'fas fa-users',
-    label: 'People'
+    label: 'People',
+    itemLabel: 'Person'
   },
   images: {
     type: 'unwalled.garden/photo-album',
     icon: 'fas fa-image',
-    label: 'Images'
+    label: 'Images',
+    itemLabel: 'Photo Album'
   },
   podcasts: {
     type: 'unwalled.garden/podcast',
     icon: 'fas fa-microphone',
-    label: 'Podcasts'
+    label: 'Podcasts',
+    itemLabel: 'Podcast'
   },
   interfaces: {
     type: 'unwalled.garden/interface',
     icon: 'fas fa-mouse-pointer',
-    label: 'Interfaces'
+    label: 'Interfaces',
+    itemLabel: 'Interface'
   },
   videos: {
     type: 'unwalled.garden/video',
     icon: 'fas fa-film',
-    label: 'Videos'
+    label: 'Videos',
+    itemLabel: 'Video'
   },
   websites: {
     type: false,
     icon: 'fas fa-file-alt',
-    label: 'Websites'
+    label: 'Websites',
+    itemLabel: 'Website'
   }
 }
 
@@ -75,6 +84,10 @@ export function getCategoryIcon (id) {
 
 export function getCategoryDescription (id) {
   return CATEGORIES[id].description
+}
+
+export function getCategoryItemLabel (id) {
+  return CATEGORIES[id].itemLabel
 }
 
 export function findCategoryForDat (dat) {
@@ -124,6 +137,12 @@ export class DatsExplorer extends Explorer {
   get viewPath () {
     return [
       {title: getCategoryLabel(this.category), icon: getCategoryIcon(this.category), onClick: e => emit(this, 'change-location', {detail: {view: 'dats', category: category.id}})}
+    ]
+  }
+
+  buildContextMenuItems () {
+    return [
+      {icon: 'fas fa-fw fa-plus', label: `New ${getCategoryItemLabel(this.category)}`, click: () => this.onClickNew()}
     ]
   }
   
@@ -278,13 +297,13 @@ export class DatsExplorer extends Explorer {
       <div class="path" style="margin-right: 20px;">${this.renderPath()}</div>
       <div class="radio-group">
         ${filterOpt(false, 'Library')}
-        ${filterOpt('mine', `My ${this.category}`)}
+        ${filterOpt('mine', 'Created by me')}
       </div>
       <div class="spacer"></div>
       ${canMakeNew
         ? html`
           <div class="btn-group">
-            <button @click=${this.onClickNew} class="primary"><i class="fa-fw fas fa-plus"></i> New ${this.category.slice(0, -1)}</button>
+            <button @click=${this.onClickNew} class="primary"><i class="fa-fw fas fa-plus"></i> New ${getCategoryItemLabel(this.category)}</button>
           </div>
         ` : ''}
     `

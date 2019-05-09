@@ -33,8 +33,8 @@ class AppNav extends LitElement {
 
   get tabs () {
     return [
+      {view: 'files', icon: 'far fa-hdd', label: 'My files'},
       {view: 'bookmarks', category: undefined, icon: 'far fa-star', label: 'Bookmarks'},
-      {view: 'files', icon: 'far fa-hdd', label: 'My public drive'},
       this.makeDatCategory('people'),
       html`<h5>Media</h5>`,
       this.makeDatCategory('websites'),

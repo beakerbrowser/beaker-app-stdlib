@@ -71,17 +71,12 @@ export class FileSidebar extends LitElement {
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="panel">
-        <div class="panel-banner">
-          <img class="cover" src="asset:cover:${this.datInfo.url}">
-          <img class="thumb" src="asset:thumb:${this.datInfo.url}">
-          <div class="ctrls btn-group rounded">
-            <button class="flat"><i class="fas fa-plus"></i></button>
-            <button class="flat"><i class="fas fa-rss"></i> 3</button>
-            <button class="flat" @click=${this.onClickMenu}><i class="fas fa-ellipsis-h"></i></button>
-          </div>
-        </div>
         <div class="panel-body">
           <h2 class="name">${file.name}</h2>
+          <div class="btn-group rounded" style="margin: 0">
+            <button @click=${this.onClickOpen}><i class="fas fa-external-link-alt"></i> Open</button>
+            <button @click=${this.onClickMenu}><i class="fas fa-ellipsis-h"></i></button>
+          </div>
           ${file.stat.isDirectory() ? html`<p>Folder</p>` : html`<p>${formatBytes(file.stat.size)}</p>`}
         </div>
         <div class="panel-tabsnav">

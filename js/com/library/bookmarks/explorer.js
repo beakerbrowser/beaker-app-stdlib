@@ -38,6 +38,12 @@ export class BookmarksExplorer extends Explorer {
     ]
   }
 
+  buildContextMenuItems () {
+    return [
+      {icon: 'fas fa-fw fa-plus', label: `New bookmark`, click: () => this.onClickNew()}
+    ]
+  }
+
   // data management
   // =
 

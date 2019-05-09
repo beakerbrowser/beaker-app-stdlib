@@ -30,6 +30,11 @@ export class Explorer extends LitElement {
     return null
   }
 
+  buildContextMenuItems () {
+    // this can be overridden
+    return null
+  }
+
   // data management
   // =
 
@@ -47,7 +52,7 @@ export class Explorer extends LitElement {
     const hasPath = !!this.viewPath
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
-      <div class="${classMap({main: true, 'with-sidebar': !!sidebarEl, 'with-header': !!headerEl})}">
+      <div class="${classMap({main: true, 'with-sidebar': !!sidebarEl, 'with-header': !!headerEl})}" @contextmenu=${this.onContextmenu}>
         <div>
           ${headerEl ? html`<div class="header">${headerEl}</div>` : ''}
           <div class="toolbar">${this.renderToolbar()}</div>
@@ -167,6 +172,18 @@ export class Explorer extends LitElement {
       right: true,
       fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'
     })
+  }
+
+  onContextmenu (e) {
+    var items = this.buildContextMenuItems()
+    if (!items) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    const isContextMenu = e.button === 2
+    const style = `padding: 4px 0`
+    const right = !isContextMenu
+    contextMenu.create({x: e.clientX, y: e.clientY, items, style, right, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
   }
 }
 Explorer.styles = [explorerCSS]

@@ -123,8 +123,6 @@ export class List extends Table {
   }
 
   onContextmenuRow (e, row) {
-    console.log(e)
-
     var items = this.buildContextMenuItems(row)
     if (!items) return
 

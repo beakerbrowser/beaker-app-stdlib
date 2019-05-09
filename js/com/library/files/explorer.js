@@ -1,11 +1,14 @@
 import { html } from '../../../../vendor/lit-element/lit-element.js'
 import { Explorer } from '../explorer.js'
 import { findCategoryForDat } from '../dats/explorer.js'
+import { buildContextMenuItems } from '../dats/list.js'
 import { shorten, joinPath } from '../../../strings.js'
 import { emit } from '../../../dom.js'
 import './list.js'
 import '../sidebars/dat.js'
 import '../sidebars/file.js'
+
+const profilesAPI = navigator.importSystemAPI('profiles')
 
 export class FilesExplorer extends Explorer {
   static get properties () {
@@ -20,6 +23,7 @@ export class FilesExplorer extends Explorer {
 
   constructor () {
     super()
+    this.currentUser = null
     this.dat = ''
     this.path = '/'
     this.datInfo = null
@@ -49,8 +53,16 @@ export class FilesExplorer extends Explorer {
     return path
   }
 
+  buildContextMenuItems () {
+    return buildContextMenuItems(this, this.datInfo, {noExplore: true})
+  }
+
   getFileByKey (key) {
     return this.files.find(d => d.key === key)
+  }
+
+  get currentUserUrl () {
+    return this.currentUser ? this.currentUser.url : ''
   }
 
   // data management
@@ -60,6 +72,7 @@ export class FilesExplorer extends Explorer {
     this.reset()
     this.safelyAccessListEl(el => el.clearSelection())
 
+    this.currentUser = await profilesAPI.getCurrentUser()
     var archive = new DatArchive(this.dat)
     this.datInfo = await archive.getInfo()
     this.files = await archive.readdir(this.path, {stat: true})
