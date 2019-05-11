@@ -30,19 +30,19 @@ export class FeedPost extends LitElement {
       <div class="inner">
         <div class="content-column">
           <div class="body">${this.post.content.body}</div>
-          ${Math.random() > 0.7 ? html`
-          <div class="embed">
-            <div class="embed-thumb">
-              <img src="asset:thumb:dat://f12cadfff9d8389a95c361408d1b1869072fe10f8da5ba364078d40398a293e4">
-            </div>
-            <div class="embed-details">
-              <div class="embed-title">Paul Frazee</div>
-              <div class="embed-type"><i class="fas fa-file-alt"></i> Website</div>
-              <div class="embed-description">The Beaker guy</div>
-            </div>
-          </div>` : ''}
+          ${'' /* TODO html`
+            <div class="embed">
+              <div class="embed-thumb">
+                <img src="asset:thumb:dat://f12cadfff9d8389a95c361408d1b1869072fe10f8da5ba364078d40398a293e4">
+              </div>
+              <div class="embed-details">
+                <div class="embed-title">Paul Frazee</div>
+                <div class="embed-type"><i class="fas fa-file-alt"></i> Website</div>
+                <div class="embed-description">The Beaker guy</div>
+              </div>
+          </div>`*/}
           <div class="footer">
-            <a class="comments" href="#">${(Math.random()*15)|0} comments</a>
+            ${'' /* TODO <a class="comments" href="#">${(Math.random()*15)|0} comments</a> */}
             <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
             <a class="permalink" href="${viewRecordUrl}" target="_blank">${timeDifference(this.post.createdAt, true, 'ago')}</a>
           </div>

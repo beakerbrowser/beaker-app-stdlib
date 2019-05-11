@@ -7,18 +7,19 @@ ${buttonscss}
 ${reactionscss}
 
 :host {
-  display: block;
-  cursor: pointer;
-
   --body-font-size: 15px;
   --header-font-size: 12px;
   --title-font-size: 12px;
   --inner-width: initial;
+  --footer-color: rgb(96, 123, 173);
   --footer-background: #f4f8ff;
-  --blue-border-color: #afcaff;
-  --light-blue-border-color: #dae5fb;
+  --footer-color: #777;
+  --footer-background: #fafafa;
+  --title-color: #555;
 
-  border: 1px solid var(--blue-border-color);
+  display: block;
+  /*cursor: pointer;*/
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
@@ -54,7 +55,7 @@ a:hover {
   display: flex;
   align-items: center;
   font-size: var(--header-font-size);
-  color: rgb(96, 123, 173);
+  color: var(--footer-color);
   background: var(--footer-background);
   padding: 6px 20px;
 }
@@ -70,7 +71,7 @@ a:hover {
 .title {
   font-size: var(--title-font-size);
   font-weight: 500;
-  color: #355188;
+  color: var(--title-color);
   margin-left: 0;
   font-weight: 500;
   line-height: 17px;
@@ -94,13 +95,13 @@ a:hover {
   font-size: var(--body-font-size);
   line-height: 1.4;
   white-space: pre-line;
-  border-bottom: 1px solid var(--light-blue-border-color);
+  border-bottom: 1px solid var(--light-border-color);
 }
 
 .embed {
   display: flex;
   padding: 10px 20px;
-  border-bottom: 1px solid var(--light-blue-border-color);
+  border-bottom: 1px solid var(--light-border-color);
 }
 
 .embed img {
