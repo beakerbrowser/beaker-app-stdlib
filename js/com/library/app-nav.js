@@ -46,8 +46,8 @@ class AppNav extends LitElement {
       this.makeDatCategory('applications'),
       this.makeDatCategory('interfaces'),
       this.makeDatCategory('modules'),
-      html`<h5>System</h5>`,
-      {view: 'help', category: undefined, icon: 'far fa-question-circle', label: 'Help'}
+      // html`<h5>System</h5>`,
+      // {view: 'help', category: undefined, icon: 'far fa-question-circle', label: 'Help'}
     ]
   }
 
