@@ -66,7 +66,7 @@ export const CATEGORIES = {
   },
   websites: {
     type: false,
-    icon: 'fas fa-file-alt',
+    icon: 'fas fa-sitemap',
     label: 'Websites',
     itemLabel: 'Website'
   }
