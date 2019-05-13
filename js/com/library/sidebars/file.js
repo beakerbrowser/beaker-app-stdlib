@@ -2,11 +2,15 @@ import { LitElement, html, css } from '../../../../vendor/lit-element/lit-elemen
 import { classMap } from '../../../../vendor/lit-element/lit-html/directives/class-map.js'
 import sidebarStyles from '../../../../css/com/library/sidebar.css.js'
 import { format as formatBytes } from '../../../../vendor/bytes/index.js'
+import { joinPath } from '../../../strings.js'
+import { buildContextMenuItems } from '../files/list.js'
+import * as contextMenu from '../../context-menu.js'
 
 export class FileSidebar extends LitElement {
   static get properties () {
     return {
       datInfo: {type: Object},
+      path: {type: String},
       fileInfo: {type: Object},
       preview: {type: String},
       tab: {type: String}
@@ -16,6 +20,7 @@ export class FileSidebar extends LitElement {
   constructor () {
     super()
     this.datInfo = null
+    this.path = ''
     this._fileInfo = null
     this.preview = ''
     this.tab = 'preview'
@@ -29,6 +34,10 @@ export class FileSidebar extends LitElement {
 
   get fileInfo () {
     return this._fileInfo
+  }
+
+  get dat () {
+    return this.datInfo.url
   }
 
   // data management
@@ -111,6 +120,20 @@ export class FileSidebar extends LitElement {
 
   onClickTab (e, id) {
     this.tab = id
+  }
+
+  onClickOpen (e) {
+    window.open(joinPath(this.dat, this.path, this.fileInfo.name))
+  }
+
+  onClickMenu (e) {
+    var items = buildContextMenuItems(this, this.fileInfo)
+    if (!items) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    const style = `padding: 4px 0`  
+    contextMenu.create({x: e.clientX, y: e.clientY, items, style, right: true, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
   }
 }
 FileSidebar.styles = [sidebarStyles, css`

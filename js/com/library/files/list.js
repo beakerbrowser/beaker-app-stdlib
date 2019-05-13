@@ -9,6 +9,28 @@ import { joinPath } from '../../../strings.js'
 import { emit } from '../../../dom.js'
 import './readme.js'
 
+export function buildContextMenuItems (self, row) {
+  const isFile = row.stat.isFile()
+  const url = joinPath(self.dat, self.path, row.name)
+  const copyUrl = () => {
+    writeToClipboard(url)
+    toast.create('Copied URL to clipboard')
+  }
+  var items = [
+    {icon: 'fa fa-external-link-alt', label: 'Open in new tab', click: () => window.open(url)},
+    {icon: 'fa fa-link', label: 'Copy URL', click: copyUrl}
+  ]
+  if (isFile) {
+    items.push('-')
+    items.push({icon: 'far fa-edit', label: `Edit ${isFile ? 'file' : 'folder'}`, click: () => window.open(`beaker://editor/${url}`)})
+  }
+  if (self.datInfo.isOwner) {
+    items.push('-')
+    items.push({icon: 'far fa-trash-alt', label: `Delete ${isFile ? 'file' : 'folder'}`, click: () => emit(self, 'delete', {detail:{rows: [row]}})})
+  }
+  return items
+}
+
 export class FilesList extends List {
   static get properties() {
     return { 
@@ -42,25 +64,7 @@ export class FilesList extends List {
   // =
 
   buildContextMenuItems (row) {
-    const isFile = row.stat.isFile()
-    const url = joinPath(this.dat, this.path, row.name)
-    const copyUrl = () => {
-      writeToClipboard(url)
-      toast.create('Copied URL to clipboard')
-    }
-    var items = [
-      {icon: 'fa fa-external-link-alt', label: 'Open in new tab', click: () => window.open(url)},
-      {icon: 'fa fa-link', label: 'Copy URL', click: copyUrl}
-    ]
-    if (isFile) {
-      items.push('-')
-      items.push({icon: 'far fa-edit', label: `Edit ${isFile ? 'file' : 'folder'}`, click: () => window.open(`beaker://editor/${url}`)})
-    }
-    if (this.datInfo.isOwner) {
-      items.push('-')
-      items.push({icon: 'far fa-trash-alt', label: `Delete ${isFile ? 'file' : 'folder'}`, click: () => emit(this, 'delete', {detail:{rows: [row]}})})
-    }
-    return items
+    return buildContextMenuItems(this, row)
   }
 
   // rendering

@@ -3,6 +3,7 @@ import { Explorer } from '../explorer.js'
 import { findCategoryForDat } from '../dats/explorer.js'
 import { buildContextMenuItems } from '../dats/list.js'
 import { shorten, joinPath } from '../../../strings.js'
+import * as contextMenu from '../../context-menu.js'
 import { emit } from '../../../dom.js'
 import './list.js'
 import '../sidebars/dat.js'
@@ -156,10 +157,11 @@ export class FilesExplorer extends Explorer {
       <div class="path">${this.renderPath()}</div>
       <div class="spacer"></div>
       ${this.renderToolbarSearch()}
-      <div class="btn-group" style="margin: 0 0 0 10px">
-        <button class="primary" ?disabled=${!canMakeNew} @click=${canMakeNew ? this.onClickNew : undefined}><i class="fa-fw far fa-file"></i> New file</button>
-        <button class="primary" ?disabled=${!canMakeNew} @click=${canMakeNew ? this.onClickNew : undefined}><i class="fa-fw far fa-folder"></i> New folder</button>
-      </div>
+      ${''/* TODO <div class="btn-group" style="margin-left: 10px">
+        <button ?disabled=${!canMakeNew} @click=${canMakeNew ? this.onClickNew : undefined}><i class="fa-fw far fa-file"></i> New file</button>
+        <button ?disabled=${!canMakeNew} @click=${canMakeNew ? this.onClickNew : undefined}><i class="fa-fw far fa-folder"></i> New folder</button>
+      </div>*/}
+      <button @click=${this.onClickMenu} style="margin-left: 10px"><i class="fa-fw fas fa-ellipsis-h"></i></button>      
     `
   }
   
@@ -176,13 +178,15 @@ export class FilesExplorer extends Explorer {
     var fileInfo = this.getFileByKey(this.selectedKeys[0])
     return html`
       <beaker-library-file-sidebar
-        .fileInfo="${fileInfo}"
+        path="${this.path}"
+        .fileInfo=${fileInfo}
+        @delete=${this.onDelete}
       ></beaker-library-file-sidebar>
     `
   }
 
   renderSidebarMultiSelection () {
-    return html`${this.selectedKeys.length} items selected`
+    return html`<div style="padding: 10px">${this.selectedKeys.length} items selected</div>`
   }
 
   // events
@@ -201,6 +205,16 @@ export class FilesExplorer extends Explorer {
 
   onDelete (e) {
     this.deleteFile(e.detail.rows)
+  }
+
+  onClickMenu (e) {
+    var items = buildContextMenuItems(this, this.datInfo, {noExplore: true})
+    if (!items) return
+
+    e.preventDefault()
+    e.stopPropagation()
+    const style = `padding: 4px 0`  
+    contextMenu.create({x: e.clientX, y: e.clientY, items, style, right: true, noBorders: true, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
   }
 
   // helpers
