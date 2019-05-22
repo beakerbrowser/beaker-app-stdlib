@@ -49,7 +49,7 @@ export class Reactions extends LitElement {
       ${this.defaultReactions.map(renderReaction)}
       ${this.addedReactions.map(renderReaction)}
       <span class="reaction add-btn" @click=${this.onClickAddBtn}>
-        <i class="fas fa-ellipsis-h"></i>
+        <i class="far fa-smile"></i>
       </span>
     `
   }

@@ -4,7 +4,7 @@
 :host {
   display: block;
   background: #fff;
-  padding: 8px 14px;
+  padding: 14px 18px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   overflow: hidden;
@@ -12,7 +12,7 @@
 
 .input-placeholder,
 textarea {
-  padding: 8px 10px;
+  padding: 0;
   font-size: 14px;
 }
 

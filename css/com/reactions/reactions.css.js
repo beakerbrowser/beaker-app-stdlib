@@ -9,7 +9,7 @@ const cssStr = css`
   font-size: 13px;
   font-weight: 500;
   color: #444;
-  border: 1px solid var(--light-border-color);
+  /*border: 1px solid var(--light-border-color);*/
   border-radius: 16px;
 }
 

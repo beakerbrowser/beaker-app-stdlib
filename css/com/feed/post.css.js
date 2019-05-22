@@ -7,15 +7,15 @@ ${buttonscss}
 ${reactionscss}
 
 :host {
-  --body-font-size: 15px;
+  --body-font-size: 14px;
   --header-font-size: 12px;
-  --title-font-size: 12px;
+  --title-font-size: 14px;
+  --footer-font-size: 12px;
   --inner-width: initial;
-  --footer-color: rgb(96, 123, 173);
-  --footer-background: #f4f8ff;
+  --title-color: #333;
+  --header-color: #777;
   --footer-color: #777;
-  --footer-background: #fafafa;
-  --title-color: #555;
+  --footer-background: rgb(250, 250, 253);
 
   display: block;
   /*cursor: pointer;*/
@@ -44,20 +44,53 @@ a:hover {
   display: inline-block;
   border-radius: 50%;
   object-fit: cover;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   vertical-align: middle;
   position: relative;
   top: -1px;
+  margin-right: 3px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px 16px 4px;
+  font-size: var(--header-font-size);
+  line-height: var(--header-font-size);
+  color: var(--header-color);
+}
+
+.title {
+  font-size: var(--title-font-size);
+  color: var(--title-color);
+  margin-right: 10px;
+  line-height: 17px;
+}
+
+.body {
+  color: rgba(0, 0, 0, 0.9);
+  padding: 6px 18px 12px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--body-font-size);
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+beaker-reactions {
+  display: block;
+  padding: 0 18px 10px;
 }
 
 .footer {
   display: flex;
   align-items: center;
-  font-size: var(--header-font-size);
+  font-size: var(--footer-font-size);
   color: var(--footer-color);
   background: var(--footer-background);
-  padding: 6px 20px;
+  padding: 10px 20px 12px;
 }
 
 .footer a {
@@ -68,34 +101,8 @@ a:hover {
   margin-left: 0;
 }
 
-.title {
-  font-size: var(--title-font-size);
-  font-weight: 500;
-  color: var(--title-color);
-  margin-left: 0;
-  font-weight: 500;
-  line-height: 17px;
-}
-
 .permalink {
   color: inherit;
-}
-
-.comments {
-  font-weight: 500;
-  width: 80px;
-}
-
-.body {
-  color: rgba(0, 0, 0, 0.9);
-  padding: 16px 20px;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: var(--body-font-size);
-  line-height: 1.4;
-  white-space: pre-line;
-  border-bottom: 1px solid var(--light-border-color);
 }
 
 .embed {

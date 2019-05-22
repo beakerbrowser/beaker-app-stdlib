@@ -29,7 +29,19 @@ export class FeedPost extends LitElement {
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="inner">
         <div class="content-column">
+          <div class="header">
+            <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
+            <a class="permalink" href="${viewRecordUrl}" target="_blank">${timeDifference(this.post.createdAt, true, 'ago')}</a>
+          </div>
           <div class="body">${this.post.content.body}</div>
+          ${'reactions' in this.post
+            ? html`
+                <beaker-reactions
+                  user-url="${this.userUrl}"
+                  .reactions=${this.post.reactions}
+                  topic="${this.post.url}"
+                ></beaker-reactions>`
+            : ''}
           ${'' /* TODO html`
             <div class="embed">
               <div class="embed-thumb">
@@ -42,9 +54,7 @@ export class FeedPost extends LitElement {
               </div>
           </div>`*/}
           <div class="footer">
-            ${'' /* TODO <a class="comments" href="#">${(Math.random()*15)|0} comments</a> */}
-            <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
-            <a class="permalink" href="${viewRecordUrl}" target="_blank">${timeDifference(this.post.createdAt, true, 'ago')}</a>
+            <a class="comments" href="#">0 comments</a>
           </div>
         </div>
       </div>
