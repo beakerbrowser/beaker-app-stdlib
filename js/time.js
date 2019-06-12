@@ -29,6 +29,7 @@ const msPerMonth = msPerDay * 30;
 const msPerYear = msPerDay * 365;
 const now = Date.now()
 export function timeDifference (ts, short = false, postfix = 'ago') {
+  ts = Number(new Date(ts))
   var elapsed = now - ts
   if (elapsed < 1) elapsed = 1 // let's avoid 0 and negative values
   if (elapsed < msPerMinute) {
@@ -45,9 +46,9 @@ export function timeDifference (ts, short = false, postfix = 'ago') {
     return `${n}${short ? 'd' : pluralize(n, ' day')} ${postfix}`
   } else if (elapsed < msPerYear) {
     let n = Math.round(elapsed/msPerMonth)
-    return `${n}${short ? 'm' : pluralize(n, ' month')} ${postfix}`
+    return `${n}${short ? 'mo' : pluralize(n, ' month')} ${postfix}`
   } else {
     let n = Math.round(elapsed/msPerYear )
-    return `${n}${short ? 'y' : pluralize(n, ' year')} ${postfix}`
+    return `${n}${short ? 'yr' : pluralize(n, ' year')} ${postfix}`
   }
 }

@@ -73,7 +73,7 @@ export class FilesExplorer extends Explorer {
     this.reset()
     this.safelyAccessListEl(el => el.clearSelection())
 
-    this.currentUser = await profilesAPI.getCurrentUser()
+    this.currentUser = await profilesAPI.me()
     var archive = new DatArchive(this.dat)
     this.datInfo = await archive.getInfo()
     this.files = await archive.readdir(this.path, {stat: true})

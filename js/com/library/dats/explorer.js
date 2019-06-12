@@ -8,7 +8,7 @@ import '../sidebars/dat.js'
 
 const profilesAPI = navigator.importSystemAPI('profiles')
 const libraryAPI = navigator.importSystemAPI('library')
-const graphAPI = navigator.importSystemAPI('unwalled-garden-graph')
+const followsAPI = navigator.importSystemAPI('unwalled-garden-follows')
 
 export const CATEGORIES = {
   all: {
@@ -153,14 +153,14 @@ export class DatsExplorer extends Explorer {
     this.reset()
     this.safelyAccessListEl(el => el.clearSelection())
 
-    var self = await profilesAPI.getCurrentUser()
+    var self = await profilesAPI.me()
     this.currentUser = self
     var saved = !this.ownerFilter ? true : undefined
     var owner = this.ownerFilter === 'mine' ? true : undefined
     if (this.category === 'following') {
       // TODO replace this with a library api list query
-      this.dats = [self].concat(await graphAPI.listFollows(self.url))
-    } else if (this.category === 'websites') {
+      this.dats = [self].concat((await followsAPI.list({filters: {authors: self.url}})).map(({subject}) => subject))
+    } else if (this.category === 'all' || this.category === 'websites') {
       this.dats = await libraryAPI.list({filters: {owner, saved}})
       this.dats = this.dats.filter(d => !hasKnownType(d))
     } else {

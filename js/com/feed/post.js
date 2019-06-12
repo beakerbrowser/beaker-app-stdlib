@@ -33,7 +33,7 @@ export class FeedPost extends LitElement {
             <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
             <a class="permalink" href="${viewRecordUrl}" target="_blank">${timeDifference(this.post.createdAt, true, 'ago')}</a>
           </div>
-          <div class="body">${this.post.content.body}</div>
+          <div class="body">${this.post.body}</div>
           ${'reactions' in this.post
             ? html`
                 <beaker-reactions

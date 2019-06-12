@@ -20,7 +20,7 @@ export class PostsList extends List {
   // =
 
   renderBody (row) {
-    return row.content.body
+    return row.body
   }
 
   renderCreatedAt (row) {

@@ -9,7 +9,7 @@ import './sidebar.js'
 
 const profilesAPI = navigator.importSystemAPI('profiles')
 const bookmarksAPI = navigator.importSystemAPI('bookmarks')
-const graphAPI = navigator.importSystemAPI('unwalled-garden-graph')
+const followsAPI = navigator.importSystemAPI('unwalled-garden-follows')
 
 export class BookmarksExplorer extends Explorer {
   static get properties () {
@@ -51,9 +51,11 @@ export class BookmarksExplorer extends Explorer {
     this.reset()
     this.safelyAccessListEl(el => el.clearSelection())
 
-    var currentUser = this.currentUser = await profilesAPI.getCurrentUser()
+    var currentUser = this.currentUser = await profilesAPI.me()
     if (this.ownerFilter === 'network') {
-      let authors = [currentUser].concat(await graphAPI.listFollows(currentUser.url))
+      let authors = [currentUser].concat(
+        (await followsAPI.list({filters: {authors: currentUser.url}})).map(({subject}) => subject)
+      )
       this.bookmarks = await bookmarksAPI.query({filters: {authors: authors.map(f => f.url)}})
     } else {
       this.bookmarks = await bookmarksAPI.query({filters: {authors: currentUser.url}})

@@ -25,7 +25,7 @@ export class BeakerEditThumb extends BasePopup {
   }
 
   static async runFlow (profiles) {
-    var profile = await profiles.getCurrentUser()
+    var profile = await profiles.me()
     var archive = new DatArchive(profile.url)
 
     // find the existing thumb

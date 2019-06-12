@@ -8,7 +8,6 @@ import * as toast from '../../toast.js'
 import sidebarStyles from '../../../../css/com/library/sidebar.css.js'
 
 const profilesAPI = navigator.importSystemAPI('profiles')
-const graphAPI = navigator.importSystemAPI('unwalled-garden-graph')
 
 export class DatSidebar extends LitElement {
   static get properties () {
@@ -38,14 +37,6 @@ export class DatSidebar extends LitElement {
     return (this.datInfo.type || []).includes('unwalled.garden/person')
   }
 
-  get followers () {
-    return this.datInfo.followers
-  }
-
-  get isFollowing () {
-    return this.datInfo.followers.find(f => f.url === this.currentUser.url)
-  }
-
   get isSelf () {
     return this.datInfo.url === this.currentUser.url
   }
@@ -54,10 +45,9 @@ export class DatSidebar extends LitElement {
   // =
 
   async load () {
-    this.currentUser = await profilesAPI.getCurrentUser()
+    this.currentUser = await profilesAPI.me()
     var archive = new DatArchive(this.url)
     var datInfo = await archive.getInfo()
-    datInfo.followers = await graphAPI.listFollowers(datInfo.url)
     this.datInfo = datInfo
   }
 
@@ -78,13 +68,6 @@ export class DatSidebar extends LitElement {
           <div class="ctrls">
             ${this.isSelf ? html`<span class="isyou">This is you</span>` : ''}
             <span class="btn-group rounded">
-              ${this.isPerson && !this.isSelf
-                  ? html`
-                    <button @click=${this.onToggleFollowing}>
-                      <i class="fas fa-rss"></i> ${this.isFollowing ? 'Unfollow' : 'Follow'}
-                    </button>
-                  `
-                  : ''}
               <button @click=${this.onClickOpen}><i class="fas fa-external-link-alt"></i> Open</button>
               <button @click=${this.onClickMenu}><i class="fas fa-ellipsis-h"></i></button>
             </span>
@@ -108,8 +91,6 @@ export class DatSidebar extends LitElement {
   }
 
   renderTabBody () {
-    const type = this.datInfo.type || []
-    const isPerson = type.includes('unwalled.garden/person')
     switch (this.tab) {
       case 'settings':
         return html`
@@ -128,19 +109,6 @@ export class DatSidebar extends LitElement {
           <p>
             <small>Size:</small> ${formatBytes(this.datInfo.size)}<br><small>Last updated:</small> ${shortDate(this.datInfo.mtime)}
           </p>
-          ${isPerson
-            ? html`
-              <div class="followers">
-                <small>Followed by:</small>
-                ${this.datInfo.followers.length === 0 ? html`Nobody you follow` : ''}
-                ${this.datInfo.followers.map(f => html`
-                  <a href="intent:unwalled.garden/view-profile?url=${encodeURIComponent(f.url)}" target="_blank">
-                    <img class="avatar" src="asset:thumb:${f.url}">
-                    ${f.title}
-                  </a>
-                `)}
-              </div>
-            ` : ''}
         `
     }
   }
@@ -186,18 +154,6 @@ export class DatSidebar extends LitElement {
   onClickTab (e, id) {
     this.tab = id
   }
-
-  async onToggleFollowing (e) {
-    if (this.isFollowing) {
-      await graphAPI.unfollow(this.datInfo.url)
-      toast.create(`Unfollowed ${this.datInfo.title || 'Anonymous'}`)
-    } else {
-      await graphAPI.follow(this.datInfo.url)
-      toast.create(`Followed ${this.datInfo.title || 'Anonymous'}`)
-    }
-    this.load()
-  }
-
 }
 DatSidebar.styles = [sidebarStyles, css`
 small {
@@ -220,28 +176,6 @@ button {
   padding: 0 10px;
   border-radius: 16px;
 }
-
-.followers a {
-  display: flex;
-  align-items: center;
-  color: inherit;
-  text-decoration: none;
-  padding: 5px 10px;
-  margin: 5px 0;
-}
-
-.followers a:hover {
-  background: #f5f5f7;
-}
-
-.followers .avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 5px;
-}
-
 `]
 
 customElements.define('beaker-library-dat-sidebar', DatSidebar)

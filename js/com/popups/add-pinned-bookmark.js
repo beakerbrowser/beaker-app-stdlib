@@ -40,7 +40,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   }
 
   async initialLoad () {
-    this.user = await profiles.getCurrentUser()
+    this.user = await profiles.me()
     await this.loadSuggestions()
   }
 

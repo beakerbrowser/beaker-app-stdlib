@@ -20,10 +20,10 @@ export class BeakerEditProfile extends BasePopup {
   }
 
   static async runFlow (profiles) {
-    var profile = await profiles.getCurrentUser()
+    var profile = await profiles.me()
     var newValues = await BeakerEditProfile.create(profile)
     await (new DatArchive(profile.url)).configure(newValues)
-    return profiles.getCurrentUser()
+    return profiles.me()
   }
 
   static destroy () {
