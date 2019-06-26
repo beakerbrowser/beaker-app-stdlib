@@ -17,14 +17,14 @@ export class FeedPost extends LitElement {
     super()
     this.post = null
     this.userUrl = ''
-    this.viewProfileBaseUrl = 'intent:unwalled.garden/view-profile?url='
-    this.viewRecordBaseUrl = 'intent:unwalled.garden/view-file?url='
+    this.viewProfileBaseUrl = ''
+    this.viewRecordBaseUrl = ''
   }
 
   render () {
     if (!this.post) return
-    var viewProfileUrl = `${this.viewProfileBaseUrl}${encodeURIComponent(this.post.author.url)}`
-    var viewRecordUrl = `${this.viewRecordBaseUrl}${encodeURIComponent(this.post.url)}`
+    var viewProfileUrl = this.viewProfileBaseUrl ? `${this.viewProfileBaseUrl}${encodeURIComponent(this.post.author.url)}` : this.post.author.url
+    var viewRecordUrl = this.viewRecordBaseUrl ? `${this.viewRecordBaseUrl}${encodeURIComponent(this.post.url)}` : this.post.url
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
       <div class="inner">
