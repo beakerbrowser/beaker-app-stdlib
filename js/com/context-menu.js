@@ -170,6 +170,14 @@ class BeakerContextMenu extends LitElement {
                     </div>
                   `
                 }
+                if (item.href) {
+                  return html`
+                    <a class="dropdown-item" href=${item.href}>
+                      ${icon !== false ? html`<i class="${icon}"></i>` : ''}
+                      ${item.label}
+                    </a>
+                  `
+                }
                 return html`
                   <div class="dropdown-item" @click=${() => { destroy(); item.click() }}>
                     ${icon !== false ? html`<i class="${icon}"></i>` : ''}
@@ -185,6 +193,7 @@ class BeakerContextMenu extends LitElement {
 
 BeakerContextMenu.styles = css`
 ${dropdownCSS}
+
 .context-menu {
   position: fixed;
   z-index: 10000;
@@ -195,7 +204,13 @@ ${dropdownCSS}
   white-space: nowrap;
 }
 
-.dropdown-item {
+a.dropdown-item {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dropdown-item,
+.dropdown-items.roomy .dropdown-item {
   padding-right: 30px; /* add a little cushion to the right */
 }
 `
