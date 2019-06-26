@@ -40,9 +40,7 @@ export class FilesExplorer extends Explorer {
       }
       emit(this, 'change-location', {detail})
     }
-    var category = findCategoryForDat(this.datInfo)
     var path = [
-      {title: category.label, icon: category.icon, onClick: e => emit(this, 'change-location', {detail: {view: 'dats', category: category.id}})},
       {title: shorten(this.datInfo && this.datInfo.title ? this.datInfo.title : 'Untitled', 100), onClick: gotoPath('/')}
     ]
     var pathUpTo = '/'

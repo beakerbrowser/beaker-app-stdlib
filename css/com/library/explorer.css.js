@@ -61,7 +61,7 @@ ${buttons2css}
 
 .main /*.with-sidebar*/ {
   display: grid;
-  grid-template-columns: calc(100vw - 540px) 340px;
+  grid-template-columns: calc(100vw - 500px) 340px;
 }
 
 .list > * {

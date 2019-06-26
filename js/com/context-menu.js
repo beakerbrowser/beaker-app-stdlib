@@ -141,9 +141,12 @@ class BeakerContextMenu extends LitElement {
       roomy: this.roomy,
       'no-border': this.noBorders
     })
+    var style = ''
+    if (this.x) style += `left: ${this.x}px; `
+    if (this.y) style += `top: ${this.y}px; `
     return html`
       ${this.fontAwesomeCSSUrl ? html`<link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">` : ''}
-      <div class="context-menu dropdown" style="left: ${this.x}px; top: ${this.y}px">
+      <div class="context-menu dropdown" style="${style}">
         ${this.customRender
           ? this.customRender()
           : html`

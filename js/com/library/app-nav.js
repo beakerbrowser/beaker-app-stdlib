@@ -33,20 +33,19 @@ class AppNav extends LitElement {
 
   get tabs () {
     return [
-      {view: 'bookmarks', category: undefined, icon: 'far fa-star', label: 'Bookmarks'},
-      {view: 'files', icon: 'far fa-hdd', label: 'My files'},
-      this.makeDatCategory('people'),
-      html`<h5>Media</h5>`,
-      this.makeDatCategory('websites'),
-      this.makeDatCategory('images'),
-      this.makeDatCategory('music'),
-      this.makeDatCategory('videos'),
-      this.makeDatCategory('podcasts'),
-      html`<h5>Software</h5>`,
+      html`<h5>Favorites</h5>`,
+      {view: 'files', icon: 'fas fa-home', label: 'Home'},
+      // this.makeDatCategory('websites'),
+      // {view: 'dats', category: 'all', icon: 'far fa-hdd', label: 'Drives'},
       this.makeDatCategory('applications'),
-      this.makeDatCategory('interfaces'),
-      this.makeDatCategory('modules'),
-      // html`<h5>System</h5>`,
+      this.makeDatCategory('websites'),
+      // this.makeDatCategory('images'),
+      // this.makeDatCategory('music'),
+      // this.makeDatCategory('videos'),
+      // this.makeDatCategory('podcasts'),
+      // html`<h5>Software</h5>`,
+      // this.makeDatCategory('interfaces'),
+      // this.makeDatCategory('modules'),
       // {view: 'help', category: undefined, icon: 'far fa-question-circle', label: 'Help'}
     ]
   }
@@ -102,14 +101,14 @@ AppNav.styles = [tooltipCSS, css`
 }
 
 h5 {
-  margin: 15px 10px 5px;
+  margin: 0px 10px 5px;
   color: #666673;
   font-weight: 400;
 }
 
 a {
   display: flex;
-  padding: 6px 16px;
+  padding: 8px 16px;
   align-items: center;
   border: 0;
 }
@@ -140,6 +139,21 @@ hr {
 
 .collapsed i {
   margin-right: 0;
+}
+
+/* icon adjustments for visual consistency */
+.collapsed .fa-folder-open {
+  font-size: 1.4em;
+}
+.collapsed .fa-window-restore {
+  font-size: 1.3em;
+  position: relative;
+  left: 1px;
+}
+.collapsed .fa-address-book {
+  font-size: 1.5em;
+  position: relative;
+  left: 2px;
 }
 `]
 customElements.define('beaker-library-app-nav', AppNav)
