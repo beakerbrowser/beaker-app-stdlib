@@ -2,7 +2,10 @@ import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { repeat } from '../../../vendor/lit-element/lit-html/directives/repeat.js'
 import commentsThreadCSS from '../../../css/com/comments/thread.css.js'
 import { timeDifference } from '../../time.js'
+import { writeToClipboard } from '../../clipboard.js'
 import { emit } from '../../dom.js'
+import * as contextMenu from '../context-menu.js'
+import * as toast from '../toast.js'
 import './composer.js'
 import '../reactions/reactions.js'
 
@@ -47,6 +50,7 @@ export class CommentsThread extends LitElement {
         <div class="header">
           <a class="title" href="${comment.author.url}">${comment.author.title}</a>
           <a class="permalink" href="${comment.url}" target="_blank">${timeDifference(comment.createdAt, true, 'ago')}</a>
+            <button class="menu transparent" @click=${e => this.onClickMenu(e, comment)}><span class="fas fa-fw fa-ellipsis-h"></span></button>
         </div>
         <div class="body">${comment.body}</div>
         <div class="footer">
@@ -95,6 +99,42 @@ export class CommentsThread extends LitElement {
   onSubmitComment (e, url) {
     this.activeReplies[url] = false
     this.requestUpdate()
+  }
+
+  onClickMenu (e, comment) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    var items = [
+      {icon: 'far fa-fw fa-file-alt', label: 'View comment file', click: () => window.open(comment.url) },
+      {icon: 'fas fa-fw fa-link', label: 'Copy comment URL', click: () => {
+        writeToClipboard(comment.url)
+        toast.create('Copied to your clipboard')
+      }}
+    ]
+
+    if (this.userUrl === comment.author.url) {
+      items.push('-')
+      items.push({icon: 'fas fa-fw fa-trash', label: 'Delete comment', click: () => this.onClickDelete(comment) })
+    }
+
+    var rect = e.currentTarget.getClientRects()[0]
+    contextMenu.create({
+      x: rect.right + 4,
+      y: rect.bottom + 8,
+      right: true,
+      withTriangle: true,
+      roomy: true,
+      noBorders: true,
+      fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css',
+      style: `padding: 4px 0`,
+      items 
+    })
+  }
+
+  onClickDelete (comment) {
+    if (!confirm('Are you sure?')) return
+    emit(this, 'delete-comment', {bubbles: true, composed: true, detail: {comment}})
   }
 }
 CommentsThread.styles = commentsThreadCSS

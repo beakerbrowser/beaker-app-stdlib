@@ -31,17 +31,16 @@ beaker-comment-composer {
 }
 
 .comments {
-  margin-bottom: 10px;
 }
 
 .comments .comments {
-  margin-left: 10px;
+  margin-left: 12px;
 }
 
 .comment {
   overflow: hidden;
-  margin: 20px 0 20px 10px;
-  border-left: 1px solid #ddd;
+  margin: 20px 0 0 12px;
+  border-left: 2px solid #e5e5e5;
 }
 
 .avatar.icon {
@@ -63,6 +62,10 @@ beaker-comment-composer {
   font-size: var(--header-font-size);
   line-height: var(--header-font-size);
   color: var(--header-color);
+}
+
+.header .menu {
+  padding: 2px 4px;
 }
 
 .title {
