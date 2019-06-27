@@ -2,8 +2,11 @@ import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import feedPostCSS from '../../../css/com/feed/post.css.js'
 import { timeDifference } from '../../time.js'
 import { findParent, emit } from '../../dom.js'
+import { writeToClipboard } from '../../clipboard.js'
 import { pluralize } from '../../strings.js'
 import '../reactions/reactions.js'
+import * as contextMenu from '../context-menu.js'
+import * as toast from '../toast.js'
 
 const RENDER_LIMIT = 280
 
@@ -43,6 +46,7 @@ export class FeedPost extends LitElement {
           <div class="header">
             <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
             <a class="permalink" href="${viewRecordUrl}" target="_blank">${timeDifference(this.post.createdAt, true, 'ago')}</a>
+            <button class="menu transparent" @click=${this.onClickMenu}><span class="fas fa-fw fa-ellipsis-h"></span></button>
           </div>
           <div class="body">${body}${this.isTooLong ? '...' : ''}</div>
           ${this.isTooLong ? html`<a class="readmore" href="#" @click=${this.onTopClick}>Read more</a>` : ''}
@@ -81,8 +85,44 @@ export class FeedPost extends LitElement {
     // make sure this wasn't a click on a link within the post
     if (findParent(e.target, el => el.tagName === 'A' || el === e.currentTarget) !== e.currentTarget) {
       return
-    }    
+    }
     emit(this, 'expand', {bubbles: true, composed: true, detail: {post: this.post}})
+  }
+
+  onClickMenu (e) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    var items = [
+      {icon: 'far fa-fw fa-file-alt', label: 'View post file', click: () => window.open(this.post.url) },
+      {icon: 'fas fa-fw fa-link', label: 'Copy post URL', click: () => {
+        writeToClipboard(this.post.url)
+        toast.create('Copied to your clipboard')
+      }}
+    ]
+
+    if (this.userUrl === this.post.author.url) {
+      items.push('-')
+      items.push({icon: 'fas fa-fw fa-trash', label: 'Delete post', click: () => this.onClickDelete() })
+    }
+
+    var rect = e.currentTarget.getClientRects()[0]
+    contextMenu.create({
+      x: rect.right + 4,
+      y: rect.bottom + 8,
+      right: true,
+      withTriangle: true,
+      roomy: true,
+      noBorders: true,
+      fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css',
+      style: `padding: 4px 0`,
+      items 
+    })
+  }
+
+  onClickDelete () {
+    if (!confirm('Are you sure?')) return
+    emit(this, 'delete', {bubbles: true, composed: true, detail: {post: this.post}})
   }
 }
 FeedPost.styles = feedPostCSS

@@ -72,6 +72,11 @@ a:hover {
   line-height: 17px;
 }
 
+.header .menu {
+  margin-left: auto;
+  padding: 2px 4px;
+}
+
 .body {
   color: rgba(0, 0, 0, 0.9);
   padding: 6px 18px;
@@ -86,6 +91,7 @@ a:hover {
 .readmore {
   display: inline-block;
   margin: 6px 18px;
+  color: gray;
 }
 
 beaker-reactions {

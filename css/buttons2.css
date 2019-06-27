@@ -51,6 +51,15 @@ button.noborder {
   border-color: transparent;
 }
 
+button.transparent {
+  border-color: transparent;
+  box-shadow: none; 
+}
+
+button.transparent:hover {
+  background: #f5f5f5;
+}
+
 .radio-group button {
   background: transparent;
   border: 0;
