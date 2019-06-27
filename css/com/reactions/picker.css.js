@@ -72,7 +72,7 @@ const cssStr = css`
 }
 
 .heading {
-  padding: 6px 16px 6px;
+  padding: 6px 12px;
   font-size: 14px;
   color: #8892a7;
   margin-top: 8px;
@@ -90,6 +90,7 @@ const cssStr = css`
   text-align: center;
   width: 30px;
   padding: 4px 0;
+  font-size: 15px;
 }
 
 .list span:hover {

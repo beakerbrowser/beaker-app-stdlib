@@ -1,21 +1,21 @@
 import {css} from '../../../vendor/lit-element/lit-element.js'
-import buttonscss from '../../buttons.css.js'
+import buttons2css from '../../buttons2.css.js'
 import reactionscss from '../reactions/reactions.css.js'
 
 const cssStr = css`
-${buttonscss}
+${buttons2css}
 ${reactionscss}
 
 :host {
-  --body-font-size: 14px;
+  --body-font-size: 15px;
   --header-font-size: 12px;
   --title-font-size: 14px;
   --footer-font-size: 12px;
   --inner-width: initial;
   --title-color: #333;
-  --header-color: #777;
-  --footer-color: #777;
-  --footer-background: rgb(250, 250, 253);
+  --header-color: #888;
+  --footer-color: #888;
+  --footer-background: #fff;
 
   display: block;
   /*cursor: pointer;*/
@@ -23,6 +23,10 @@ ${reactionscss}
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
+}
+
+a {
+  text-decoration: none;
 }
 
 a:hover {
@@ -70,7 +74,7 @@ a:hover {
 
 .body {
   color: rgba(0, 0, 0, 0.9);
-  padding: 6px 18px 12px;
+  padding: 6px 18px;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,9 +83,13 @@ a:hover {
   white-space: pre-line;
 }
 
+.readmore {
+  display: inline-block;
+  margin: 6px 18px;
+}
+
 beaker-reactions {
   display: block;
-  padding: 0 18px 10px;
 }
 
 .footer {
@@ -90,11 +98,12 @@ beaker-reactions {
   font-size: var(--footer-font-size);
   color: var(--footer-color);
   background: var(--footer-background);
-  padding: 10px 20px 12px;
+  padding: 10px 16px 12px;
 }
 
 .footer a {
   margin: 0 5px;
+  color: inherit;
 }
 
 .footer a:first-child {

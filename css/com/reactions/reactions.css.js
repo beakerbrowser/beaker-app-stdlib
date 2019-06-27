@@ -15,7 +15,7 @@ const cssStr = css`
 
 .reaction:hover {
   cursor: pointer;
-  background: #f5f8ff;
+  background: #f5f5f5;
 }
 
 .reaction .count {
@@ -23,22 +23,23 @@ const cssStr = css`
 }
 
 .reaction.by-user {
-  background: #f5f8ff;
+  background: #f5f5f5;
   font-weight: bold;
 }
 
 .reaction.by-user:hover {
-  background: #e3e9f7;
+  background: #e5e5e5;
 }
 
 .reaction.add-btn {
   border: 0;
-  font-size: 11px;
-  color: #7182a5;
+  font-size: 12px;
+  line-height: 21px;
+  color: #888;
 }
 
 .reaction.add-btn.pressed {
-  background: #e3e9f7;
+  background: #e5e5e5;
   box-shadow: inset 0 2px 3px rgba(0,0,0,.05);
   opacity: 1;
 }

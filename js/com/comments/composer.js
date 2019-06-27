@@ -1,33 +1,47 @@
 import {LitElement, html} from '../../../vendor/lit-element/lit-element.js'
-import feedComposerCSS from '../../../css/com/feed/composer.css.js'
-import { on } from '../../dom.js'
+import commentComposerCSS from '../../../css/com/comments/composer.css.js'
+import { emit } from '../../dom.js'
 
-export class FeedComposer extends LitElement {
+export class CommentComposer extends LitElement {
   static get properties () {
     return {
+      topic: {type: String},
+      replyTo: {type: String, attribute: 'reply-to'},
       isFocused: {type: Boolean},
+      alwaysActive: {type: Boolean},
       draftText: {type: String}
     }
   }
 
   constructor () {
     super()
+    this.topic = ''
+    this.replyTo = ''
     this.isFocused = false
+    this.alwaysActive = false
     this.draftText = ''
-    on(document, 'focus-composer', () => this.onClickPlaceholder())
   }
 
   _submit () {
     if (!this.draftText) return
-    this.dispatchEvent(new CustomEvent('submit', {detail: {body: this.draftText}}))
+    var detail = {
+      topic: this.topic,
+      replyTo: this.replyTo || undefined,
+      body: this.draftText
+    }
+    emit(this, 'submit-comment', {bubbles: true, detail})
     this.draftText = ''
+  }
+
+  focus () {
+    this.shadowRoot.querySelector('textarea').focus()
   }
 
   // rendering
   // =
 
   render () {
-    if (this.isFocused || this.draftText) {
+    if (this.alwaysActive || this.isFocused || this.draftText) {
       return this.renderActive()
     }
     return this.renderInactive()
@@ -36,7 +50,7 @@ export class FeedComposer extends LitElement {
   renderInactive () {
     return html`
       <div class="input-placeholder" @click=${this.onClickPlaceholder}>
-        Create a new post
+        Write a new comment
       </div>
     `
   }
@@ -44,7 +58,7 @@ export class FeedComposer extends LitElement {
   renderActive () {
     return html`
       <textarea
-        placeholder="Enter your post here"
+        placeholder="Enter your comment here"
         @keydown=${this.onKeydownTextarea}
         @keyup=${this.onChangeTextarea}
         @blur=${this.onBlurTextarea}
@@ -93,6 +107,6 @@ export class FeedComposer extends LitElement {
     this._submit()
   }
 }
-FeedComposer.styles = feedComposerCSS
+CommentComposer.styles = commentComposerCSS
 
-customElements.define('beaker-feed-composer', FeedComposer)
+customElements.define('beaker-comment-composer', CommentComposer)

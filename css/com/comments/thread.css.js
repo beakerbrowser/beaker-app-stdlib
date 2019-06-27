@@ -1,19 +1,22 @@
-@import "../../buttons2.css";
-@import "../reactions/reactions.css";
+import {css} from '../../../vendor/lit-element/lit-element.js'
+import buttons2css from '../../buttons2.css.js'
+import reactionscss from '../reactions/reactions.css.js'
+
+const cssStr = css`
+${buttons2css}
+${reactionscss}
 
 :host {
   --body-font-size: 15px;
   --header-font-size: 12px;
-  --title-font-size: 14px;
+  --title-font-size: 13px;
   --footer-font-size: 12px;
-  --inner-width: initial;
-  --title-color: #333;
+  --title-color: var(--color-link);
   --header-color: #888;
   --footer-color: #888;
   --footer-background: #fff;
 
   display: block;
-  /*cursor: pointer;*/
   border: 1px solid var(--border-color);
   border-radius: 4px;
   overflow: hidden;
@@ -28,23 +31,30 @@ a:hover {
   text-decoration: underline;
 }
 
-.inner {
-  display: flex;
-  align-items: center;
-  width: var(--inner-width);
+beaker-comment-composer {
+  border: 1px solid #ccc;
 }
 
-.content-column {
-  flex: 1;
+.comments {
+  margin-bottom: 10px;
+}
+
+.comments .comments {
+  margin-left: 10px;
+}
+
+.comment {
   overflow: hidden;
+  margin: 20px 0 20px 10px;
+  border-left: 1px solid #ddd;
 }
 
 .avatar.icon {
   display: inline-block;
   border-radius: 50%;
   object-fit: cover;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   vertical-align: middle;
   position: relative;
   top: -1px;
@@ -54,7 +64,7 @@ a:hover {
 .header {
   display: flex;
   align-items: center;
-  padding: 16px 16px 4px;
+  padding: 4px 16px 4px;
   font-size: var(--header-font-size);
   line-height: var(--header-font-size);
   color: var(--header-color);
@@ -69,18 +79,13 @@ a:hover {
 
 .body {
   color: rgba(0, 0, 0, 0.9);
-  padding: 6px 18px;
+  padding: 0 16px;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: var(--body-font-size);
   line-height: 1.4;
   white-space: pre-line;
-}
-
-.readmore {
-  display: inline-block;
-  margin: 6px 18px;
 }
 
 beaker-reactions {
@@ -93,15 +98,17 @@ beaker-reactions {
   font-size: var(--footer-font-size);
   color: var(--footer-color);
   background: var(--footer-background);
-  padding: 10px 16px 12px;
+  padding: 4px 14px;
 }
 
-.footer a {
+.footer > a,
+.footer > span {
   margin: 0 5px;
   color: inherit;
 }
 
-.footer a:first-child {
+.footer > a:first-child,
+.footer > span:first-child {
   margin-left: 0;
 }
 
@@ -109,31 +116,9 @@ beaker-reactions {
   color: inherit;
 }
 
-.embed {
-  display: flex;
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--light-border-color);
+.comment beaker-comment-composer {
+  margin: 10px 16px;
 }
 
-.embed img {
-  display: block;
-  width: 90px;
-  border-radius: 4px;
-}
-
-.embed .embed-details {
-  padding: 10px 26px;
-}
-
-.embed .embed-details > * {
-  margin: 4px 0;
-}
-
-.embed .embed-title {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.embed .embed-description {
-  color: var(--color-text--muted);
-}
+`
+export default cssStr
