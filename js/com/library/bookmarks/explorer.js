@@ -7,7 +7,7 @@ import { emit } from '../../../dom.js'
 import './list.js'
 import './sidebar.js'
 
-const profilesAPI = navigator.importSystemAPI('profiles')
+const profilesAPI = navigator.importSystemAPI('unwalled-garden-profiles')
 const bookmarksAPI = navigator.importSystemAPI('bookmarks')
 const followsAPI = navigator.importSystemAPI('unwalled-garden-follows')
 

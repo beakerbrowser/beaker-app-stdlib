@@ -7,7 +7,7 @@ import * as contextMenu from '../../context-menu.js'
 import * as toast from '../../toast.js'
 import sidebarStyles from '../../../../css/com/library/sidebar.css.js'
 
-const profilesAPI = navigator.importSystemAPI('profiles')
+const profilesAPI = navigator.importSystemAPI('unwalled-garden-profiles')
 
 export class DatSidebar extends LitElement {
   static get properties () {

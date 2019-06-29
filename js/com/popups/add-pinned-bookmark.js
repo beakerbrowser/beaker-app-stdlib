@@ -5,7 +5,7 @@ import popupsCSS from '../../../css/com/popups.css.js'
 import { writeToClipboard } from '../../clipboard.js'
 import * as contextMenu from '../context-menu.js'
 import * as toast from '../toast.js'
-const profiles = navigator.importSystemAPI('profiles')
+const profiles = navigator.importSystemAPI('unwalled-garden-profiles')
 const bookmarks = navigator.importSystemAPI('bookmarks')
 
 // exported api

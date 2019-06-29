@@ -9,7 +9,7 @@ import './list.js'
 import '../sidebars/dat.js'
 import '../sidebars/file.js'
 
-const profilesAPI = navigator.importSystemAPI('profiles')
+const profilesAPI = navigator.importSystemAPI('unwalled-garden-profiles')
 
 export class FilesExplorer extends Explorer {
   static get properties () {
