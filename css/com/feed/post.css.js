@@ -15,7 +15,6 @@ ${reactionscss}
   --title-color: #333;
   --header-color: #888;
   --footer-color: #888;
-  --footer-background: #fff;
 
   display: block;
   /*cursor: pointer;*/
@@ -103,7 +102,6 @@ beaker-reactions {
   align-items: center;
   font-size: var(--footer-font-size);
   color: var(--footer-color);
-  background: var(--footer-background);
   padding: 10px 16px 12px;
 }
 

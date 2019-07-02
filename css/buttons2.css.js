@@ -56,6 +56,7 @@ button.noborder {
 }
 
 button.transparent {
+  background: transparent;
   border-color: transparent;
   box-shadow: none; 
 }
