@@ -45,7 +45,7 @@ beaker-comment-composer {
 .comment {
   overflow: hidden;
   margin: 20px 0 0 12px;
-  border-left: 2px solid #e5e5e5;
+  border-left: 2px solid #f5f5f5;
 }
 
 .avatar.icon {

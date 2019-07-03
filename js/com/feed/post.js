@@ -41,7 +41,7 @@ export class FeedPost extends LitElement {
     var body = this.expanded ? this.post.body : this.post.body.slice(0, RENDER_LIMIT)
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
-      <div class="inner" @click=${this.onTopClick}>
+      <div class="inner">
         <div class="content-column">
           <div class="header">
             <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.post.author.url}"> ${this.post.author.title}</a>
@@ -68,7 +68,7 @@ export class FeedPost extends LitElement {
                     topic="${this.post.url}"
                   ></beaker-reactions>`
               : ''}
-            <a class="comments" @click=${this.onTopClick}>
+            <a class="comments" href="#" @click=${this.onTopClick}>
               ${this.post.numComments}
               ${pluralize(this.post.numComments, 'comment')}
             </a>

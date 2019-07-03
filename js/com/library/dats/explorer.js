@@ -162,7 +162,7 @@ export class DatsExplorer extends Explorer {
       this.dats = [self].concat((await followsAPI.list({filters: {authors: self.url}})).map(({subject}) => subject))
     } else if (this.category === 'all' || this.category === 'websites') {
       this.dats = await libraryAPI.list({filters: {owner, saved}})
-      this.dats = this.dats.filter(d => !hasKnownType(d))
+      // this.dats = this.dats.filter(d => !hasKnownType(d))
     } else {
       this.dats = await libraryAPI.list({filters: {owner, saved, type: CATEGORIES[this.category].type}})
     }
