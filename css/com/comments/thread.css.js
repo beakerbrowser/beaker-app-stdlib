@@ -15,6 +15,7 @@ ${reactionscss}
   --header-color: #888;
   --footer-color: #888;
   --footer-background: #fff;
+  --replies-left-margin: 12px;
 
   display: block;
   border: 1px solid var(--border-color);
@@ -39,7 +40,7 @@ beaker-comment-composer {
 }
 
 .comments .comments {
-  margin-left: 12px;
+  margin-left: var(--replies-left-margin);
 }
 
 .comment {
@@ -117,6 +118,10 @@ beaker-reactions {
 
 .permalink {
   color: inherit;
+}
+
+beaker-comment-composer {
+  --input-font-size: var(--body-font-size);
 }
 
 .comment beaker-comment-composer {

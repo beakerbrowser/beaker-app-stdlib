@@ -13,12 +13,13 @@ ${buttons2css}
   border: 1px solid var(--border-color);
   border-radius: 4px;
   overflow: hidden;
+  --input-font-size: 14px;
 }
 
 .input-placeholder,
 textarea {
   padding: 0;
-  font-size: 14px;
+  font-size: var(--input-font-size);
 }
 
 textarea::-webkit-input-placeholder {
