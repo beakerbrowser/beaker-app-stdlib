@@ -11,6 +11,9 @@
   --footer-color: #888;
   --footer-background: #fff;
   --replies-left-margin: 12px;
+  --comment-top-margin: 20px;
+  --comment-left-margin: 12px;
+  --composer-padding: 14px 18px;
 
   display: block;
   border: 1px solid var(--border-color);
@@ -29,6 +32,7 @@ a:hover {
 
 beaker-comment-composer {
   border: 1px solid #ccc;
+  padding: var(--composer-padding);
 }
 
 .comments {
@@ -40,7 +44,8 @@ beaker-comment-composer {
 
 .comment {
   overflow: hidden;
-  margin: 20px 0 0 12px;
+  margin-top: var(--comment-top-margin);
+  margin-left: var(--comment-left-margin);
   border-left: 2px solid #f5f5f5;
 }
 

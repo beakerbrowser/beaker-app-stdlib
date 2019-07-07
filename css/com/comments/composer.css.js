@@ -24,7 +24,7 @@ textarea {
 
 textarea::-webkit-input-placeholder {
   line-height: inherit;
-  font-size: 14px;
+  font-size: var(--input-font-size);
 }
 
 .input-placeholder {
