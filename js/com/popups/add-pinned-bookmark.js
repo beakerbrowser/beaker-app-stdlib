@@ -5,6 +5,7 @@ import popupsCSS from '../../../css/com/popups.css.js'
 import { writeToClipboard } from '../../clipboard.js'
 import * as contextMenu from '../context-menu.js'
 import * as toast from '../toast.js'
+import { toNiceUrl } from '../../strings.js'
 const profiles = navigator.importSystemAPI('unwalled-garden-profiles')
 const bookmarks = navigator.importSystemAPI('bookmarks')
 
@@ -64,11 +65,12 @@ export class AddPinnedBookmarkPopup extends BasePopup {
       </div>
       <div class="suggestions ${this.query ? 'query-results' : 'defaults'}">
         ${hasResults ? '' : html`<div class="empty">No results</div>`}
-        ${this.renderSuggestionGroup('builtins', 'Applications')}
-        ${this.renderSuggestionGroup('addressbook', 'Address book', true)}
-        ${this.renderSuggestionGroup('bookmarks', 'Bookmarks')}
-        ${this.renderSuggestionGroup('websites', 'Websites')}
-        ${this.renderSuggestionGroup('history', 'History')}
+        ${this.renderSuggestionGroup('bookmarks', 'My Bookmarks')}
+        ${this.renderSuggestionGroup('apps', 'My Applications')}
+        ${this.renderSuggestionGroup('websites', 'My Websites')}
+        ${this.renderSuggestionGroup('people', 'My People')}
+        ${this.renderSuggestionGroup('templates', 'My Templates')}
+        ${this.renderSuggestionGroup('history', 'My Browsing History')}
       </div>
     `
   }
@@ -83,13 +85,15 @@ export class AddPinnedBookmarkPopup extends BasePopup {
       </div>`
   }
   
-  renderSuggestion (row, useThumb) {
-    var title = row.title || 'Untitled'
+  renderSuggestion (row) {
+    const title = row.title || 'Untitled'
     return html`
       <a href=${row.url} class="suggestion" title=${title} @click=${this.onClick} @contextmenu=${this.onContextMenu}>
-        <img class="${useThumb ? 'rounded' : ''} favicon" src="${useThumb ? `asset:thumb:${row.url}` : `asset:favicon-32:${row.url}`}"/>
-        <span class="title">${this.query ? title : trunc(title, 15)}</span>
-        ${this.query ? html`<span class="url">${row.url}</span>` : ''}
+        <img class="thumb" src="asset:thumb:${row.url}"/>
+        <span class="details">
+          <span class="title">${title}</span>
+          <span class="url">${toNiceUrl(row.url)}</span>
+        </span>
       </a>
     `
   }
@@ -139,9 +143,17 @@ export class AddPinnedBookmarkPopup extends BasePopup {
 }
 AddPinnedBookmarkPopup.styles = [popupsCSS, css`
 .popup-inner {
-  width: 80vw;
-  max-width: 900px;
-  min-width: 600px;
+  width: 1000px;
+}
+
+.popup-inner .body {
+  padding: 0;
+}
+
+.filter-control {
+  padding: 8px 10px;
+  background: rgb(250, 250, 250);
+  border-bottom: 1px solid rgb(238, 238, 238);
 }
 
 .filter-control input {
@@ -152,12 +164,14 @@ AddPinnedBookmarkPopup.styles = [popupsCSS, css`
 
 .suggestions {
   overflow-y: auto;
-  max-height: calc(100vh - 200px);
-  padding: 0 10px;
+  max-height: calc(100vh - 300px);
+  padding-top: 20px;
+  margin-top: 0 !important;
 }
 
 .empty {
   color: rgba(0, 0, 0, 0.5);
+  padding: 0 20px 20px;
 }
 
 .group {
@@ -165,12 +179,18 @@ AddPinnedBookmarkPopup.styles = [popupsCSS, css`
 }
 
 .group-title {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.85);
   margin-bottom: 10px;
-  padding-bottom: 2px;
-  padding-left: 2px;
+  padding-bottom: 5px;
+  padding-left: 20px;
   letter-spacing: -0.5px;
+}
+
+.group-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-right: 20px;
 }
 
 .suggestion {
@@ -181,52 +201,44 @@ AddPinnedBookmarkPopup.styles = [popupsCSS, css`
   user-select: none;
 }
 
-.suggestion .favicon {
-  width: 32px;
-  height: 32px;
+.suggestion .thumb {
+  flex: 0 0 80px;
+  width: 80px;
+  height: 64px;
+  object-fit: scale-down;
+  background: #fff;
+  margin: 0 20px 0 10px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
 }
 
-.suggestion .favicon.rounded {
-  border-radius: 50%;
-  object-fit: cover;
+.suggestion .details {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .suggestion .title,
 .suggestion .url {
+  display: block;
   white-space: nowrap;
-  font-size: 12px;
+  line-height: 1.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion .title {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .suggestion .url {
-  margin-left: 10px;
-  color: gray;
+  font-size: 12px;
+  color: var(--blue);
 }
 
 .suggestion:hover {
   background: #eee;
-}
-
-.suggestions.defaults .group-items {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-}
-
-@media (min-width: 1300px) {
-  .suggestions.defaults .group-items {
-    grid-template-columns: repeat(8, 1fr);
-  }
-}
-
-.suggestions.defaults .suggestion {
-  flex-direction: column;
-}
-
-.suggestions.defaults .suggestion .favicon {
-  margin-bottom: 6px;
-}
-
-.suggestions.query-results .suggestion .favicon {
-  margin-right: 10px;
 }
 `]
 

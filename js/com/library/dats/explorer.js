@@ -17,7 +17,7 @@ export const CATEGORIES = {
     label: 'All'
   },
   applications: {
-    type: 'unwalled.garden/application',
+    type: 'application',
     icon: 'far fa-window-restore',
     label: 'Applications',
     itemLabel: 'Application'
