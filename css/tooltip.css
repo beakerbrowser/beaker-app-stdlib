@@ -76,3 +76,22 @@
   border-bottom: 6px solid transparent;
   border-right: 6px solid rgba(17, 17, 17, 0.95);
 }
+
+.tooltip-left[data-tooltip]:before {
+  top: 50%;
+  left: auto;
+  right: calc(100% + 6px);
+  transform: translate(0, -50%);
+  line-height: 0.9;
+}
+
+.tooltip-left[data-tooltip]:after {
+  top: 50%;
+  left: auto;
+  right: calc(100% + 0px);
+  transform: translate(0, -50%);
+  border: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid rgba(17, 17, 17, 0.95);
+}

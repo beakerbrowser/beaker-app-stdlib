@@ -16,6 +16,7 @@ button {
   padding: 5px 10px;
   color: #333;
   outline: 0;
+  cursor: pointer;
 }
 
 button:active {
@@ -41,6 +42,7 @@ button[disabled] {
   border-color: var(--border-color);
   background: #fff;
   color: #999;
+  cursor: default;
 }
 
 button.rounded {
@@ -63,6 +65,12 @@ button.transparent {
 
 button.transparent:hover {
   background: #f5f5f5;
+}
+
+button.transparent.pressed {
+  background: rgba(0,0,0,.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.25);
+  color: inherit;
 }
 
 .radio-group button {
