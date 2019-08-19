@@ -66,10 +66,9 @@ export class AddPinnedBookmarkPopup extends BasePopup {
       <div class="suggestions ${this.query ? 'query-results' : 'defaults'}">
         ${hasResults ? '' : html`<div class="empty">No results</div>`}
         ${this.renderSuggestionGroup('bookmarks', 'My Bookmarks')}
-        ${this.renderSuggestionGroup('apps', 'My Applications')}
         ${this.renderSuggestionGroup('websites', 'My Websites')}
-        ${this.renderSuggestionGroup('people', 'My People')}
-        ${this.renderSuggestionGroup('templates', 'My Templates')}
+        ${this.renderSuggestionGroup('people', 'People')}
+        ${this.renderSuggestionGroup('themes', 'My Themes')}
         ${this.renderSuggestionGroup('history', 'My Browsing History')}
       </div>
     `

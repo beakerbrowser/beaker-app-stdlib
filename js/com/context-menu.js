@@ -49,11 +49,9 @@ create({
   ]
 
   // instead of items, can give render()
-  render ({x, y}) {
-    return yo`
-      <div class="context-menu dropdown" style="left: ${x}px; top: ${y}px">
-        <img src="smile.png" onclick=${contextMenu.destroy} />
-      </div>
+  render () {
+    return html`
+      <img src="smile.png" onclick=${contextMenu.destroy} />
     `
   }
 }
@@ -108,7 +106,7 @@ function onClickAnywhere (e) {
 // internal
 // =
 
-class BeakerContextMenu extends LitElement {
+export class BeakerContextMenu extends LitElement {
   constructor ({x, y, right, withTriangle, roomy, noBorders, style, items, fontAwesomeCSSUrl, render}) {
     super()
     this.x = x
