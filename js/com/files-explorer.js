@@ -55,7 +55,7 @@ class FilesExplorer extends LitElement {
     this.isLoading = true
     this.readOnly = true
     this.folderPath = ''
-    this.pathSegments = []
+    this.currentFolder = null
     this.items = []
     this.load()
   }
@@ -95,17 +95,9 @@ class FilesExplorer extends LitElement {
         return a.name.localeCompare(b.name)
       })
 
-      let accPath = '/'
-      let folderPathParts = folderPath.split('/').filter(Boolean)
-      let segments = [{path: '/', name: '/'}]
-      for (let part of folderPathParts) {
-        accPath = joinPath(accPath, part)
-        let segment = await archive.stat(accPath)
-        segment.name = part
-        segment.path = accPath
-        segments.push(segment)
-      }
-      this.pathSegments = segments
+      this.currentFolder = await archive.stat(folderPath)
+      this.currentFolder.path = folderPath
+      this.currentFolder.name = folderPath.split('/').pop() || '/'
     }
 
     this.items = items
@@ -154,16 +146,10 @@ class FilesExplorer extends LitElement {
         ` : ''}
       </div>
       <div class="path">
-        ${this.pathSegments.map(item => html`
-          <a
-            @click=${e => this.onClickPathSegment(e, item)}
-            @contextmenu=${e => this.onContextmenuPathSegment(e, item)}
-          >
-            <span class="fa-fw ${item.mount ? 'fas fa-external-link-square-alt' : 'far fa-folder'}"></span>
-            ${item.isRoot ? '(root)' : item.name} ${item.mount ? html`(<code>${item.mount.key.slice(0,4)}..${item.mount.key.slice(-2)}</code>)` : ''}
-          </a>
-          <span class="fas fa-fw fa-angle-right"></span>
-        `)}
+        <a @contextmenu=${this.onContextmenuCurrentFolder}>
+          <span class="fa-fw ${this.currentFolder.mount ? 'fas fa-external-link-square-alt' : 'far fa-folder'}"></span>
+          ${this.currentFolder.name} ${this.currentFolder.mount ? html`(<code>${this.currentFolder.mount.key.slice(0,4)}..${this.currentFolder.mount.key.slice(-2)}</code>)` : ''}
+        </a>
       </div>
       <div class="listing" @contextmenu=${this.onContextmenuListing}>
         ${this.folderPath !== '/' ? html`
@@ -177,9 +163,6 @@ class FilesExplorer extends LitElement {
             <span class="icon">${icon(item)}</span>
             <span class="name">
               ${item.name}
-              ${item.stat.mount
-                ? html`<code>(${item.stat.mount.key.slice(0,4)}..${item.stat.mount.key.slice(-2)})</code>`
-                : ''}
             </span>
             <span class="size">
               ${item.stat.size ? formatBytes(item.stat.size) : ''}
@@ -387,15 +370,11 @@ class FilesExplorer extends LitElement {
     }
   }
 
-  onClickPathSegment (e, segment) {
-    this.url = joinPath(this.origin, segment.path)
-  }
-
-  onContextmenuPathSegment (e, segment) {
+  onContextmenuCurrentFolder (e) {
     e.preventDefault()
     e.stopPropagation()
 
-    var url = joinPath(this.origin, segment.path)
+    var url = joinPath(this.origin, this.currentFolder.path)
     var items = []
     items.push({
       icon: 'fas fa-fw fa-arrow-right',
@@ -422,14 +401,14 @@ class FilesExplorer extends LitElement {
         toast.create('Copied to your clipboard')
       }
     })
-    if (segment.mount) {
+    if (this.currentFolder.mount) {
       items = items.concat([
         '-',
         {
           icon: 'fas fa-fw fa-external-link-alt',
           label: `Open mount in new tab`,
           click: () => {
-            beaker.browser.openUrl(`dat://${segment.mount.key}`, {
+            beaker.browser.openUrl(`dat://${this.currentFolder.mount.key}`, {
               setActive: true,
               isSidebarActive: true
             })
@@ -439,7 +418,7 @@ class FilesExplorer extends LitElement {
           icon: 'fas fa-fw fa-link',
           label: `Copy Mount URL`,
           click () {
-            writeToClipboard(`dat://${segment.mount.key}`)
+            writeToClipboard(`dat://${this.currentFolder.mount.key}`)
             toast.create('Copied to your clipboard')
           }
         }

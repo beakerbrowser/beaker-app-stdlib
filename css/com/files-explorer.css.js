@@ -76,6 +76,11 @@ ${buttons2css}
 
 .listing .item .name {
   flex: 1;
+  word-break: break-all;
+}
+
+.listing .item .size {
+  color: rgba(0,0,0,.5);
 }
 
 @media (max-width: 600px) {
