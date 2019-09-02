@@ -125,12 +125,9 @@ beaker-reactions {
   color: inherit;
 }
 
-beaker-comment-composer {
-  --input-font-size: var(--body-font-size);
-}
-
 .comment beaker-comment-composer {
   margin: 10px 16px;
+  --input-font-size: var(--body-font-size);
 }
 
 `

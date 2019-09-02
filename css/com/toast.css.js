@@ -9,9 +9,6 @@ const cssStr = css`
   z-index: 20000;
   transition: opacity 0.1s ease;
 }
-.toast-wrapper.nomouse {
-  pointer-events: none;
-}
 .toast-wrapper.hidden {
   opacity: 0;
 }
