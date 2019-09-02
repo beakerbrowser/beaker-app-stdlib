@@ -9,7 +9,8 @@ export class CommentComposer extends LitElement {
       replyTo: {type: String, attribute: 'reply-to'},
       isFocused: {type: Boolean},
       alwaysActive: {type: Boolean},
-      draftText: {type: String}
+      draftText: {type: String},
+      placeholder: {type: String}
     }
   }
 
@@ -20,6 +21,7 @@ export class CommentComposer extends LitElement {
     this.isFocused = false
     this.alwaysActive = false
     this.draftText = ''
+    this.placeholder = 'Write a new comment'
   }
 
   _submit () {
@@ -50,7 +52,7 @@ export class CommentComposer extends LitElement {
   renderInactive () {
     return html`
       <div class="input-placeholder" @click=${this.onClickPlaceholder}>
-        Write a new comment
+        ${this.placeholder}
       </div>
     `
   }

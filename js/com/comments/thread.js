@@ -15,7 +15,8 @@ export class CommentsThread extends LitElement {
       comments: {type: Array},
       topicUrl: {type: String, attribute: 'topic-url'},
       userUrl: {type: String, attribute: 'user-url'},
-      activeReplies: {type: Object}
+      activeReplies: {type: Object},
+      composerPlaceholder: {type: String, attribute: 'composer-placeholder'}
     }
   }
 
@@ -25,12 +26,16 @@ export class CommentsThread extends LitElement {
     this.topicUrl = ''
     this.userUrl = ''
     this.activeReplies = {}
+    this.composerPlaceholder = undefined
   }
 
   render () {
     return html`
       <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
-      <beaker-comment-composer topic="${this.topicUrl}"></beaker-comment-composer>
+      <beaker-comment-composer
+        topic="${this.topicUrl}"
+        placeholder=${this.composerPlaceholder}
+      ></beaker-comment-composer>
       ${this.renderComments(this.comments)}
     `
   }
