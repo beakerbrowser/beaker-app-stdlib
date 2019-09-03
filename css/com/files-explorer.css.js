@@ -9,21 +9,29 @@ ${buttons2css}
 }
 
 :host([fullheight]) .listing {
-  height: calc(100vh - 118px);
+  height: calc(100vh - 83px);
   overflow-y: auto;
 }
 
 .toolbar {
   display: flex;
   align-items: center;
-  height: 30px;
+  height: 26px;
   background: #f5f5f5;
   border-bottom: 1px solid #bbb;
   padding-left: 5px;
 }
 
 .toolbar button {
-  padding: 3px 8px;
+  padding: 0 8px;
+  height: 26px;
+  line-height: 24px;
+  color: #555;
+  border-radius: 0;
+}
+
+.toolbar button:hover {
+  background: #e5e5e5;
 }
 
 .toolbar .text {
