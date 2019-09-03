@@ -17,8 +17,8 @@ ${buttons2css}
   display: flex;
   align-items: center;
   height: 30px;
-  background: #fff;
-  border-bottom: 1px solid #ccc;
+  background: #f5f5f5;
+  border-bottom: 1px solid #bbb;
   padding-left: 5px;
 }
 
