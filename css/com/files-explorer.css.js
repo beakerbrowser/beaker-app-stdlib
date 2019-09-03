@@ -39,7 +39,6 @@ ${buttons2css}
   display: flex;
   align-items: center;
   padding: 0 4px;
-  background: #f5f5f5;
   font-size: 12px;
   color: gray;
   overflow-x: auto;
