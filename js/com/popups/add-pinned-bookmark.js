@@ -137,7 +137,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
       {icon: 'fa fa-external-link-alt', label: 'Open Link in New Tab', click: () => window.open(url)},
       {icon: 'fa fa-link', label: 'Copy Link Address', click: () => writeToClipboard(url)}
     ]
-    contextMenu.create({x: e.clientX, y: e.clientY, items, fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css'})
+    contextMenu.create({x: e.clientX, y: e.clientY, items, fontAwesomeCSSUrl: 'beaker://assets/font-awesome.css'})
   }
 }
 AddPinnedBookmarkPopup.styles = [popupsCSS, css`

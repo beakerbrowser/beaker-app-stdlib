@@ -22,12 +22,16 @@ export class BasePopup extends LitElement {
     }
   }
 
+  get shouldCloseOnOuterClick () {
+    return true
+  }
+
   // management
   //
 
-  static async create (Class, ...args) {
+  static async coreCreate (parentEl, Class, ...args) {
     var popupEl = new Class(...args)
-    document.body.appendChild(popupEl)
+    parentEl.appendChild(popupEl)
 
     const cleanup = () => {
       popupEl.cleanup()
@@ -46,6 +50,10 @@ export class BasePopup extends LitElement {
         cleanup()
       })
     })
+  }
+
+  static async create (Class, ...args) {
+    return BasePopup.coreCreate(document.body, Class, ...args)
   }
 
   static destroy (tagName) {
@@ -84,7 +92,7 @@ export class BasePopup extends LitElement {
   // =
 
   onClickWrapper (e) {
-    if (e.target.classList.contains('popup-wrapper')) {
+    if (e.target.classList.contains('popup-wrapper') && this.shouldCloseOnOuterClick) {
       this.onReject()
     }
   }
