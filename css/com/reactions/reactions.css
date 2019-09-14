@@ -1,41 +1,57 @@
+@import "../../tooltip.css";
 
 .reaction {
-  padding: 4px 4px 3px;
-  margin-right: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #444;
-  /*border: 1px solid var(--light-border-color);*/
-  border-radius: 16px;
+  margin: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-.reaction:hover {
-  cursor: pointer;
-  background: #f5f5f5;
+.reaction[data-tooltip]::before {
+  top: 24px;
+}
+
+.reaction[data-tooltip]::after {
+  top: 20px;
+}
+
+.reaction .label {
+  display: inline-block;
+  border-right: 0;
+  padding: 2px 6px 2px 6px;
 }
 
 .reaction .count {
-  /* font-size: 11px; */
+  display: inline-block;
+  border-left: 1px solid #eee;
+  font-variant: tabular-nums;
+  border-radius: 4px;
+  padding: 1px 3px 1px 2px;
+  margin-left: -5px;
+  background: #eee;
+  font-weight: 500;
 }
 
-.reaction.by-user {
-  background: #f5f5f5;
-  font-weight: bold;
+.reaction:hover {
+  background: #eee;
 }
 
-.reaction.by-user:hover {
-  background: #e5e5e5;
+.reaction.pressed {
+  background: #eaeaea;
+  color: #666;
 }
 
-.reaction.add-btn {
-  border: 0;
-  font-size: 12px;
-  line-height: 21px;
-  color: #888;
+.reaction.pressed .count {
+  background: transparent;
+  border-radius: 0;
+  border-left: 1px solid #ccc;
 }
 
-.reaction.add-btn.pressed {
-  background: #e5e5e5;
-  box-shadow: inset 0 2px 3px rgba(0,0,0,.05);
-  opacity: 1;
+.reaction.pressed:hover {
+  background: #d5d5d5;
+}
+
+.other {
+  padding: 4px 6px;
+  font-size: 9px;
 }

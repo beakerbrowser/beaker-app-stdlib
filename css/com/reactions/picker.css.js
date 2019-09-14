@@ -13,6 +13,7 @@ const cssStr = css`
   box-shadow: 0 6px 16px rgba(0,0,0,.1);
   border-radius: 8px;
   border: 1px solid #c6cddc;
+  z-index: 100;
 }
 
 .header {

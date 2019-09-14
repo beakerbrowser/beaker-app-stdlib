@@ -1,7 +1,9 @@
 import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
 import { classMap } from '../../../vendor/lit-element/lit-html/directives/class-map.js'
-import { ReactionPicker } from './picker.js'
-import { renderSafe as renderEmoji } from '../../emoji.js'
+import { ifDefined } from '../../../vendor/lit-element/lit-html/directives/if-defined.js'
+import { ucfirst } from '../../strings.js'
+
+const DEFAULT_PHRASES = ['like', 'agree', 'haha']
 
 export class Reactions extends LitElement {
   static get properties () {
@@ -27,29 +29,43 @@ export class Reactions extends LitElement {
 
   get defaultReactions () {
     var reactions = this.reactions || []
-    return [/*'👍️'*/].map(emoji => reactions.find(r => r.emoji === emoji) || {emoji, authors: []})
+    return DEFAULT_PHRASES.map(phrase => reactions.find(r => r.phrase === phrase) || {phrase, authors: []})
   }
 
   get addedReactions () {
-    return this.reactions.filter(r => ![/*'👍️'*/].includes(r.emoji))
+    return this.reactions.filter(r => !DEFAULT_PHRASES.includes(r.phrase))
   }
 
   render () {
     const renderReaction = r => {
       var alreadySet = !!r.authors.find(a => a.url === this.userUrl)
-      var cls = classMap({reaction: true, 'by-user': alreadySet})
+      var cls = classMap({reaction: true, pressed: alreadySet})
       return html`
-        <span class="${cls}" @click=${e => this.emitChange(alreadySet, r.emoji)}>
-          ${renderEmoji(r.emoji)}
-          <span class="count">${r.authors.length}</span>
+        <span
+          class="${cls}"
+          @click=${e => this.emitChange(e, alreadySet, r.phrase)}
+          data-tooltip=${ifDefined(r.authors.length ? r.authors.map(a => a.title || 'Anonymous').join(', ') : undefined)}
+        >
+          <span class="label">${ucfirst(r.phrase)}</span>
+          ${r.authors.length > 0 ? html`
+            <span class="count">${r.authors.length}</span>
+          `: ''}
         </span>
       `
     }
+
+    var reactions = this.reactions.slice()
+    for (let i = 0; i < DEFAULT_PHRASES.length && reactions.length < 4; i++) {
+      if (!reactions.find(r => r.phrase === DEFAULT_PHRASES[i])) {
+        reactions.push({phrase: DEFAULT_PHRASES[i], authors: []})
+      }
+    }
+    reactions.sort((a, b) => b.authors.length - a.authors.length)
+
     return html`
-      ${this.defaultReactions.map(renderReaction)}
-      ${this.addedReactions.map(renderReaction)}
-      <span class="reaction add-btn" @click=${this.onClickAddBtn}>
-        <i class="far fa-smile"></i>
+      ${reactions.map(renderReaction)}
+      <span class="reaction other" @click=${this.onClickOther} data-tooltip="Custom reaction">
+        <span class="fas fa-pencil-alt"></span>
       </span>
     `
   }
@@ -57,51 +73,52 @@ export class Reactions extends LitElement {
   // events
   // =
 
-  emitChange (alreadySet, emoji) {
-    if (alreadySet) this.emitRemove(emoji)
-    if (!alreadySet) this.emitAdd(emoji)
+  emitChange (e, alreadySet, phrase) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (alreadySet) this.emitRemove(phrase)
+    if (!alreadySet) this.emitAdd(phrase)
   }
 
-  emitAdd (emoji) {
-    this.dispatchEvent(new CustomEvent('add-reaction', {bubbles: true, composed: true, detail: {topic: this.topic, emoji}}))
+  emitAdd (phrase) {
+    this.dispatchEvent(new CustomEvent('add-reaction', {bubbles: true, composed: true, detail: {topic: this.topic, phrase}}))
 
     // optimistic update UI
     var author = {url: this.userUrl, title: 'You'}
-    var reaction = this.reactions.find(r => r.emoji === emoji)
+    var reaction = this.reactions.find(r => r.phrase === phrase)
     if (reaction) reaction.authors.push(author)
-    else this.reactions.push({emoji, authors: [author]})
+    else this.reactions.push({phrase, authors: [author]})
     this.requestUpdate()
   }
 
-  emitRemove (emoji) {
-    this.dispatchEvent(new CustomEvent('delete-reaction', {bubbles: true, composed: true, detail: {topic: this.topic, emoji}}))
+  emitRemove (phrase) {
+    this.dispatchEvent(new CustomEvent('delete-reaction', {bubbles: true, composed: true, detail: {topic: this.topic, phrase}}))
     
     // optimistic update UI
-    var reaction = this.reactions.find(r => r.emoji === emoji)
+    var reaction = this.reactions.find(r => r.phrase === phrase)
     if (reaction) reaction.authors = reaction.authors.filter(author => author.url !== this.userUrl)
     this.requestUpdate()
   }
 
-  async onClickAddBtn (e) {
+  async onClickOther (e) {
     e.preventDefault()
     e.stopPropagation()
 
-    var el = e.currentTarget
-    el.classList.add('pressed')
-    try {
-      var rect = offset(el)
-      if (rect.top + 400 > document.body.scrollHeight) {
-        rect.top -= 300
+    do {
+      var phrase = prompt('Enter a custom reaction (characters only)')
+      if (!phrase) break
+      if (phrase.length > 20) {
+        alert('Must be 20 characters or less')
+        continue
       }
-      var emoji = await ReactionPicker.create({
-        left: rect.right + 5,
-        top: rect.top
-      })
-      this.emitAdd(emoji)
-    } catch (e) {
+      if (/^[a-z ]+$/i.test(phrase) === false) {
+        alert('Must only be characters (a-z)')
+        continue
+      }
 
-    }
-    el.classList.remove('pressed')
+      this.emitAdd(phrase.toLowerCase())
+      break
+    } while (true)
   }
 }
 
