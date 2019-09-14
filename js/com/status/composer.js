@@ -1,8 +1,8 @@
 import {LitElement, html} from '../../../vendor/lit-element/lit-element.js'
-import feedComposerCSS from '../../../css/com/feed/composer.css.js'
+import composerCSS from '../../../css/com/status/composer.css.js'
 import { on } from '../../dom.js'
 
-export class FeedComposer extends LitElement {
+export class StatusComposer extends LitElement {
   static get properties () {
     return {
       isFocused: {type: Boolean},
@@ -35,8 +35,9 @@ export class FeedComposer extends LitElement {
 
   renderInactive () {
     return html`
+      <link rel="stylesheet" href="beaker://assets/font-awesome.css">
       <div class="input-placeholder" @click=${this.onClickPlaceholder}>
-        Create a new post
+        <span class="fas fa-fw fa-pencil-alt" style="margin-right: 8px"></span> Compose a new status
       </div>
     `
   }
@@ -44,7 +45,7 @@ export class FeedComposer extends LitElement {
   renderActive () {
     return html`
       <textarea
-        placeholder="Enter your post here"
+        placeholder="Enter your status here"
         @keydown=${this.onKeydownTextarea}
         @keyup=${this.onChangeTextarea}
         @blur=${this.onBlurTextarea}
@@ -93,6 +94,6 @@ export class FeedComposer extends LitElement {
     this._submit()
   }
 }
-FeedComposer.styles = feedComposerCSS
+StatusComposer.styles = composerCSS
 
-customElements.define('beaker-feed-composer', FeedComposer)
+customElements.define('beaker-status-composer', StatusComposer)

@@ -9,7 +9,6 @@ ${buttons2css}
 :host {
   display: block;
   background: #fff;
-  padding: 14px 18px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   overflow: hidden;
@@ -17,7 +16,7 @@ ${buttons2css}
 
 .input-placeholder,
 textarea {
-  padding: 0;
+  padding: 16px 20px;
   font-size: 14px;
 }
 
@@ -27,9 +26,13 @@ textarea::-webkit-input-placeholder {
 }
 
 .input-placeholder {
-  cursor: text;
+  cursor: pointer;
   color: #aaa;
   font-weight: 400;
+}
+
+.input-placeholder:hover {
+  background: #fafafa;
 }
 
 textarea {
@@ -48,15 +51,11 @@ textarea {
 .actions {
   display: flex;
   align-items: center;
+  padding: 16px 20px;
 }
 
-.actions .char-count {
+.actions button {
   margin-left: auto;
-  margin-right: 10px;
-}
-
-.actions .char-count.danger {
-  color: var(--red);
 }
 `
 export default cssStr

@@ -15,13 +15,21 @@ ${reactionscss}
   --title-color: #333;
   --header-color: #888;
   --footer-color: #888;
+  --border-color: #ccc;
 
   display: block;
-  /*cursor: pointer;*/
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  overflow: hidden;
   background: #fff;
+}
+
+:host([expandable]) {
+  cursor: pointer;
+}
+
+:host([expandable]) .inner:hover {
+  background: #fbfbfb;
+  border-radius: 4px;
 }
 
 a {
@@ -40,7 +48,6 @@ a:hover {
 
 .content-column {
   flex: 1;
-  overflow: hidden;
 }
 
 .avatar.icon {
@@ -93,16 +100,12 @@ a:hover {
   color: gray;
 }
 
-beaker-reactions {
-  display: block;
-}
-
 .footer {
   display: flex;
   align-items: center;
   font-size: var(--footer-font-size);
   color: var(--footer-color);
-  padding: 10px 16px 12px;
+  padding: 4px 18px 12px;
 }
 
 .footer a {
@@ -110,8 +113,18 @@ beaker-reactions {
   color: inherit;
 }
 
+.footer > * {
+  white-space: nowrap;
+}
+
 .footer a:first-child {
   margin-left: 0;
+}
+
+beaker-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 8px;
 }
 
 .permalink {
