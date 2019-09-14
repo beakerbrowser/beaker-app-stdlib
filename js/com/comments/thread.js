@@ -31,10 +31,10 @@ export class CommentsThread extends LitElement {
 
   render () {
     return html`
-      <link rel="stylesheet" href="/vendor/beaker-app-stdlib/css/fontawesome.css">
+      <link rel="stylesheet" href="beaker://assets/font-awesome.css">
       <beaker-comment-composer
         topic="${this.topicUrl}"
-        placeholder=${this.composerPlaceholder}
+        placeholder=${this.composerPlaceholder || 'Add your reply'}
       ></beaker-comment-composer>
       ${this.renderComments(this.comments)}
     `
@@ -59,6 +59,11 @@ export class CommentsThread extends LitElement {
         </div>
         <div class="body">${comment.body}</div>
         <div class="footer">
+          <a href="#" @click=${e => this.onClickToggleReply(e, comment.url)}>
+            ${this.activeReplies[comment.url]
+              ? html`<span class="fas fa-fw fa-times"></span> Cancel reply`
+              : html`<span class="fas fa-fw fa-reply"></span> Reply`}
+          </a>
           ${'reactions' in comment
             ? html`
               <beaker-reactions
@@ -67,15 +72,6 @@ export class CommentsThread extends LitElement {
                 topic="${comment.url}"
               ></beaker-reactions>`
             : ''}
-          <span class="replies">
-            ${comment.replyCount}
-            ${comment.replyCount === 1 ? 'reply' : 'replies'}
-          </span>
-          <a href="#" @click=${e => this.onClickToggleReply(e, comment.url)}>
-            ${this.activeReplies[comment.url]
-              ? html`<span class="fas fa-fw fa-times"></span> Cancel reply`
-              : html`<span class="fas fa-fw fa-reply"></span> Reply`}
-          </a>
         </div>
         ${this.activeReplies[comment.url] ? html`
           <beaker-comment-composer
@@ -131,7 +127,7 @@ export class CommentsThread extends LitElement {
       withTriangle: true,
       roomy: true,
       noBorders: true,
-      fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css',
+      fontAwesomeCSSUrl: 'beaker://assets/font-awesome.css',
       style: `padding: 4px 0`,
       items 
     })

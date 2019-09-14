@@ -19,11 +19,12 @@ ${reactionscss}
   --comment-top-margin: 20px;
   --comment-left-margin: 12px;
   --composer-padding: 14px 18px;
+  --composer-margin: 0;
+  --composer-border: 1px solid #ddd;
 
   display: block;
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  overflow: hidden;
   background: #fff;
 }
 
@@ -36,8 +37,9 @@ a:hover {
 }
 
 beaker-comment-composer {
-  border: 1px solid #ccc;
+  border: var(--composer-border);
   padding: var(--composer-padding);
+  margin: var(--composer-margin);
 }
 
 .comments {
@@ -48,7 +50,6 @@ beaker-comment-composer {
 }
 
 .comment {
-  overflow: hidden;
   margin-top: var(--comment-top-margin);
   margin-left: var(--comment-left-margin);
   border-left: 2px solid #f5f5f5;
@@ -97,10 +98,6 @@ beaker-comment-composer {
   white-space: pre-line;
 }
 
-beaker-reactions {
-  display: block;
-}
-
 .footer {
   display: flex;
   align-items: center;
@@ -108,6 +105,12 @@ beaker-reactions {
   color: var(--footer-color);
   background: var(--footer-background);
   padding: 4px 14px;
+}
+
+beaker-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 4px;
 }
 
 .footer > a,
