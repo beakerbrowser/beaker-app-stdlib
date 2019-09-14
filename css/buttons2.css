@@ -15,8 +15,16 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background: #f5f5f5;
+}
+
 button:active {
   background: #eee;
+}
+
+button.big {
+  padding: 6px 12px;
 }
 
 button.pressed {
@@ -32,6 +40,18 @@ button.primary {
   border-color: var(--blue);
   color: #fff;
   box-shadow: 0 1px 1px rgba(0,0,0,.1);
+}
+
+button.primary:hover {
+  background: rgb(73, 126, 234);
+}
+
+button.gray {
+  background: #fafafa;
+}
+
+button.gray:hover {
+  background: #f5f5f5;
 }
 
 button[disabled] {
@@ -81,8 +101,7 @@ button.transparent.pressed {
 }
 
 .btn-group {
-  display: flex;
-  margin: 0 6px;
+  display: inline-flex;
 }
 
 .btn-group button {
