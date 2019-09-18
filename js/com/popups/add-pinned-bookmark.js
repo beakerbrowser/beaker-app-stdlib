@@ -6,8 +6,6 @@ import { writeToClipboard } from '../../clipboard.js'
 import * as contextMenu from '../context-menu.js'
 import * as toast from '../toast.js'
 import { toNiceUrl } from '../../strings.js'
-const profiles = navigator.importSystemAPI('unwalled-garden-profiles')
-const bookmarks = navigator.importSystemAPI('bookmarks')
 
 // exported api
 // =
@@ -41,7 +39,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   }
 
   async initialLoad () {
-    this.user = await profiles.me()
+    this.user = await UwG.profiles.me()
     await this.loadSuggestions()
   }
 
@@ -116,10 +114,10 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   }
 
   async pin (url, title) {
-    if (!(await bookmarks.has(url))) {
-      await bookmarks.add({href: url, title: title, pinned: true, isPublic: false})
+    if (!(await UwG.bookmarks.has(url))) {
+      await UwG.bookmarks.add({href: url, title: title, pinned: true, isPublic: false})
     } else {
-      await bookmarks.edit(url, {pinned: true})
+      await UwG.bookmarks.edit(url, {pinned: true})
     }
     toast.create('Pinned to your start page')
   }

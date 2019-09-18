@@ -6,13 +6,6 @@ import './status.js'
 import './composer.js'
 import { ViewStatusPopup } from '../popups/view-status.js'
 
-const UwG = {
-  follows: navigator.importSystemAPI('unwalled-garden-follows'),
-  statuses: navigator.importSystemAPI('unwalled-garden-statuses'),
-  comments: navigator.importSystemAPI('unwalled-garden-comments'),
-  reactions: navigator.importSystemAPI('unwalled-garden-reactions')
-}
-
 const LOAD_LIMIT = 50
 
 export class StatusFeed extends LitElement {
@@ -43,9 +36,9 @@ export class StatusFeed extends LitElement {
   }
 
   async load () {
-    this.followedUsers = (await UwG.follows.list({authors: this.user.url})).map(({topic}) => topic.url)
+    this.followedUsers = (await UwG.follows.list({author: this.user.url})).map(({topic}) => topic.url)
     var statuses = await UwG.statuses.list({
-      authors: this.author ? this.author : this.feedAuthors,
+      author: this.author ? this.author : this.feedAuthors,
       limit: LOAD_LIMIT,
       reverse: true
     })
@@ -66,8 +59,8 @@ export class StatusFeed extends LitElement {
   async loadFeedAnnotations (statuses) {
     await Promise.all(statuses.map(async (status) => {
       var [c, r] = await Promise.all([
-        UwG.comments.list({topics: status.url, authors: this.feedAuthors}),
-        UwG.reactions.tabulate(status.url, {authors: this.feedAuthors})
+        UwG.comments.list({topic: status.url, author: this.feedAuthors}),
+        UwG.reactions.tabulate(status.url, {author: this.feedAuthors})
       ])
       status.numComments = c.length
       status.reactions = r
@@ -75,7 +68,7 @@ export class StatusFeed extends LitElement {
   }
 
   async loadStatusComments (status) {
-    status.comments = await UwG.comments.thread(status.url, {authors: this.feedAuthors})
+    status.comments = await UwG.comments.thread(status.url, {author: this.feedAuthors})
     await loadCommentReactions(this.feedAuthors, status.comments)
     console.log('loaded', status.comments)
   }
@@ -216,9 +209,9 @@ export class StatusFeed extends LitElement {
 
 customElements.define('beaker-status-feed', StatusFeed)
 
-async function loadCommentReactions (authors, comments) {
+async function loadCommentReactions (author, comments) {
   await Promise.all(comments.map(async (comment) => {
-    comment.reactions = await UwG.reactions.tabulate(comment.url, {authors})
-    if (comment.replies) await loadCommentReactions(authors, comment.replies)
+    comment.reactions = await UwG.reactions.tabulate(comment.url, {author})
+    if (comment.replies) await loadCommentReactions(author, comment.replies)
   }))
 }
