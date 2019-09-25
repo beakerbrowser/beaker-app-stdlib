@@ -37,11 +37,11 @@ ${tooltipcss}
 }
 
 .reaction:hover {
-  background: #eee;
+  background: #eeeef5;
 }
 
 .reaction.pressed {
-  background: #eaeaea;
+  background: #eaeaf3;
   color: #666;
 }
 
