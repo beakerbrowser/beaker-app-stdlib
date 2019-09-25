@@ -212,6 +212,7 @@ customElements.define('beaker-status-feed', StatusFeed)
 async function loadCommentReactions (author, comments) {
   await Promise.all(comments.map(async (comment) => {
     comment.reactions = await UwG.reactions.tabulate(comment.url, {author})
+    comment.reactions.sort((a, b) => b.authors.length - a.authors.length)
     if (comment.replies) await loadCommentReactions(author, comment.replies)
   }))
 }

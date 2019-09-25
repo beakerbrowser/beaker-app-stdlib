@@ -60,7 +60,6 @@ export class Reactions extends LitElement {
         reactions.push({phrase: DEFAULT_PHRASES[i], authors: []})
       }
     }
-    reactions.sort((a, b) => b.authors.length - a.authors.length)
 
     return html`
       ${reactions.map(renderReaction)}
