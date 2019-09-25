@@ -1,9 +1,10 @@
 import { LitElement, html } from '../../../vendor/lit-element/lit-element.js'
+import { unsafeHTML } from '../../../vendor/lit-element/lit-html/directives/unsafe-html.js'
 import statusCSS from '../../../css/com/status/status.css.js'
 import { timeDifference } from '../../time.js'
 import { findParent, emit } from '../../dom.js'
 import { writeToClipboard } from '../../clipboard.js'
-import { pluralize } from '../../strings.js'
+import { highlightSearchResult } from '../../strings.js'
 import '../reactions/reactions.js'
 import * as contextMenu from '../context-menu.js'
 import * as toast from '../toast.js'
@@ -15,6 +16,7 @@ export class Status extends LitElement {
     return {
       status: {type: Object},
       userUrl: {type: String, attribute: 'user-url'},
+      highlightNonce: {type: String, attribute: 'highlight-nonce'},
       expanded: {type: Boolean},
       viewProfileBaseUrl: {type: String, attribute: 'view-profile-base-url'},
       viewRecordBaseUrl: {type: String, attribute: 'view-record-base-url'}
@@ -25,6 +27,7 @@ export class Status extends LitElement {
     super()
     this.status = null
     this.userUrl = ''
+    this.highlightNonce = undefined
     this.expanded = false
     this.viewProfileBaseUrl = ''
     this.viewRecordBaseUrl = ''
@@ -38,6 +41,9 @@ export class Status extends LitElement {
     if (!this.status || !this.status.body) return
     var viewProfileUrl = this.viewProfileBaseUrl ? `${this.viewProfileBaseUrl}${encodeURIComponent(this.status.author.url)}` : this.status.author.url
     var body = this.expanded ? this.status.body : this.status.body.slice(0, RENDER_LIMIT)
+    if (this.highlightNonce !== undefined) {
+      body = unsafeHTML(highlightSearchResult(body, this.highlightNonce))
+    }
     return html`
       <link rel="stylesheet" href="beaker://assets/font-awesome.css">
       <div class="inner" @click=${this.onTopClick}>
@@ -63,7 +69,7 @@ export class Status extends LitElement {
               <span class="far fa-fw fa-comment"></span>
               ${this.status.numComments}
             </span>
-            ${'reactions' in this.status
+            ${this.status.reactions !== undefined
               ? html`
                 <beaker-reactions
                   user-url="${this.userUrl}"
