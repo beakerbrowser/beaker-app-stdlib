@@ -39,7 +39,7 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   }
 
   async initialLoad () {
-    this.user = await UwG.profiles.me()
+    this.user = await uwg.profiles.me()
     await this.loadSuggestions()
   }
 
@@ -114,10 +114,10 @@ export class AddPinnedBookmarkPopup extends BasePopup {
   }
 
   async pin (url, title) {
-    if (!(await UwG.bookmarks.has(url))) {
-      await UwG.bookmarks.add({href: url, title: title, pinned: true, isPublic: false})
+    if (!(await uwg.bookmarks.has(url))) {
+      await uwg.bookmarks.add({href: url, title: title, pinned: true, isPublic: false})
     } else {
-      await UwG.bookmarks.edit(url, {pinned: true})
+      await uwg.bookmarks.edit(url, {pinned: true})
     }
     toast.create('Pinned to your start page')
   }

@@ -36,8 +36,8 @@ export class StatusFeed extends LitElement {
   }
 
   async load () {
-    this.followedUsers = (await UwG.follows.list({author: this.user.url})).map(({topic}) => topic.url)
-    var statuses = await UwG.statuses.list({
+    this.followedUsers = (await uwg.follows.list({author: this.user.url})).map(({topic}) => topic.url)
+    var statuses = await uwg.statuses.list({
       author: this.author ? this.author : this.feedAuthors,
       limit: LOAD_LIMIT,
       reverse: true
@@ -59,8 +59,8 @@ export class StatusFeed extends LitElement {
   async loadFeedAnnotations (statuses) {
     await Promise.all(statuses.map(async (status) => {
       var [c, r] = await Promise.all([
-        UwG.comments.list({topic: status.url, author: this.feedAuthors}),
-        UwG.reactions.tabulate(status.url, {author: this.feedAuthors})
+        uwg.comments.list({topic: status.url, author: this.feedAuthors}),
+        uwg.reactions.tabulate(status.url, {author: this.feedAuthors})
       ])
       status.numComments = c.length
       status.reactions = r
@@ -68,7 +68,7 @@ export class StatusFeed extends LitElement {
   }
 
   async loadStatusComments (status) {
-    status.comments = await UwG.comments.thread(status.url, {author: this.feedAuthors})
+    status.comments = await uwg.comments.thread(status.url, {author: this.feedAuthors})
     await loadCommentReactions(this.feedAuthors, status.comments)
     console.log('loaded', status.comments)
   }
@@ -136,17 +136,17 @@ export class StatusFeed extends LitElement {
   }
   
   async onAddReaction (e) {
-    await UwG.reactions.add(e.detail.topic, e.detail.phrase)
+    await uwg.reactions.add(e.detail.topic, e.detail.phrase)
   }
 
   async onDeleteReaction (e) {
-    await UwG.reactions.remove(e.detail.topic, e.detail.phrase)
+    await uwg.reactions.remove(e.detail.topic, e.detail.phrase)
   }
 
   async onSubmitStatus (e) {
     // add the new status
     try {
-      await UwG.statuses.add({body: e.detail.body})
+      await uwg.statuses.add({body: e.detail.body})
     } catch (e) {
       alert('Something went wrong. Please let the Beaker team know! (An error is logged in the console.)')
       console.error('Failed to add status')
@@ -163,7 +163,7 @@ export class StatusFeed extends LitElement {
 
     // delete the status
     try {
-      await UwG.statuses.remove(status.url)
+      await uwg.statuses.remove(status.url)
     } catch (e) {
       alert('Something went wrong. Please let the Beaker team know! (An error is logged in the console.)')
       console.error('Failed to delete status')
@@ -180,7 +180,7 @@ export class StatusFeed extends LitElement {
     // add the new comment
     try {
       var {topic, replyTo, body} = e.detail
-      await UwG.comments.add(topic, {replyTo, body})
+      await uwg.comments.add(topic, {replyTo, body})
     } catch (e) {
       alert('Something went wrong. Please let the Beaker team know! (An error is logged in the console.)')
       console.error('Failed to add comment')
@@ -195,7 +195,7 @@ export class StatusFeed extends LitElement {
     
     // delete the comment
     try {
-      await UwG.statuses.remove(comment.url)
+      await uwg.statuses.remove(comment.url)
     } catch (e) {
       alert('Something went wrong. Please let the Beaker team know! (An error is logged in the console.)')
       console.error('Failed to delete comment')
@@ -211,7 +211,7 @@ customElements.define('beaker-status-feed', StatusFeed)
 
 async function loadCommentReactions (author, comments) {
   await Promise.all(comments.map(async (comment) => {
-    comment.reactions = await UwG.reactions.tabulate(comment.url, {author})
+    comment.reactions = await uwg.reactions.tabulate(comment.url, {author})
     comment.reactions.sort((a, b) => b.authors.length - a.authors.length)
     if (comment.replies) await loadCommentReactions(author, comment.replies)
   }))
