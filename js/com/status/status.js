@@ -102,7 +102,7 @@ export class Status extends LitElement {
     e.stopPropagation()
 
     var items = [
-      {icon: 'far fa-fw fa-file-alt', label: 'View status file', click: () => window.open(this.status.url) },
+      {icon: 'far fa-fw fa-file-alt', label: 'View status', click: () => window.open(this.status.url) },
       {icon: 'fas fa-fw fa-link', label: 'Copy status URL', click: () => {
         writeToClipboard(this.status.url)
         toast.create('Copied to your clipboard')

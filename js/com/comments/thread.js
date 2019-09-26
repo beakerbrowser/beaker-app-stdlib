@@ -107,7 +107,7 @@ export class CommentsThread extends LitElement {
     e.stopPropagation()
 
     var items = [
-      {icon: 'far fa-fw fa-file-alt', label: 'View comment file', click: () => window.open(comment.url) },
+      {icon: 'far fa-fw fa-file-alt', label: 'View comment', click: () => window.open(comment.url) },
       {icon: 'fas fa-fw fa-link', label: 'Copy comment URL', click: () => {
         writeToClipboard(comment.url)
         toast.create('Copied to your clipboard')
