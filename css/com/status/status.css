@@ -66,6 +66,10 @@ a:hover {
   color: var(--header-color);
 }
 
+.date {
+  color: inherit;
+}
+
 .title {
   font-size: var(--title-font-size);
   color: var(--title-color);

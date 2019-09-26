@@ -50,7 +50,7 @@ export class Status extends LitElement {
         <div class="content-column">
           <div class="header">
             <a class="title" href="${viewProfileUrl}"><img class="avatar icon" src="asset:thumb:${this.status.author.url}"> ${this.status.author.title}</a>
-            <span class="date">${timeDifference(this.status.createdAt, true, 'ago')}</span>
+            <a class="date" href=${this.status.url}>${timeDifference(this.status.createdAt, true, 'ago')}</a>
             <button class="menu transparent" @click=${this.onClickMenu}><span class="fas fa-fw fa-ellipsis-h"></span></button>
           </div>
           <div class="body">${body}${this.isTooLong ? '...' : ''}</div>

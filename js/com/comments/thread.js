@@ -54,7 +54,7 @@ export class CommentsThread extends LitElement {
       <div class="comment">
         <div class="header">
           <a class="title" href="${comment.author.url}">${comment.author.title}</a>
-          <a class="permalink" href="${comment.url}" target="_blank">${timeDifference(comment.createdAt, true, 'ago')}</a>
+          <a class="permalink" href="${comment.url}">${timeDifference(comment.createdAt, true, 'ago')}</a>
             <button class="menu transparent" @click=${e => this.onClickMenu(e, comment)}><span class="fas fa-fw fa-ellipsis-h"></span></button>
         </div>
         <div class="body">${comment.body}</div>
