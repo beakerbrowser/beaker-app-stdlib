@@ -17,8 +17,7 @@ ${buttons2css}
   display: flex;
   align-items: center;
   height: 26px;
-  background: #f5f5f5;
-  border-bottom: 1px solid #bbb;
+  background: #222;
   padding-left: 5px;
 }
 
@@ -26,12 +25,12 @@ ${buttons2css}
   padding: 0 8px;
   height: 26px;
   line-height: 24px;
-  color: #555;
+  color: #eee;
   border-radius: 0;
 }
 
 .toolbar button:hover {
-  background: #e5e5e5;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .toolbar .text {
@@ -44,22 +43,20 @@ ${buttons2css}
 }
 
 .path {
-  display: flex;
-  align-items: center;
   padding: 0 4px;
   font-size: 12px;
-  color: gray;
+  color: #bbb;
   overflow-x: auto;
   white-space: nowrap;
 }
 
 .path a {
+  display: block;
   padding: 4px;
-  cursor: pointer;
 }
 
 .path a:hover {
-  background: #eee;
+  cursor: default;
 }
 
 .path .fa-angle-right {
@@ -74,7 +71,7 @@ ${buttons2css}
 }
 
 .listing .item:hover {
-  background: #fafafa;
+  background: #444;
 }
 
 .listing .item .icon {
@@ -87,7 +84,7 @@ ${buttons2css}
 }
 
 .listing .item .size {
-  color: rgba(0,0,0,.5);
+  color: rgba(255, 255, 255,.5);
 }
 
 @media (max-width: 600px) {
