@@ -23,7 +23,7 @@ function handleFolder (dirpath) {
 function handleCSSFile (cssPath) {
   const cssJsPath = cssPathToJsPath(cssPath)
   console.log('Generating', cssJsPath)
-  
+
   // read the css
   const css = fs.readFileSync(cssPath, 'utf8')
 
@@ -33,7 +33,6 @@ function handleCSSFile (cssPath) {
   // write the css-js file
   fs.writeFileSync(cssJsPath, `import {css} from '${path.relative(path.dirname(cssPath), litElementPath)}'
 ${imports}
-
 const cssStr = css\`
 ${newCss}
 \`

@@ -10,7 +10,7 @@ export class BasePopup extends LitElement {
 
     const onGlobalKeyUp = e => {
       // listen for the escape key
-      if (e.keyCode === 27) {
+      if (this.shouldCloseOnEscape && e.keyCode === 27) {
         this.onReject()
       }
     }
@@ -22,7 +22,15 @@ export class BasePopup extends LitElement {
     }
   }
 
+  get shouldShowHead () {
+    return true
+  }
+
   get shouldCloseOnOuterClick () {
+    return true
+  }
+
+  get shouldCloseOnEscape () {
     return true
   }
 
@@ -68,10 +76,12 @@ export class BasePopup extends LitElement {
     return html`
       <div class="popup-wrapper" @click=${this.onClickWrapper}>
         <div class="popup-inner">
-          <div class="head">
-            <span class="title">${this.renderTitle()}</span>
-            <span title="Cancel" @click=${this.onReject} class="close-btn square">&times;</span>
-          </div>
+          ${this.shouldShowHead ? html`
+            <div class="head">
+              <span class="title">${this.renderTitle()}</span>
+              <span title="Cancel" @click=${this.onReject} class="close-btn square">&times;</span>
+            </div>
+          ` : ''}
           <div class="body">
             ${this.renderBody()}
           </div>

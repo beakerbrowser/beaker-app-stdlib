@@ -40,7 +40,7 @@ create({
   parent: document.body,
 
   // url to fontawesome css
-  fontAwesomeCSSUrl: '/vendor/beaker-app-stdlib/css/fontawesome.css',
+  fontAwesomeCSSUrl: 'beaker://assets/font-awesome.css',
 
   // menu items
   items: [
@@ -107,17 +107,21 @@ function onClickAnywhere (e) {
 // =
 
 export class BeakerContextMenu extends LitElement {
-  constructor ({x, y, right, withTriangle, roomy, noBorders, style, items, fontAwesomeCSSUrl, render}) {
+  constructor ({x, y, right, center, top, withTriangle, roomy, veryRoomy, rounded, noBorders, style, items, fontAwesomeCSSUrl, render}) {
     super()
     this.x = x
     this.y = y
     this.right = right || false
+    this.center = center || false
+    this.top = top || false
     this.withTriangle = withTriangle || false
     this.roomy = roomy || false
+    this.veryRoomy = veryRoomy || false
+    this.rounded = rounded || false
     this.noBorders = noBorders || false
     this.customStyle = style || undefined
     this.items = items
-    this.fontAwesomeCSSUrl = fontAwesomeCSSUrl
+    this.fontAwesomeCSSUrl = fontAwesomeCSSUrl || 'beaker://assets/font-awesome.css'
     this.customRender = render
   }
 
@@ -130,13 +134,17 @@ export class BeakerContextMenu extends LitElement {
   // rendering
   // =
 
-  render() {
+  render () {
     const cls = classMap({
       'dropdown-items': true,
       right: this.right,
+      center: this.center,
       left: !this.right,
+      top: this.top,
       'with-triangle': this.withTriangle,
       roomy: this.roomy,
+      'very-roomy': this.veryRoomy,
+      rounded: this.rounded,
       'no-border': this.noBorders
     })
     var style = ''
@@ -146,7 +154,7 @@ export class BeakerContextMenu extends LitElement {
       ${this.fontAwesomeCSSUrl ? html`<link rel="stylesheet" href="${this.fontAwesomeCSSUrl}">` : ''}
       <div class="context-menu dropdown" style="${style}">
         ${this.customRender
-          ? this.customRender()
+          ? this.customRender.call(this)
           : html`
             <div class="${cls}" style="${ifDefined(this.customStyle)}">
               ${this.items.map(item => {
@@ -157,7 +165,7 @@ export class BeakerContextMenu extends LitElement {
                   return item
                 }
                 var icon = item.icon
-                if (icon && !icon.includes(' ')) {
+                if (typeof icon === 'string' && !icon.includes(' ')) {
                   icon = 'fa fa-' + icon
                 }
                 if (item.disabled) {
@@ -170,15 +178,17 @@ export class BeakerContextMenu extends LitElement {
                 }
                 if (item.href) {
                   return html`
-                    <a class="dropdown-item" href=${item.href}>
+                    <a class="dropdown-item ${item.selected ? 'selected' : ''}" href=${item.href}>
                       ${icon !== false ? html`<i class="${icon}"></i>` : ''}
                       ${item.label}
                     </a>
                   `
                 }
                 return html`
-                  <div class="dropdown-item" @click=${() => { destroy(); item.click() }}>
-                    ${icon !== false ? html`<i class="${icon}"></i>` : ''}
+                  <div class="dropdown-item ${item.selected ? 'selected' : ''}" @click=${() => { destroy(); item.click() }}>
+                    ${typeof icon === 'string'
+                      ? html`<i class="${icon}"></i>`
+                      : icon ? icon : ''}
                     ${item.label}
                   </div>
                 `
@@ -210,6 +220,18 @@ a.dropdown-item {
 .dropdown-item,
 .dropdown-items.roomy .dropdown-item {
   padding-right: 30px; /* add a little cushion to the right */
+}
+
+/* custom icon css */
+.fa-long-arrow-alt-right.custom-link-icon {
+  position: relative;
+  transform: rotate(-45deg);
+  left: 1px;
+}
+.fa-custom-path-icon:after {
+  content: './';
+  letter-spacing: -1px;
+  font-family: var(--code-font);
 }
 `
 

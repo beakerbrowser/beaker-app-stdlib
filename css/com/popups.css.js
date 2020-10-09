@@ -1,7 +1,6 @@
 import {css} from '../../vendor/lit-element/lit-element.js'
 import buttonscss from '../buttons.css.js'
 import inputscss from '../inputs.css.js'
-
 const cssStr = css`
 ${buttonscss}
 ${inputscss}
@@ -36,10 +35,10 @@ ${inputscss}
 
 .popup-inner .head {
   position: relative;
-  background: #fafafa;
+  background: var(--bg-color--semi-light);
   padding: 7px 12px;
   width: 100%;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color--light);
   border-radius: 4px 4px 0 0;
 }
 

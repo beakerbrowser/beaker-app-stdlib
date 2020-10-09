@@ -1,6 +1,5 @@
 import {css} from '../../vendor/lit-element/lit-element.js'
 
-
 const cssStr = css`
 .spinner {
   display: inline-block;
@@ -8,7 +7,7 @@ const cssStr = css`
   width: 14px;
   animation: rotate 1s infinite linear;
   color: #aaa;
-  border: 1.5px solid;
+  border: 2px solid;
   border-right-color: transparent;
   border-radius: 50%;
   transition: color 0.25s;

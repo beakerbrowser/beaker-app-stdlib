@@ -1,6 +1,5 @@
 import {css} from '../vendor/lit-element/lit-element.js'
 
-
 const cssStr = css`
 textarea {
   line-height: 1.4;
@@ -8,10 +7,9 @@ textarea {
 
 input,
 textarea {
-  height: 30px;
-  padding: 0 7px;
   border-radius: 4px;
-  color: rgba(51, 51, 51, 0.95);
+  color: var(--text-color--default);
+  background: var(--bg-color--default);
   border: 1px solid #d9d9d9;
 }
 textarea {
@@ -49,12 +47,12 @@ textarea[type="radio"] {
 
 input[type="radio"]:hover,
 textarea[type="radio"]:hover {
-  border: 1px solid var(--color-blue);
+  border: 1px solid var(--blue);
 }
 
 input[type="radio"]:checked,
 textarea[type="radio"]:checked {
-  border: 4.5px solid var(--color-blue);
+  border: 4.5px solid var(--blue);
 }
 
 input[type="file"],
@@ -146,7 +144,7 @@ input.inline:focus {
   padding: 3px;
   border-radius: 2px;
   border: 1px solid #d9d9d9;
-  color: var(--color-text--muted);
+  color: var(--text-color--pretty-light);
 }
 
 .input-file-picker span {
@@ -155,8 +153,7 @@ input.inline:focus {
 }
 
 ::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 0.8rem;
+  color: var(--text-color--pretty-light);
 }
 
 .big::-webkit-input-placeholder,
@@ -256,7 +253,7 @@ label.required:after {
 }
 
 .toggle.disabled {
-  color: var(--color-text--light);
+  color: var(--text-color--pretty-light);
 }
 
 label.checkbox-container {

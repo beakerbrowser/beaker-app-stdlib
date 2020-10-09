@@ -1,28 +1,63 @@
 import {css} from '../vendor/lit-element/lit-element.js'
 
-
 const cssStr = css`
 body {
-  /* common simple colors */
-  --red: rgb(255, 59, 48);
-  --orange: rgb(255, 149, 0);
-  --yellow: rgb(255, 204, 0);
-  --lime: #E6EE9C;
-  --green: rgb(76, 217, 100);
-  --teal: rgb(90, 200, 250);
-  --blue: #2864dc;
-  --purple: rgb(88, 86, 214);
-  --pink: rgb(255, 45, 85);
+  --blue: #2864dc; /* this is a leftover that ought to get replaced */
+  --border-color--default: #bbc;
+  --border-color--light: #ccd;
+  --border-color--dark: #99a;
+  --border-color--semi-light: #dde;
+  --border-color--very-light: #eef;
+  --border-color--private-light: #b7c7b0;
+  --border-color--unread: #9497f5;
+  --text-color--default: #333;
+  --text-color--lightish: #555;
+  --text-color--light: #667;
+  --text-color--pretty-light: #889;
+  --text-color--very-light: #bbc;
+  --text-color--link: #4040e7;
+  --text-color--result-link: blue;
+  --text-color--markdown-link: #4040e7;
+  --text-color--private-default: #518680;
+  --text-color--private-link: #02796d;
+  --bg-color--default: #fff;
+  --bg-color--secondary: #fafafd;
+  --bg-color--light: #fafafd;
+  --bg-color--semi-light: #f0f0f6;
+  --bg-color--private-light: #f5faf7;
+  --bg-color--private-semi-light: #edf6f1;
+  --bg-color--light-highlight: #f7faff;
+  --bg-color--unread: #f2f3ff;
+}
 
-  /* common element colors */
-  --color-text: #333;
-  --color-text--muted: gray;
-  --color-text--light: #aaa;
-  --color-text--dark: #111;
-  --color-link: #295fcb;
-  --color-focus-box-shadow: rgba(41, 95, 203, 0.8);
-  --border-color: #d4d7dc;
-  --light-border-color: #e4e7ec;
+@media (prefers-color-scheme: dark) {
+  body {
+    --border-color--default: #669;
+    --border-color--light: #558;
+    --border-color--dark: #88a;
+    --border-color--semi-light: #447;
+    --border-color--very-light: #334;
+    --border-color--private-light: #3a5a4c;
+    --border-color--unread: #9497f5;
+    --text-color--default: #ccd;
+    --text-color--lightish: #bbc;
+    --text-color--light: #aab;
+    --text-color--pretty-light: #99a;
+    --text-color--very-light: #557;
+    --text-color--link: #5d80ff;
+    --text-color--result-link: #587bfb;
+    --text-color--markdown-link: #5d80ff;
+    --text-color--private-default: #69a59e;
+    --text-color--private-link: #04a294;
+    --bg-color--default: #223;
+    --bg-color--secondary: #1b1b2b;
+    --bg-color--light: #334;
+    --bg-color--semi-light: #445;
+    --bg-color--private-light: #202f2f;
+    --bg-color--private-semi-light: #354a48;
+    --bg-color--light-highlight: #3e3e5a;
+    --bg-color--unread: #333658;
+  }
 }
 `
 export default cssStr

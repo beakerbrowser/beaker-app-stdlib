@@ -1,9 +1,8 @@
 import {css} from '../vendor/lit-element/lit-element.js'
 
-
 const cssStr = css`
 body {
-  --system-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, Cantarell, "Oxygen Sans", "Helvetica Neue", sans-serif;
+  --system-font: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Ubuntu, Cantarell, "Oxygen Sans", "Helvetica Neue", sans-serif;
   --code-font: Consolas, 'Lucida Console', Monaco, monospace;
 }
 
