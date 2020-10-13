@@ -14,6 +14,8 @@ ${markdownCSS}
 
 :host {
   display: block;
+  content-visibility: auto;
+  contain-intrinsic-size: 610px 115px;
 }
 
 a {
